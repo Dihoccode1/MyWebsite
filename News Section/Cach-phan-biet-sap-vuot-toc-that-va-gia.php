@@ -118,8 +118,8 @@
     <div class="comment">
       <div class="avatar"><img src="https://www.gravatar.com/avatar/57a697fc97be4fba4e83eaa0a55207a5?s=110&d=identicon" alt="avatar"></div>
       <div class="c-body">
-        <div class="c-meta">Đăng ngày 09/02/2017 · bởi <span class="name">ưẻ</span></div>
-        <div class="c-text">óighóa</div>
+        <div class="c-meta">Đăng ngày 09/02/2017 · bởi <span class="name">loc</span></div>
+        <div class="c-text">test1</div>
       </div>
     </div>
 
