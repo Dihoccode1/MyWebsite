@@ -365,15 +365,15 @@
                         <div class="col col-xs-12 blog_xxx">
                             <article class="blog-item">
                                 <div class="blog-item-thumbnail">
-                                    <a class="thumb" href="/sap-by-vilain-gold-digger" title="Sáp Vuốt Tóc By Vilain Gold Digger"> <!-- THAY LINK + TITLE -->
+                                    <a class="thumb" href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php" target="_blank" title="Sáp Vuốt Tóc By Vilain Gold Digger"> <!-- THAY LINK + TITLE -->
                                         <img loading="lazy"
-                                            src="https://sapvuottocnam.com/wp-content/uploads/2017/01/danh-gia-chi-tiet-sap-vuot-toc-by-vilain-gold-digger-4-min.jpg?v=1529072355191"
+                                            src="/assets/images/OIP.webp"
                                             alt="Sáp Vuốt Tóc By Vilain Gold Digger"> <!-- THAY ALT -->
                                     </a>
                                 </div>
                                 <div class="blog-item-info">
                                     <h3 class="blog-item-name">
-                                        <a href="https://sapvuottocnam.com/danh-gia-chi-tiet-sap-vuot-toc-by-vilain-gold-digger/" target="_blank"  title="Sáp Vuốt Tóc By Vilain Gold Digger"> <!-- THAY LINK + TITLE -->
+                                        <a href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php" target="_blank"  title="Sáp Vuốt Tóc By Vilain Gold Digger"> <!-- THAY LINK + TITLE -->
                                             Sáp Vuốt Tóc By Vilain Gold Digger – Giữ nếp mạnh, không bóng <!-- THAY TIÊU ĐỀ -->
                                         </a>
                                     </h3>
@@ -387,7 +387,7 @@
                                         đến Pompadour, giúp anh em tự tin cả ngày dài. <!-- THAY MÔ TẢ -->
                                     </p>
                                     <div class="news_post_loop_more">
-                                        <a class="btn btn-primary" target="_blank" href="https://sapvuottocnam.com/danh-gia-chi-tiet-sap-vuot-toc-by-vilain-gold-digger/" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK -->
+                                        <a class="btn btn-primary" target="_blank" href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK -->
                                     </div>
                                 </div>
                             </article>
@@ -397,7 +397,7 @@
                         <div class="col col-xs-12 blog_xxx">
                             <article class="blog-item">
                                 <div class="blog-item-thumbnail">
-                                    <a class="thumb" href="/huong-dan-su-dung-sap-vuot-toc" title="Hướng dẫn sử dụng sáp vuốt tóc">
+                                    <a class="thumb" href="/News Section/huong-dan-su-dung-sap-vuot-toc.php" target="_blank" title="Hướng dẫn sử dụng sáp vuốt tóc">
                                         <img loading="lazy"
                                             src="https://cdn.tgdd.vn/Files/2019/03/05/1153067/huong-dan-su-dung-wax-vuot-toc-giup-giu-nep-lau-va-khong-ngua-1_700x400.jpg"
                                             alt="Hướng dẫn sử dụng sáp vuốt tóc">
@@ -405,7 +405,7 @@
                                 </div>
                                 <div class="blog-item-info">
                                     <h3 class="blog-item-name">
-                                        <a href="/huong-dan-su-dung-sap-vuot-toc" title="Hướng dẫn sử dụng sáp vuốt tóc">
+                                        <a href="/News Section/huong-dan-su-dung-sap-vuot-toc.php" target="_blank"title="Hướng dẫn sử dụng sáp vuốt tóc">
                                             Hướng dẫn sử dụng sáp vuốt tóc đúng cách
                                         </a>
                                     </h3>
@@ -420,7 +420,7 @@
                                         Xem ngay hướng dẫn chi tiết để tối ưu hiệu quả tạo kiểu!
                                     </p>
                                     <div class="news_post_loop_more">
-                                        <a class="btn btn-primary" href="/huong-dan-su-dung-sap-vuot-toc" title="Xem chi tiết">Xem chi tiết</a>
+                                        <a class="btn btn-primary" href="/News Section/huong-dan-su-dung-sap-vuot-toc.php" target="_blank"title="Xem chi tiết">Xem chi tiết</a>
                                     </div>
                                 </div>
                             </article>
@@ -430,7 +430,7 @@
                         <div class="col col-xs-12 blog_xxx">
                             <article class="blog-item">
                                 <div class="blog-item-thumbnail">
-                                    <a class="thumb" href="/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu" title="Gợi ý loại sáp vuốt tóc nam nên dùng thử một lần trong đời"> <!-- THAY LINK + TITLE -->
+                                    <a class="thumb" href="/News Section/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php" target="_blank" title="Gợi ý loại sáp vuốt tóc nam nên dùng thử một lần trong đời"> <!-- THAY LINK + TITLE -->
                                         <img loading="lazy"
                                             src="https://api.watsons.vn/api/v2/wtcvn/blog/wp-content/uploads/tong-hop-nhung-loai-sap-vuot-toc-nam-co-bong-cao-4-min-1.jpg"
                                             alt="Gợi ý loại sáp vuốt tóc nam nên dùng thử"> <!-- THAY ALT -->
@@ -438,7 +438,7 @@
                                 </div>
                                 <div class="blog-item-info">
                                     <h3 class="blog-item-name">
-                                        <a href="/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu" title="Gợi ý loại sáp vuốt tóc nam nên dùng thử một lần trong đời"> <!-- THAY LINK + TITLE -->
+                                        <a href="/News Section/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php" target="_blank"title="Gợi ý loại sáp vuốt tóc nam nên dùng thử một lần trong đời"> <!-- THAY LINK + TITLE -->
                                             Gợi ý loại sáp vuốt tóc nam tốt nhất nên dùng thử một lần trong đời <!-- THAY TIÊU ĐỀ -->
                                         </a>
                                     </h3>
@@ -454,7 +454,7 @@
                                         <!-- THAY MÔ TẢ -->
                                     </p>
                                     <div class="news_post_loop_more">
-                                        <a class="btn btn-primary" href="/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
+                                        <a class="btn btn-primary" href="/News Section/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php"target="_blank" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
                                     </div>
                                 </div>
                             </article>
@@ -464,7 +464,7 @@
                         <div class="col col-xs-12 blog_xxx">
                             <article class="blog-item">
                                 <div class="blog-item-thumbnail">
-                                    <a class="thumb" href="/cach-bao-quan-sap-vuot-toc" title="Cách bảo quản sáp vuốt tóc"> <!-- THAY LINK + TITLE -->
+                                    <a class="thumb" href="/News Section/cach-bao-quan-sap-vuot-toc.php"target="_blank" title="Cách bảo quản sáp vuốt tóc"> <!-- THAY LINK + TITLE -->
                                         <img loading="lazy"
                                             src="https://menitems.vn/cdn/shop/articles/cach-xac-dinh-han-su-dung-cua-sap-vuot-toc_5_9718989c-5e49-424b-b4a2-0b35e153716e.jpg?v=1741167983&width=1000"
                                             alt="Cách bảo quản sáp vuốt tóc"> <!-- THAY ALT -->
@@ -472,7 +472,7 @@
                                 </div>
                                 <div class="blog-item-info">
                                     <h3 class="blog-item-name">
-                                        <a href="/cach-bao-quan-sap-vuot-toc" title="Cách bảo quản sáp vuốt tóc"> <!-- THAY LINK + TITLE -->
+                                        <a href="/News Section/cach-bao-quan-sap-vuot-toc.php"target="_blank" title="Cách bảo quản sáp vuốt tóc"> <!-- THAY LINK + TITLE -->
                                             Cách bảo quản sáp vuốt tóc để dùng lâu và hiệu quả <!-- THAY TIÊU ĐỀ -->
                                         </a>
                                     </h3>
@@ -487,7 +487,7 @@
                                         <!-- THAY MÔ TẢ -->
                                     </p>
                                     <div class="news_post_loop_more">
-                                        <a class="btn btn-primary" href="/cach-bao-quan-sap-vuot-toc" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
+                                        <a class="btn btn-primary" href="/News Section/cach-bao-quan-sap-vuot-toc.php"target="_blank" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
                                     </div>
                                 </div>
                             </article>
@@ -495,7 +495,7 @@
                         <div class="col col-xs-12 blog_xxx">
                             <article class="blog-item">
                                 <div class="blog-item-thumbnail">
-                                    <a class="thumb" href="/phan-biet-sap-vuot-toc-that-va-gia" title="Cách phân biệt sáp vuốt tóc thật và giả"> <!-- THAY LINK + TITLE -->
+                                    <a class="thumb" href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php" target="_blank" title="Cách phân biệt sáp vuốt tóc thật và giả"> <!-- THAY LINK + TITLE -->
                                         <img loading="lazy"
                                             src="https://cdn.tgdd.vn/Files/2017/05/29/987295/cach-phan-biet-sap-vuot-toc-nam-gia-va-that-202109162020354691.jpg"
                                             alt="Cách phân biệt sáp vuốt tóc thật và giả"> <!-- THAY ALT -->
@@ -503,7 +503,7 @@
                                 </div>
                                 <div class="blog-item-info">
                                     <h3 class="blog-item-name">
-                                        <a href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php" title="Cách phân biệt sáp vuốt tóc thật và giả"> <!-- THAY LINK + TITLE -->
+                                        <a href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php"target="_blank" title="Cách phân biệt sáp vuốt tóc thật và giả"> <!-- THAY LINK + TITLE -->
                                             Cách phân biệt sáp vuốt tóc thật và giả <!-- THAY TIÊU ĐỀ -->
                                         </a>
                                     </h3>
@@ -519,7 +519,7 @@
                                         <!-- THAY MÔ TẢ -->
                                     </p>
                                     <div class="news_post_loop_more">
-                                        <a class="btn btn-primary" href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php" title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
+                                        <a class="btn btn-primary" href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php" target="_blank"title="Xem chi tiết">Xem chi tiết</a> <!-- THAY LINK + TEXT -->
                                     </div>
                                 </div>
                             </article>
