@@ -24,7 +24,7 @@
     }
     .container-section
     {
-      max-width:740px; margin:20px auto 80px; padding:0 16px;
+      max-width:1200px; margin:20px auto 80px; padding:0 16px;
     }
     .article-title{font-size:26px; line-height:1.3; margin:0 0 8px; font-weight:700}
     .article-title a{color:var(--text); text-decoration:none}
@@ -142,7 +142,7 @@
       <button class="btn-class" type="submit">Bình luận</button>
     </form>
   </div>
-      <?php include __DIR__ . '/../partials/footer.php'; ?>
+  <?php include __DIR__ . '/../partials/footer.php'; ?>
   <script>
     // popup chia sẻ dạng desktop
     function winOpen(url){
