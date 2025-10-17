@@ -72,9 +72,9 @@
 <body>
     <?php include __DIR__ . '/../partials/header.php'; ?>
 
-  <div class="container-section">
+<div class="container-section">
   <h1 class="article-title">
-    <a href="/cach-phan-biet-sap-vuot-toc-that-va-gia">Cách phân biệt sáp vuốt tóc thật và giả</a>
+    <a href="/huong-dan-su-dung-sap-vuot-toc-dung-cach">Hướng dẫn sử dụng sáp vuốt tóc đúng cách</a>
   </h1>
   <div class="meta">
     <div>Đăng ngày&nbsp;29/09/2025</div>
@@ -83,23 +83,21 @@
   </div>
 
   <div class="rte">
-    <p>Trên thị trường hiện nay xuất hiện rất nhiều loại sáp vuốt tóc kém chất lượng. Để phân biệt sáp thật và giả, anh em cần chú ý đến bao bì, tem chống giả, mùi hương và chất sáp bên trong. Sáp chính hãng thường có mùi dịu nhẹ, chất sáp mịn và dễ tan khi xoa đều. Hãy mua tại cửa hàng uy tín để tránh rủi ro.</p>
-    <p><img src="/assets/img/phan-biet-sap-that-gia.jpg" alt="Cách phân biệt sáp vuốt tóc thật và giả"></p>
-    <p>Một đặc điểm dễ nhận thấy là sáp thật có tem niêm phong rõ ràng, logo in sắc nét và thông tin sản xuất chi tiết. Ngược lại, sáp giả thường có vỏ hộp thô, màu sắc lệch chuẩn và mùi hương hắc khó chịu. Khi mở nắp, sáp giả có thể bị tách nước, khô hoặc vón cục.</p>
-    <p>Để đảm bảo an toàn cho da đầu và tóc, anh em nên tránh mua sáp giá rẻ trôi nổi không rõ nguồn gốc. Việc sử dụng sáp kém chất lượng lâu dài có thể khiến tóc gãy rụng và da đầu bị kích ứng.</p>
+    <p>Để có một kiểu tóc đẹp và giữ nếp lâu, việc sử dụng sáp đúng cách rất quan trọng. Lấy một lượng sáp vừa đủ, xoa đều ra lòng bàn tay, sau đó vuốt từ chân tóc đến ngọn để tạo form mong muốn. Hãy nhớ rằng dùng quá nhiều sáp có thể khiến tóc bết dính. Xem ngay hướng dẫn chi tiết để tối ưu hiệu quả tạo kiểu!</p>
+    <p><img src="/assets/img/huong-dan-sap.jpg" alt="Hướng dẫn sử dụng sáp vuốt tóc đúng cách"></p>
   </div>
 
   <div class="share">
     <span>Chia sẻ với bạn:</span>
     <div class="icons">
-      <a href="https://www.facebook.com/sharer/sharer.php?u=http://gentleman-theme.mysapo.net/cach-phan-biet-sap-vuot-toc-that-va-gia" target="_blank" aria-label="Facebook">f</a>
-      <a href="https://plus.google.com/share?url=http://gentleman-theme.mysapo.net/cach-phan-biet-sap-vuot-toc-that-va-gia" target="_blank" aria-label="Google+">g+</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=http://gentleman-theme.mysapo.net/huong-dan-su-dung-sap-vuot-toc-dung-cach" target="_blank" aria-label="Facebook">f</a>
+      <a href="https://plus.google.com/share?url=http://gentleman-theme.mysapo.net/huong-dan-su-dung-sap-vuot-toc-dung-cach" target="_blank" aria-label="Google+">g+</a>
     </div>
   </div>
 
   <div class="prevnext">
-    <div>← <a href="/News Section/cach-bao-quan-sap-vuot-toc.php">Bài viết trước</a></div>
-    <div><a href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php">Bài viết sau</a> →</div>
+    <div>← <a href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php">Bài viết trước</a></div>
+    <div><a href="/News Section/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php">Bài viết sau</a> →</div>
   </div>
 
   <hr>
@@ -107,22 +105,18 @@
   <h3 class="section-title">Ý kiến bạn đọc</h3>
 
   <div class="comment">
-    <div class="avatar">
-      <img src="https://www.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=110&d=identicon" alt="avatar">
-    </div>
+    <div class="avatar"><img src="https://www.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=110&d=identicon" alt="avatar"></div>
     <div class="c-body">
-      <div class="c-meta">Đăng ngày 13/10/2025 · bởi <span class="name">Khánh</span></div>
-      <div class="c-text">Bài viết rất hữu ích, mình từng mua nhầm hàng fake rồi!</div>
+      <div class="c-meta">Đăng ngày 11/02/2017 · bởi <span class="name">An</span></div>
+      <div class="c-text">Tets</div>
     </div>
   </div>
 
   <div class="comment">
-    <div class="avatar">
-      <img src="https://www.gravatar.com/avatar/57a697fc97be4fba4e83eaa0a55207a5?s=110&d=identicon" alt="avatar">
-    </div>
+    <div class="avatar"><img src="https://www.gravatar.com/avatar/57a697fc97be4fba4e83eaa0a55207a5?s=110&d=identicon" alt="avatar"></div>
     <div class="c-body">
-      <div class="c-meta">Đăng ngày 12/10/2025 · bởi <span class="name">Minh</span></div>
-      <div class="c-text">Giờ mình chỉ mua sáp ở cửa hàng uy tín thôi, tránh hàng giả kém chất lượng.</div>
+      <div class="c-meta">Đăng ngày 09/02/2017 · bởi <span class="name">loc</span></div>
+      <div class="c-text">test1</div>
     </div>
   </div>
 
