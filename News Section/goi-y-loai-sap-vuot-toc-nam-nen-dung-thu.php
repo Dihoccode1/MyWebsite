@@ -84,7 +84,7 @@
 
   <div class="rte">
     <p>Trên thị trường có rất nhiều loại sáp với chất lượng và mức giá khác nhau. Tuy nhiên, một số dòng sáp cao cấp như By Vilain Gold Digger, Clay Wax hay Morris Motley luôn được giới trẻ ưa chuộng nhờ khả năng giữ nếp mạnh mẽ, mùi hương dễ chịu và không gây bết dính. Đây là những lựa chọn mà bạn nên thử ít nhất một lần trong đời.</p>
-    <p><img src="MyWebsite-main/assets/images/sáp vuốt tóc nên dùng 1 lần trong đời.jpg" alt="Gợi ý sáp vuốt tóc nam tốt nhất nên dùng thử một lần trong đời"></p>
+    <p><img src="assets/images/sáp vuốt tóc nên dùng 1 lần trong đời.jpg" alt="Gợi ý sáp vuốt tóc nam tốt nhất nên dùng thử một lần trong đời"></p>
     <p>Các dòng sáp cao cấp này không chỉ giúp mái tóc của bạn vào nếp hoàn hảo, mà còn bảo vệ tóc khỏi bụi bẩn và tác động môi trường. Đặc biệt, các thành phần tự nhiên trong sản phẩm giúp tóc khỏe mạnh hơn sau mỗi lần sử dụng.</p>
     <p>Nếu bạn là người yêu thích phong cách lịch lãm, tự tin và chỉn chu, hãy lựa chọn dòng sáp phù hợp với chất tóc của mình để có được diện mạo hoàn hảo nhất mỗi ngày.</p>
   </div>
