@@ -84,7 +84,7 @@
 
   <div class="rte">
     <p>Trên thị trường hiện nay xuất hiện rất nhiều loại sáp vuốt tóc kém chất lượng. Để phân biệt sáp thật và giả, anh em cần chú ý đến bao bì, tem chống giả, mùi hương và chất sáp bên trong. Sáp chính hãng thường có mùi dịu nhẹ, chất sáp mịn và dễ tan khi xoa đều. Hãy mua tại cửa hàng uy tín để tránh rủi ro.</p>
-    <p><img src="assets/images/phân biệt sáp vuốt tóc thật và giả.jpg" alt="Cách phân biệt sáp vuốt tóc thật và giả"></p>
+    <p><img src="MyWebsite-main/assets/images/phân biệt sáp vuốt tóc thật và giả.jpg" alt="Cách phân biệt sáp vuốt tóc thật và giả"></p>
     <p>Một đặc điểm dễ nhận thấy là sáp thật có tem niêm phong rõ ràng, logo in sắc nét và thông tin sản xuất chi tiết. Ngược lại, sáp giả thường có vỏ hộp thô, màu sắc lệch chuẩn và mùi hương hắc khó chịu. Khi mở nắp, sáp giả có thể bị tách nước, khô hoặc vón cục.</p>
     <p>Để đảm bảo an toàn cho da đầu và tóc, anh em nên tránh mua sáp giá rẻ trôi nổi không rõ nguồn gốc. Việc sử dụng sáp kém chất lượng lâu dài có thể khiến tóc gãy rụng và da đầu bị kích ứng.</p>
   </div>
