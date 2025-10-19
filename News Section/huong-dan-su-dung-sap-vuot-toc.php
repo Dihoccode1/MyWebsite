@@ -84,7 +84,7 @@
 
   <div class="rte">
     <p>Để có một kiểu tóc đẹp và giữ nếp lâu, việc sử dụng sáp đúng cách rất quan trọng. Lấy một lượng sáp vừa đủ, xoa đều ra lòng bàn tay, sau đó vuốt từ chân tóc đến ngọn để tạo form mong muốn. Hãy nhớ rằng dùng quá nhiều sáp có thể khiến tóc bết dính. Xem ngay hướng dẫn chi tiết để tối ưu hiệu quả tạo kiểu!</p>
-    <p><img src="MyWebsite-main/assets/images/sử dụng sáp đúng cách.jpg" alt="Hướng dẫn sử dụng sáp vuốt tóc đúng cách"></p>
+    <p><img src="assets/images/sử dụng sáp đúng cách.jpg" alt="Hướng dẫn sử dụng sáp vuốt tóc đúng cách"></p>
   </div>
 
   <div class="share">
