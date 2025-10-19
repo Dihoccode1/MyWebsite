@@ -81,7 +81,7 @@
 
   <div class="rte">
     <p>By Vilain Gold Digger là dòng sáp cao cấp đến từ Đan Mạch, nổi bật với khả năng giữ nếp siêu mạnh (Strong Hold) và độ bóng 0% cho mái tóc tự nhiên. Sản phẩm phù hợp cho mọi kiểu tóc từ Undercut, Side Part, đến Pompadour, giúp anh em tự tin cả ngày dài.</p>
-    <p><img src="assets/images/1616406786-by-vilain-gold-digger-02.jpg" alt="Sáp vuốt tóc By Vilain Gold Digger"></p>
+    <p><img src="MyWebsite-main/assets/images/1616406786-by-vilain-gold-digger-02.jpg" alt="Sáp vuốt tóc By Vilain Gold Digger"></p>
     <p>Sáp có chất sáp mềm mịn, dễ đánh tan trong lòng bàn tay, không để lại cặn trắng khi vuốt lên tóc. Hương thơm nhẹ nhàng, sang trọng, giúp người dùng cảm thấy dễ chịu suốt cả ngày.</p>
     <p>Gold Digger đặc biệt được các barber chuyên nghiệp tin dùng vì khả năng giữ form tóc ổn định ngay cả trong điều kiện thời tiết ẩm nóng. Khi cần làm mới kiểu tóc, chỉ cần dùng lược hoặc tay vuốt lại là tóc lập tức trở về dáng cũ.</p>
     <p>Nếu bạn đang tìm một loại sáp vừa mạnh mẽ vừa tự nhiên, không bóng nhờn và dễ gội rửa — By Vilain Gold Digger chính là lựa chọn hoàn hảo.</p>
