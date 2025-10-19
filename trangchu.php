@@ -197,7 +197,7 @@
                 <figure>
                   <a href="#" title="Banner 3">
                     <img
-                      src="assets/images/sap.webp"
+                      src="assets/images/sap2.webp"
                       alt="Banner 3"
                       loading="lazy">
                   </a>
