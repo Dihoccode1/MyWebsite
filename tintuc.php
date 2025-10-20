@@ -160,7 +160,7 @@
                   </h3>
                   <div class="date">
                     <div class="post-time">Đăng ngày&nbsp;29/09/2025</div>
-                    <div class="news_home_content_short_time">bởi <span>THE MAN</span></div>
+                    <div class="news_home_content_short_time">bởi <span>Nobility</span></div>
                   </div>
                   <p class="blog-item-summary">
                     By Vilain Gold Digger là dòng sáp cao cấp đến từ Đan Mạch, nổi bật với khả năng giữ nếp siêu mạnh (Strong Hold)
@@ -190,7 +190,7 @@
                   </h3>
                   <div class="date">
                     <div class="post-time">Đăng ngày&nbsp;29/09/2025</div>
-                    <div class="news_home_content_short_time">bởi <span>THE MAN</span></div>
+                    <div class="news_home_content_short_time">bởi <span>Nobility</span></div>
                   </div>
                   <p class="blog-item-summary">
                     Để có một kiểu tóc đẹp và giữ nếp lâu, việc sử dụng sáp đúng cách rất quan trọng.
@@ -221,7 +221,7 @@
                   </h3>
                   <div class="date">
                     <div class="post-time">Đăng ngày&nbsp;29/09/2025</div>
-                    <div class="news_home_content_short_time">bởi <span>THE MAN</span></div>
+                    <div class="news_home_content_short_time">bởi <span>Nobility</span></div>
                   </div>
                   <p class="blog-item-summary">
                     Trên thị trường có rất nhiều loại sáp với chất lượng và mức giá khác nhau.
@@ -252,7 +252,7 @@
                   </h3>
                   <div class="date">
                     <div class="post-time">Đăng ngày&nbsp;29/09/2025</div>
-                    <div class="news_home_content_short_time">bởi <span>THE MAN</span></div>
+                    <div class="news_home_content_short_time">bởi <span>Nobility</span></div>
                   </div>
                   <p class="blog-item-summary">
                     Để sáp luôn giữ được chất lượng, anh em nên bảo quản sản phẩm nơi khô ráo, thoáng mát,
@@ -282,7 +282,7 @@
                   </h3>
                   <div class="date">
                     <div class="post-time">Đăng ngày&nbsp;29/09/2025</div>
-                    <div class="news_home_content_short_time">bởi <span>THE MAN</span></div>
+                    <div class="news_home_content_short_time">bởi <span>Nobility</span></div>
                   </div>
                   <p class="blog-item-summary">
                     Trên thị trường hiện nay xuất hiện rất nhiều loại sáp vuốt tóc kém chất lượng.

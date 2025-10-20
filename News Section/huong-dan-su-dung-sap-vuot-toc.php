@@ -105,12 +105,12 @@
       <div class="col-12 col-lg-8 col-70 content-pad mb-3">
         <div class="container-section">
           <h1 class="article-title">
-            <a href="/huong-dan-su-dung-sap-vuot-toc-dung-cach">Hướng dẫn sử dụng sáp vuốt tóc đúng cách</a>
+            <a href="#">Hướng dẫn sử dụng sáp vuốt tóc đúng cách</a>
           </h1>
           <div class="meta">
             <div>Đăng ngày&nbsp;29/09/2025</div>
             <span class="sep">•</span>
-            <div>bởi <strong>THE MAN</strong></div>
+            <div>bởi <strong>Nobility</strong></div>
           </div>
 
           <div class="rte">

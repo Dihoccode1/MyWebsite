@@ -74,7 +74,8 @@
   text-decoration: none;
   cursor: default;
 }
-
+    .article-title{font-size:26px; line-height:1.3; margin:0 0 8px; font-weight:700}
+    .article-title a{color:var(--text); text-decoration:none}
 
 
   </style>
@@ -120,11 +121,11 @@
     <!-- Cột phải: nội dung bài viết -->  
        <div class="col-12 col-lg-8 col-70 content-pad mb-3">
       <div class="container-section">
-        <h1 class="article-title">Sáp Vuốt Tóc By Vilain Gold Digger – Giữ nếp mạnh, không bóng</h1>
+        <h1 class="article-title"><a href ="#">Sáp Vuốt Tóc By Vilain Gold Digger – Giữ nếp mạnh, không bóng</a></h1>
         <div class="meta">
           <div>Đăng ngày&nbsp;29/09/2025</div>`
           <span class="sep">•</span>
-          <div>bởi <strong>THE MAN</strong></div>
+          <div>bởi <strong>Nobility</strong></div>
         </div>
 
         <div class="rte">
