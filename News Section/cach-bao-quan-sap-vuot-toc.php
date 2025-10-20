@@ -33,7 +33,10 @@
     .meta .sep{color:#ccc}
 
     .rte p{margin:14px 0}
-    .rte img{max-width:100%; height:auto; display:block; margin:12px 0}
+    .rte img{  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;}
 
     /* chia sẻ */
     .share{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); margin-top:18px}
@@ -66,6 +69,7 @@
 .btn-class{display:inline-block; padding:10px 18px; background:var(--black); color:#fff; border:0; cursor:pointer; font-weight:700}
 .btn-class:hover{opacity:.9}
     /* util */
+    
     .sr{position:absolute; left:-9999px}
   </style>
 </head>
@@ -84,7 +88,7 @@
 
   <div class="rte">
     <p>Để sáp luôn giữ được chất lượng, anh em nên bảo quản sản phẩm nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp và nhiệt độ quá cao. Sau khi sử dụng, hãy đóng chặt nắp hộp để tránh sáp bị khô hoặc bay mùi. Với cách bảo quản đúng, một hộp sáp có thể dùng được rất lâu.</p>
-    <p><img src="assets/images/cách bảo quản sáp vuốt tóc.jpg" alt="Cách bảo quản sáp vuốt tóc để dùng lâu và hiệu quả"></p>
+    <p><img src="/assets/images/cách bảo quản sáp vuốt tóc.jpg" alt="Cách bảo quản sáp vuốt tóc để dùng lâu và hiệu quả"></p>
     <p>Ngoài ra, không nên để sáp trong cốp xe hoặc nơi có nhiệt độ thay đổi đột ngột, vì điều này dễ khiến kết cấu sáp bị biến dạng. Nếu sáp có dấu hiệu tách lớp hoặc khô cứng, bạn có thể khuấy nhẹ và bảo quản lại ở nơi mát để phục hồi phần nào chất lượng ban đầu.</p>
     <p>Một mẹo nhỏ là nên dùng muỗng sạch lấy sáp thay vì dùng tay trực tiếp, giúp hạn chế vi khuẩn và bụi bẩn xâm nhập vào sản phẩm. Thực hiện những bước nhỏ này sẽ giúp sáp của bạn luôn như mới, giữ hiệu quả tạo kiểu ổn định trong thời gian dài.</p>
   </div>
