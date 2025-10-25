@@ -997,7 +997,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp"
+                                                        src="./assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp"
                                                         alt="Kính 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1051,7 +1051,8 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Powder/" alt="Mũ 1"></a>
+                                                        src="./assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp"
+                                                        alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href="#"><img
@@ -1102,7 +1103,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp"
+                                                        src="./assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1153,7 +1154,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Wax/Kevin_Murphy_Rough_Rider/kevin-murphy-rough-rider.webp"
+                                                        src="./assets/images/product/Hair_wax/Kevin_Murphy_Rough_Rider/kevin-murphy-rough-rider.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1208,7 +1209,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Wax/Remaker/remaker-web-1-b8823322-5444-4ef4-8cf3-6c56d301720d.webp"
+                                                        src="./assets/images/product/Hair_wax/Remaker/remaker-web-1-b8823322-5444-4ef4-8cf3-6c56d301720d.webp"
                                                         alt="Kính 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1260,7 +1261,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp"
+                                                        src="./assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1311,7 +1312,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Spray/Davines_Strong_Hairspray/gom-xit-toc-davines-strong-hairspray-400ml.webp"
+                                                        src="./assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1361,7 +1362,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="./assets/images/Products/Wax/Suavecito_Firme_Clay_Pomade/suavecito-firme-clay-open-2048x.webp"
+                                                        src="./assets/images/product/Hair_wax/Suavecito_Firme_Clay_Pomade/suavecito-firme-clay-open-2048x.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1422,8 +1423,8 @@
                     <!-- Banner left -->
                     <div class="col col-6 content_banner">
                         <a href="#" title="Handmade">
-                            <img class="img-responsive lazyload" src="./assets/images/images_mmain/sap_handmade.jpg"
-                                data-src="" alt="Handmade">
+                            <img class="img-responsive lazyload" src="./assets/images/sap_handmade.jpg" data-src=""
+                                alt="Handmade">
                         </a>
                         <div class="des">
                             <h4><span>Handmade</span></h4>
@@ -1437,8 +1438,8 @@
                     <!-- Banner right -->
                     <div class="col col-6 content_banner">
                         <a href="#" title="Bộ sưu tập mới">
-                            <img class="img-responsive lazyload" src="./assets/images/images_mmain/suu_tap.jpg"
-                                data-src="" alt="Bộ sưu tập mới">
+                            <img class="img-responsive lazyload" src="./assets/images/suu_tap.jpg" data-src=""
+                                alt="Bộ sưu tập mới">
                         </a>
                         <div class="des">
                             <h4><span>Bộ sưu tập mới</span></h4>
