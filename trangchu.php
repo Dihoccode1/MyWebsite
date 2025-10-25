@@ -744,7 +744,7 @@
     .content_banner .des h4 span {
       border-bottom: 2px solid #fff;
       padding-bottom: 2px;
-      color:#fff;
+      color: #fff;
       font-size: 15px;
     }
 
@@ -758,7 +758,7 @@
     .content_banner .des a {
       font-weight: 600;
       font-size: 20px;
-      color:#fff;
+      color: #fff;
     }
 
 
@@ -1315,12 +1315,12 @@
           <div class="inner">
             <h2>Về chúng tôi</h2>
             <p>
-           Nobility 1800s mang đến cho khách hàng trải nghiệm mua sắm thời trang hàng hiệu trực tuyến đẳng cấp, quy tụ những thương hiệu thời trang quốc tế và trong nước.
-Chúng tôi cam kết mang lại chất lượng phục vụ tốt nhất, cùng bộ sưu tập khổng lồ gồm quần áo, giày dép, phụ kiện và mỹ phẩm cho cả nam và nữ — bắt kịp xu hướng thời trang mới nhất trên thế giới.
+              Nobility 1800s mang đến cho khách hàng trải nghiệm mua sắm thời trang hàng hiệu trực tuyến đẳng cấp, quy tụ những thương hiệu thời trang quốc tế và trong nước.
+              Chúng tôi cam kết mang lại chất lượng phục vụ tốt nhất, cùng bộ sưu tập khổng lồ gồm quần áo, giày dép, phụ kiện và mỹ phẩm cho cả nam và nữ — bắt kịp xu hướng thời trang mới nhất trên thế giới.
 
-Tại Nobility 1800s, bạn dễ dàng tìm thấy mọi phong cách mình muốn:
-từ những trang phục thoải mái ở nhà, đồ công sở lịch lãm, cho đến set đồ dạo phố năng động.
-Trải nghiệm mua sắm hàng hiệu trực tuyến chưa từng có – chỉ có tại Nobility 1800s .
+              Tại Nobility 1800s, bạn dễ dàng tìm thấy mọi phong cách mình muốn:
+              từ những trang phục thoải mái ở nhà, đồ công sở lịch lãm, cho đến set đồ dạo phố năng động.
+              Trải nghiệm mua sắm hàng hiệu trực tuyến chưa từng có – chỉ có tại Nobility 1800s .
             </p>
           </div>
         </div>
