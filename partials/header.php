@@ -47,7 +47,7 @@
              <a href="/san-pham">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
              <ul class="submenu">
                  <li><a href="/san-pham/spkhuyenmai">Sản phẩm khuyến mãi</a></li>
-                 <li><a href="/san-pham/quan">Sản phẩm nổi bật</a></li>
+                 <li><a href="../sanpham/sanphamnoibat.html">Sản phẩm nổi bật</a></li>
                  <li><a href="/san-pham/phu-kien">Sản phẩm mới</a></li>
              </ul>
          </li>
