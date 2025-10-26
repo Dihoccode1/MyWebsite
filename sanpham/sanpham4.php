@@ -129,7 +129,7 @@ hr {
 
 .breadcrumbs {
     padding: 15px 0;
-    font-size: 13px;
+    font-size: 16px;
     color: #777;
 }
 
@@ -172,14 +172,33 @@ hr {
     padding-top: 30px;
 }
 
+/* PHẦN ĐÃ CHỈNH SỬA ĐỂ CÓ KHUNG BẰNG NHAU VÀ CĂN DƯỚI */
 .product-item {
     text-align: center;
     margin-bottom: 30px;
+    /* KHUNG SẢN PHẨM */
+    border: 1px solid #eee;
+    padding: 15px 10px;
+    border-radius: 5px;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    height: 100%;
+    /* BƯỚC 1: Đảm bảo khung chiếm hết chiều cao của cột */
+}
+
+.product-item:hover {
+    border-color: #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .product-item a {
     text-decoration: none;
     color: #333;
+    display: flex;
+    /* BƯỚC 2: Áp dụng Flexbox */
+    flex-direction: column;
+    /* Xếp nội dung theo chiều dọc */
+    height: 100%;
+    /* Đảm bảo liên kết căng đều trong khung */
 }
 
 .product-image {
@@ -222,9 +241,12 @@ hr {
 .product-name {
     font-size: 14px;
     margin-bottom: 8px;
+    /* Giữ nguyên các thuộc tính giới hạn text */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    /* BƯỚC 3: Đẩy tên và giá xuống đáy */
+    margin-top: auto;
 }
 
 .product-price .sale-price {
