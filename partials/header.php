@@ -29,7 +29,7 @@
              </div>
 
              <div class="header-right">
-                 <a href="/giohang.php" class="cart-link">
+                 <a href="./header.php" class="cart-link">
                      <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                      GIỎ HÀNG (<span class="cart-count">0</span>)
                  </a>
@@ -47,7 +47,7 @@
              <a href="/san-pham">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
              <ul class="submenu">
                  <li><a href="/san-pham/spkhuyenmai">Sản phẩm khuyến mãi</a></li>
-                 <li><a href="../sanpham/sanphamnoibat.html">Sản phẩm nổi bật</a></li>
+                 <li><a href="../sanpham/sanphamnoibat.php">Sản phẩm nổi bật</a></li>
                  <li><a href="/san-pham/phu-kien">Sản phẩm mới</a></li>
              </ul>
          </li>
