@@ -802,8 +802,24 @@
 
     /* Optional: rounded corners & subtle image hover */
     .content_banner a img {
+        width: 100%;
+        /* Luôn lấp đầy chiều ngang cột */
+        height: 250px;
+        /* Chiều cao mặc định (cho mobile) */
+        object-fit: cover;
+        /* LỆNH QUAN TRỌNG: Cắt ảnh vừa khung, không méo */
         border-radius: 14px;
-        transition: transform .4s ease
+        /* Giữ bo góc */
+        transition: transform .4s ease;
+        /* Giữ hiệu ứng */
+    }
+
+    /* Khi 2 cột hiển thị (màn hình lớn hơn 576px) */
+    @media (min-width: 576px) {
+        .content_banner a img {
+            height: 320px;
+            /* Đặt chiều cao cao hơn cho desktop */
+        }
     }
 
     :root {
@@ -981,7 +997,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/kinh.jpg?v=1445834520927"
+                                                        src="./assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp"
                                                         alt="Kính 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1016,10 +1032,12 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Kính mát gọng vuông Ray-Ban</a></h3>
+                                    <h3 class="product-name"><a href="#">Sáp Vuốt Tóc By Vilain Gold Digger
+                                        </a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">1.500.000₫</span>
-                                        <span class="price product-price-old">1.640.000₫</span>
+                                        <span class="price product-price">250.000₫
+                                        </span>
+                                        <span class="price product-price-old">499.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1033,7 +1051,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1068,10 +1086,11 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Bột Tạo Phồng Tóc Dapper Dan Texture Dust</a>
+                                    </h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">289.000₫</span>
+                                        <span class="price product-price-old">449.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1084,7 +1103,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1119,10 +1138,11 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Bột tạo phồng Reuzel Matte Texture Powder</a>
+                                    </h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">315.000₫</span>
+                                        <span class="price product-price-old">420.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1134,7 +1154,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Hair_wax/Kevin_Murphy_Rough_Rider/kevin-murphy-rough-rider.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1169,10 +1189,10 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Sáp vuốt tóc Kevin Murphy Rough Rider</a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">619.000₫</span>
+                                        <span class="price product-price-old">6890.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1189,7 +1209,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/kinh.jpg?v=1445834520927"
+                                                        src="./assets/images/product/Hair_wax/Remaker/remaker-web-1-b8823322-5444-4ef4-8cf3-6c56d301720d.webp"
                                                         alt="Kính 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1224,10 +1244,10 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Kính mát gọng vuông Ray-Ban</a></h3>
+                                    <h3 class="product-name"><a href="#">Sáp vuốt tóc Remaker</a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">1.500.000₫</span>
-                                        <span class="price product-price-old">1.640.000₫</span>
+                                        <span class="price product-price">240.000₫</span>
+                                        <span class="price product-price-old">300.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1241,7 +1261,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1276,10 +1296,10 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Tinh dầu dưỡng tóc Blumaan Hydrating</a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">549.000₫</span>
+                                        <span class="price product-price-old">689.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1292,7 +1312,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1327,10 +1347,10 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Gôm Xịt Cứng Davines Strong Hairspray</a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">879.000₫</span>
+                                        <span class="price product-price-old">990.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1342,7 +1362,7 @@
                                         <div class="swiper-wrapper">
                                             <div class="item swiper-slide">
                                                 <a class="image_link" href=""><img
-                                                        src="//bizweb.dktcdn.net/thumb/large/100/004/366/products/mu.jpg?v=1445834520390"
+                                                        src="./assets/images/product/Hair_wax/Suavecito_Firme_Clay_Pomade/suavecito-firme-clay-open-2048x.webp"
                                                         alt="Mũ 1"></a>
                                             </div>
                                             <div class="item swiper-slide">
@@ -1377,10 +1397,10 @@
                                 </div>
 
                                 <div class="product-info a-left">
-                                    <h3 class="product-name"><a href="#">Mũ lưỡi trai New Era</a></h3>
+                                    <h3 class="product-name"><a href="#">Sáp Vuốt Tóc Suavecito Oil Based </a></h3>
                                     <div class="price-box">
-                                        <span class="price product-price">200.000₫</span>
-                                        <span class="price product-price-old">240.000₫</span>
+                                        <span class="price product-price">269.000₫</span>
+                                        <span class="price product-price-old">350.000₫</span>
                                     </div>
                                 </div>
                             </div>
@@ -1403,9 +1423,7 @@
                     <!-- Banner left -->
                     <div class="col col-6 content_banner">
                         <a href="#" title="Handmade">
-                            <img class="img-responsive lazyload"
-                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-                                data-src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/twobanner_1.png?1753170970183"
+                            <img class="img-responsive lazyload" src="./assets/images/sap_handmade.jpg" data-src=""
                                 alt="Handmade">
                         </a>
                         <div class="des">
@@ -1420,9 +1438,7 @@
                     <!-- Banner right -->
                     <div class="col col-6 content_banner">
                         <a href="#" title="Bộ sưu tập mới">
-                            <img class="img-responsive lazyload"
-                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-                                data-src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/twobanner_2.png?1753170970183"
+                            <img class="img-responsive lazyload" src="./assets/images/suu_tap.jpg" data-src=""
                                 alt="Bộ sưu tập mới">
                         </a>
                         <div class="des">
