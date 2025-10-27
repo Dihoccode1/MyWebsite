@@ -29,7 +29,7 @@
              </div>
 
              <div class="header-right">
-                 <a href="./header.php" class="cart-link">
+                 <a href="../giohang.php" class="cart-link">
                      <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                      GIỎ HÀNG (<span class="cart-count">0</span>)
                  </a>

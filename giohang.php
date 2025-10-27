@@ -19,95 +19,95 @@
     <link rel="stylesheet" href="assets/css/base.css">
 </head>
 <style>
-    /* ===== Breadcrumb ===== */
-    .bread-crumb {
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-        background: transparent
-    }
+/* ===== Breadcrumb ===== */
+.bread-crumb {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    background: transparent
+}
 
-    .breadcrumb {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 14px;
-        background: transparent !important;
-    }
+.breadcrumb {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    background: transparent !important;
+}
 
-    .breadcrumb li {
-        color: #666;
-        display: flex;
-        align-items: center
-    }
+.breadcrumb li {
+    color: #666;
+    display: flex;
+    align-items: center
+}
 
-    .breadcrumb li.home a {
-        font-weight: 600;
-        color: #333
-    }
+.breadcrumb li.home a {
+    font-weight: 600;
+    color: #333
+}
 
-    .breadcrumb .sep {
-        color: #999
-    }
+.breadcrumb .sep {
+    color: #999
+}
 
-    .breadcrumb li strong span {
-        color: #000
-    }
+.breadcrumb li strong span {
+    color: #000
+}
 
-    /* Tiêu đề */
-    /* Tiêu đề */
-    .title {
-        font-size: 22px;
-        font-weight: 700;
-        color: #2c3e50;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+/* Tiêu đề */
+/* Tiêu đề */
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
 
-    /* Icon giỏ hàng */
-    .empty-icon {
-        font-size: 60px;
-        color: #bdc3c7;
-        margin-bottom: 16px;
-        text-align: center;
-    }
+/* Icon giỏ hàng */
+.empty-icon {
+    font-size: 60px;
+    color: #bdc3c7;
+    margin-bottom: 16px;
+    text-align: center;
+}
 
-    /* Thông điệp */
-    .message {
-        font-size: 16px;
-        color: #7f8c8d;
-        margin-bottom: 28px;
-        text-align: center;
-    }
+/* Thông điệp */
+.message {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 28px;
+    text-align: center;
+}
 
-    /* Nút quay lại */
-    .btn-back {
-        display: block;
-        /* chiếm 1 hàng */
-        width: fit-content;
-        /* vừa với nội dung */
-        margin: 0 auto 20px;
-        /* căn giữa ngang */
-        background: #000;
-        color: #fff;
-        padding: 12px 24px;
-        border-radius: 30px;
-        font-size: 15px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background 0.2s ease;
-        text-decoration: none !important;
-          border: 1px solid transparent;
-    }
+/* Nút quay lại */
+.btn-back {
+    display: block;
+    /* chiếm 1 hàng */
+    width: fit-content;
+    /* vừa với nội dung */
+    margin: 0 auto 20px;
+    /* căn giữa ngang */
+    background: #000;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    text-decoration: none !important;
+    border: 1px solid transparent;
+}
 
 
-    .btn-back:hover {
-        background: #fff;
-        border: 1px solid #000;
-        color: #000;
-    }
+.btn-back:hover {
+    background: #fff;
+    border: 1px solid #000;
+    color: #000;
+}
 </style>
 
 <body>

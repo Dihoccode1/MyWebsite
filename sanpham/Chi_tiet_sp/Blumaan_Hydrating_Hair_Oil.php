@@ -238,7 +238,12 @@ hr {
     transition: background-color 0.2s;
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
     background-color: #555;
 }
 
@@ -286,6 +291,33 @@ hr {
 
 .product-description li {
     margin-bottom: 10px;
+}
+
+/* ===== CSS CHO HIỆU ỨNG GIỎ HÀNG ===== */
+.cart-link.shake {
+    animation: shake 0.6s;
+}
+
+@keyframes shake {
+    0% {
+        transform: scale(1);
+    }
+
+    30% {
+        transform: scale(1.15);
+    }
+
+    /* Phóng to */
+    60% {
+        transform: scale(0.9);
+    }
+
+    /* Thu nhỏ */
+    100% {
+        transform: scale(1);
+    }
+
+    /* Về bình thường */
 }
 </style>
 
@@ -424,6 +456,88 @@ hr {
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $('.add-to-cart-btn').on('click', function(e) {
+            e.preventDefault(); // Ngăn hành vi mặc định của button
+
+            var $button = $(this);
+            var $cart = $('.cart-link'); // Mục tiêu: giỏ hàng ở header
+            var $productImage = $('#mainProductImage'); // Hình ảnh sản phẩm chính
+
+            // ---- 1. Hiệu ứng ảnh bay ----
+
+            // Tạo một bản sao của hình ảnh sản phẩm
+            var $imageClone = $productImage.clone()
+                .css({
+                    'position': 'absolute',
+                    'top': $productImage.offset().top,
+                    'left': $productImage.offset().left,
+                    'width': $productImage.width(),
+                    'height': $productImage.height(),
+                    'opacity': 0.8,
+                    'z-index': 9999, // Đảm bảo nó bay bên trên mọi thứ
+                    'border-radius': '10px'
+                })
+                .appendTo($('body')); // Thêm vào body để bay
+
+            // Lấy vị trí của giỏ hàng
+            var cartPosition = $cart.offset();
+
+            // Cho ảnh "bay" về phía giỏ hàng
+            $imageClone.animate({
+                'top': cartPosition.top + 10,
+                'left': cartPosition.left + 10,
+                'width': 50, // Thu nhỏ lại
+                'height': 50,
+                'opacity': 0.1
+            }, 1000, 'swing', function() {
+                // Khi bay xong, xóa bản sao
+                $(this).remove();
+
+                // Thêm hiệu ứng "rung" cho giỏ hàng
+                $cart.addClass('shake');
+                setTimeout(function() {
+                    $cart.removeClass('shake');
+                }, 600); // 600ms khớp với thời gian animation
+            });
+
+            // ---- 2. Cập nhật số lượng giỏ hàng ----
+
+            // Lấy số lượng từ ô input
+            var quantityToAdd = parseInt($('#quantity').val());
+
+            // Lấy số lượng hiện tại từ text của giỏ hàng
+            var cartText = $cart.text(); // Ví dụ: "GIỎ HÀNG (0)"
+            var currentCount = 0;
+
+            // Dùng regex để tìm số trong dấu ngoặc
+            var match = cartText.match(/\((\d+)\)/);
+            if (match) {
+                currentCount = parseInt(match[1]);
+            }
+
+            // Tính số lượng mới
+            var newCount = currentCount + quantityToAdd;
+
+            // Cập nhật lại text cho giỏ hàng
+            $cart.text('GIỎ HÀNG (' + newCount + ')');
+
+            // ---- 3. Cập nhật nút (UX) ----
+
+            // Thay đổi text và vô hiệu hóa nút để tránh spam click
+            $button.text('ĐÃ THÊM VÀO GIỎ')
+                .prop('disabled', true);
+
+            // Sau 2 giây, trả lại trạng thái cũ
+            setTimeout(function() {
+                $button.text('THÊM VÀO GIỎ')
+                    .prop('disabled', false);
+            }, 2000);
+        });
+    });
     </script>
 </body>
 
