@@ -44,7 +44,7 @@
          <li><a href="/trangchu.php">TRANG CHỦ</a></li>
          <li><a href="/gioithieu.php">GIỚI THIỆU</a></li>
          <li class="has-submenu">
-             <a href="/san-pham">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
+             <a href="/sanpham/sanpham.html">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
              <ul class="submenu">
                  <li><a href="/san-pham/spkhuyenmai">Sản phẩm khuyến mãi</a></li>
                  <li><a href="/san-pham/quan">Sản phẩm nổi bật</a></li>
