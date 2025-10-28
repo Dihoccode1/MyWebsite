@@ -222,6 +222,105 @@ window.SV_PRODUCT_SEED = [
     image: "/assets/images/product/Volumizing_powder/Bột tạo phồng Patricks HP1 Hair Powder/hp1-1x1-grey-background-png-v-1732593674-width-1920.png",
     category: "volumizing_powder",
     badge: ""
-  }
+  },
   // ... thêm các SP khác vào đây
+    {
+    id: "wax-apestomen-nitro",
+    name: "Sáp vuốt tóc Apestomen Nitro Wax",
+    price: 340000,
+    image: "/assets/images/product/Hair_wax/Apestomen_Nitro_Wax/apestomen-nitro-wax-compressed-1-600x600.webp",
+    category: "hair_wax",
+    badge: "",
+    featured: true
+  },
+  {
+    id: "wax-hanz-de-fuko-quicksand",
+    name: "Sáp vuốt tóc Hanz De Fuko Quicksand",
+    price: 525000,
+    original_price: 650000,
+    image: "/assets/images/product/Hair_wax/Hanz_de_Fuko_Quicksand/untitled-1-425eb329-c3d1-4be6-b6f8-b687c916e2d2.webp",
+    category: "hair_wax",
+    badge: "sale",
+    featured: true
+  },
+  {
+    id: "wax-kevin-murphy-night-rider",
+    name: "Sáp vuốt tóc Kevin Murphy Night Rider",
+    price: 650000,
+    image: "/assets/images/product/Hair_wax/Kevin_Murphy_Night_Rider/kevin-murphy-night-rider-2.jpg",
+    category: "hair_wax",
+    badge: "",
+    featured: true
+  },
+  {
+    id: "powder-volcanic-ash",
+    name: "Bột tạo phồng Volcanic Ash",
+    price: 450000,
+    original_price: 750000,
+    image: "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
+    category: "volumizing_powder",
+    badge: "sale",
+    featured: true
+  },
+  {
+    id: "spray-kevin-murphy-session",
+    name: "Gôm xịt Kevin Murphy Session Spray",
+    price: 690000,
+    image: "/assets/images/product/Hair_spray/Kevin Murphy Session Spray/1468319756-session-spray-1.webp",
+    category: "hair_spray",
+    badge: "",
+    featured: true
+  },
+  {
+    id: "oil-blumaan-hydrating",
+    name: "Tinh dầu dưỡng tóc Blumaan Hydrating Hair Oil",
+    price: 550000,
+    original_price: 689000,
+    image: "/assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp",
+    category: "hair_conditioner",
+    badge: "sale",
+    featured: true
+  },
+  {
+    id: "oil-moroccanoil-treatment",
+    name: "Tinh dầu dưỡng tóc Moroccanoil Treatment",
+    price: 300000,
+    image: "/assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp",
+    category: "hair_conditioner",
+    badge: "",
+    featured: true
+  },
+  {
+    id: "powder-dapper-dan-ultra-matte-dust",
+    name: "Bột tạo phồng Dapper Dan Ultra Matte Texture Dust",
+    price: 400000,
+    original_price: 450000,
+    image: "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
+    category: "volumizing_powder",
+    badge: "sale",
+    featured: true
+  },
+  {
+    id: "powder-dapper-dan-ultra-matte-dust",
+    name: "Bột tạo phồng Dapper Dan Ultra Matte Texture Dust",
+    price: 400000,
+    original_price: 450000,
+    image: "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
+    category: "volumizing_powder",
+    badge: "sale",
+    featured: true
+  }
+  ,
+  {
+    id: "powder-dapper-dan-ultra-matte-dust",
+    name: "Bột tạo phồng Dapper Dan Ultra Matte Texture Dust",
+    price: 400000,
+    original_price: 450000,
+    image: "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
+    category: "volumizing_powder",
+    badge: "sale",
+    featured: true
+  }
+  
 ];
+

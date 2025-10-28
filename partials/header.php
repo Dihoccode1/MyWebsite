@@ -46,9 +46,9 @@
          <li class="has-submenu">
              <a href="/sanpham/sanpham.php">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
              <ul class="submenu">
-                 <li><a href="/san-pham/spkhuyenmai">Sản phẩm khuyến mãi</a></li>
+                 <li><a href="../sanpham/sanpham_khuyenmai.php">Sản phẩm khuyến mãi</a></li>
                  <li><a href="../sanpham/sanphamnoibat.php">Sản phẩm nổi bật</a></li>
-                 <li><a href="/san-pham/phu-kien">Sản phẩm mới</a></li>
+                 <li><a href="../sanpham/sanpham_moi.php">Sản phẩm mới</a></li>
              </ul>
          </li>
          <li><a href="/tintuc.php">TIN TỨC</a></li>
