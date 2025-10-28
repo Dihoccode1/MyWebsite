@@ -231,6 +231,10 @@
 <script src="/assets/js/products.seed.js"></script>
 <script src="/assets/js/store.js"></script>
 <script src="/assets/js/ui.js"></script>
+<script>
+  // CHỈ hiện sản phẩm có featured === true
+  window.SVUI?.init({ featuredOnly: true });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
 </script>

@@ -1,4 +1,5 @@
  <!-- header -->
+
  <header class="header">
      <div class="topbar">
          <div class="container">
@@ -40,18 +41,21 @@
  </header>
  <!-- end header -->
  <nav class="main-nav">
-     <ul>
-         <li><a href="/trangchu.php">TRANG CHỦ</a></li>
-         <li><a href="/gioithieu.php">GIỚI THIỆU</a></li>
-         <li class="has-submenu">
-             <a href="/sanpham/sanpham.php">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
-             <ul class="submenu">
-                 <li><a href="../sanpham/sanpham_khuyenmai.php">Sản phẩm khuyến mãi</a></li>
-                 <li><a href="../sanpham/sanphamnoibat.php">Sản phẩm nổi bật</a></li>
-                 <li><a href="../sanpham/sanpham_moi.php">Sản phẩm mới</a></li>
-             </ul>
-         </li>
-         <li><a href="/tintuc.php">TIN TỨC</a></li>
-         <li><a href="/lienhe.php">LIÊN HỆ</a></li>
-     </ul>
- </nav>
+  <ul>
+    <li><a href="/trangchu.php">TRANG CHỦ</a></li>
+    <li><a href="/gioithieu.php">GIỚI THIỆU</a></li>
+
+    <li class="has-submenu">
+      <a href="/sanpham/sanpham.php">SẢN PHẨM <i class="fa-solid fa-caret-down"></i></a>
+      <ul class="submenu">
+        <!-- ĐỔI TỪ ../... -> /sanpham/... -->
+        <li><a href="/sanpham/sanpham_khuyenmai.php">Sản phẩm khuyến mãi</a></li>
+        <li><a href="/sanpham/sanphamnoibat.php">Sản phẩm nổi bật</a></li>
+        <li><a href="/sanpham/sanpham_moi.php">Sản phẩm mới</a></li>
+      </ul>
+    </li>
+
+    <li><a href="/tintuc.php">TIN TỨC</a></li>
+    <li><a href="/lienhe.php">LIÊN HỆ</a></li>
+  </ul>
+</nav>

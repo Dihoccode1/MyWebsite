@@ -48,7 +48,7 @@
     return `
       <div class="col-lg-3 col-md-4 col-sm-6 col-6">
         <div class="product-item">
-          <a href="#">
+                <a href="pages/product_detail.php?id=${p.id}">
             <div class="product-image">
               ${badgeHTML(p.badge)}
               <img src="${p.image}" alt="${p.name}">
