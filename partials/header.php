@@ -30,7 +30,7 @@
              </div>
 
              <div class="header-right">
-                 <a href="../giohang.php" class="cart-link">
+                 <a href="/giohang.php" class="cart-link">
                      <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
                      GIỎ HÀNG (<span class="cart-count">0</span>)
                  </a>
@@ -60,7 +60,19 @@
   </ul>
 </nav>
 <script>
-  // hiện badge giỏ ngay khi tải trang
-  window.SVUI?.updateCartCount?.();
-  document.addEventListener('DOMContentLoaded', ()=> window.SVUI?.updateCartCount?.());
+  // Đồng bộ badge giỏ trên header: lúc tải trang, khi đổi giỏ ở cùng tab, và khi đổi giỏ từ tab khác
+  function refreshBadge(){ window.SVUI?.updateCartCount?.(); }
+
+  document.addEventListener('DOMContentLoaded', refreshBadge);
+  window.addEventListener('cart:changed', refreshBadge);
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'sv_cart_v1') refreshBadge();
+  });
 </script>
+
+
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
+

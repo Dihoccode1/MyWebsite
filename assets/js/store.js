@@ -76,13 +76,18 @@
   };
   const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
 
+  // phát sự kiện toàn cục mỗi khi giỏ đổi
+  function emitCartChanged() {
+    try { window.dispatchEvent(new CustomEvent('cart:changed')); } catch (_) {}
+  }
+
   function addToCart(id, qty = 1) {
     qty = clampNonNegative(qty) || 1;
     const cart = getCart();
     const i = cart.findIndex(x => x.id === id);
-    if (i > -1) cart[i].qty += qty;
-    else cart.push({ id, qty });
+    if (i > -1) cart[i].qty += qty; else cart.push({ id, qty });
     saveCart(cart);
+    emitCartChanged();
     return cart;
   }
 
@@ -90,16 +95,21 @@
     qty = clampNonNegative(qty) || 1;
     const cart = getCart().map(x => x.id === id ? { ...x, qty } : x);
     saveCart(cart);
+    emitCartChanged();
     return cart;
   }
 
   function removeFromCart(id) {
     const cart = getCart().filter(x => x.id !== id);
     saveCart(cart);
+    emitCartChanged();
     return cart;
   }
 
-  const clearCart = () => saveCart([]);
+  function clearCart() {
+    saveCart([]);
+    emitCartChanged();
+  }
 
   const count = () => getCart().reduce((s, x) => s + (x.qty || 0), 0);
 
@@ -111,6 +121,7 @@
       return s + (p ? toNumber(p.price) * (x.qty || 0) : 0);
     }, 0);
   }
+
 
   w.SVStore = {
     fmtVND, toNumber, normalizeBadge, getAllProducts,
@@ -130,8 +141,18 @@
       const sorted = sortProducts(filtered, sort);
       return paginate(sorted, page, perPage);
     },
+  
 
     // Cart API
     getCart, addToCart, setQty, removeFromCart, clearCart, count, total
   };
+  window.SVCart = {
+  add: (id, qty=1) => {
+    window.SVStore?.addToCart(id, qty);
+    window.dispatchEvent(new CustomEvent('cart:changed')); // báo cho header
+  },
+  count: () => window.SVStore?.count?.() ?? 0
+};
+
 })(window);
+

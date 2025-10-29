@@ -66,7 +66,7 @@
 .product-name {
   min-height: calc(1.4em * 2); /* ~2 dòng */
   line-height: 1.4;
-  display: -webkit-box;    /* hiển thị 2 dòng */
+  display: -webkit-box;   /* hiển thị 2 dòng */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -153,127 +153,127 @@
   <?php include __DIR__ . '/../partials/footer.php'; ?>
 
   <!-- Data & Store -->
-  <script src="/assets/js/products.seed.js"></script>
-  <script src="/assets/js/store.js"></script>
-  <!-- UI chung -->
-  <script src="/assets/js/ui.js"></script>
+<!-- Data -->
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/store.js"></script>
 
-  <!-- Nếu ui.js chưa hỗ trợ #newOnly thì fallback lọc NEW -->
-  <script>
-    (function(){
-      if (window.SVUI && typeof window.SVUI.init === 'function') {
-        window.SVUI.init({ newOnly: true });
-        return;
-      }
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const VND = n => (Number(n||0)).toLocaleString('vi-VN') + '₫';
+  const esc = s => String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const $  = (s, r=document) => r.querySelector(s);
+  const grid = $('#product-grid');
+  const pag  = $('#pagination');
+  if (!grid) return;
 
-      const grid = document.getElementById('product-grid');
-      const pagination = document.getElementById('pagination');
-      const form = document.getElementById('searchForm');
+  // ===== dữ liệu: chỉ giữ NEW =====
+  const all = (window.SVStore?.getAllProducts?.() || window.SV_PRODUCT_SEED || []);
+  const listNew = all.filter(p => String(p.badge||'').toLowerCase() === 'new');
 
-      const fmtVND = n => (n || n === 0) ? Number(n).toLocaleString('vi-VN') + '₫' : '';
-      const toNumber = v => typeof v === 'number' ? v : Number(String(v).replace(/[^\d]/g,'')) || 0;
-      const normalizeBadge = p => {
-        if(!p || !p.badge) return '';
-        const b = String(p.badge).toLowerCase().trim();
-        if (b === 'sale') return 'sale';
-        if (b === 'new') return 'new';
-        if (b === 'oos' || b === 'out_of_stock') return 'out_of_stock';
-        return '';
-      };
+  const usp   = new URLSearchParams(location.search);
+  const state = { perPage: 8, page: Math.max(1, Number(usp.get('page')||'1')) };
 
-      const baseList = (window.SVStore?.getAllProducts?.() || window.SV_PRODUCT_SEED || []).filter(p => normalizeBadge(p) === 'new');
-
-      const state = { q:'', category:'all', minPrice:'', maxPrice:'', sort:'', page:1, perPage:8 };
-
-      function badgeHTML(p){
-        const b = normalizeBadge(p);
-        if (b === 'new') return '<span class="product-badge badge-new">Mới</span>';
-        if (b === 'sale') return '<span class="product-badge badge-sale">Sale</span>';
-        if (b === 'out_of_stock') return '<span class="product-badge badge-out-of-stock">Hết hàng</span>';
-        return '';
-      }
-
-      function cardHTML(p){
-        const original = p.original_price && toNumber(p.original_price) > toNumber(p.price)
-          ? `<span class=\"original-price\">${fmtVND(p.original_price)}</span>` : '';
-        return `
-          <div class=\"col-6 col-md-4 col-lg-3\">
-            <div class=\"product-item\">
-              <a href="/sanpham/pages/product_detail.php?id=${encodeURIComponent(p.id)}">
-                <div class=\"product-image\">${badgeHTML(p)}<img src=\"${p.image}\" alt=\"${p.name}\"/></div>
-                <div class=\"product-name\">${p.name}</div>
-                <div class=\"product-price\"><span class=\"sale-price\">${fmtVND(p.price)}</span>${original}</div>
-              </a>
+  const badgeHTML = (p) => {
+    const b = String(p.badge||'').toLowerCase();
+    if (b==='sale') return '<span class="product-badge badge-sale">Sale</span>';
+    if (b==='new')  return '<span class="product-badge badge-new">Mới</span>';
+    if (b==='oos' || b==='out_of_stock') return '<span class="product-badge badge-out-of-stock">Hết hàng</span>';
+    return '';
+  };
+  const detailUrl = p => `/sanpham/pages/product_detail.php?id=${encodeURIComponent(p.id)}`;
+  const card = (p) => {
+    const showOri = p.original_price && Number(p.original_price) > Number(p.price);
+    const isOOS   = ['oos','out_of_stock'].includes(String(p.badge||'').toLowerCase());
+    return `
+      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+        <div class="product-item">
+          <a href="${detailUrl(p)}">
+            <div class="product-image">
+              ${badgeHTML(p)}
+              <img src="${p.image}" alt="${esc(p.name)}">
             </div>
-          </div>`;
-      }
+            <div class="product-name">${esc(p.name)}</div>
+            <div class="product-price">
+              <span class="sale-price">${VND(p.price)}</span>
+              ${showOri ? `<span class="original-price">${VND(p.original_price)}</span>` : ''}
+            </div>
+          </a>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-dark btn-add-cart" data-id="${esc(p.id)}" ${isOOS?'disabled':''}>
+              <i class="fas fa-cart-plus"></i> ${isOOS ? 'Hết hàng' : 'Thêm giỏ'}
+            </button>
+          </div>
+        </div>
+      </div>`;
+  };
 
-      function filterSortPaginate(){
-        let rs = baseList.slice();
-        if (state.q){
-          const kw = state.q.toLowerCase();
-          rs = rs.filter(p => (p.name||'').toLowerCase().includes(kw));
-        }
-        if (state.category !== 'all'){
-          const c = state.category.toLowerCase();
-          rs = rs.filter(p => (p.category||'').toLowerCase() === c);
-        }
-        if (state.minPrice !== '') rs = rs.filter(p => toNumber(p.price) >= Math.max(0, toNumber(state.minPrice)));
-        if (state.maxPrice !== '') rs = rs.filter(p => toNumber(p.price) <= Math.max(0, toNumber(state.maxPrice)));
-        if (state.sort){
-          const [key, dir] = state.sort.split('-');
-          const dirN = dir === 'desc' ? -1 : 1;
-          rs.sort((a,b)=>{
-            if (key==='price') return (toNumber(a.price)-toNumber(b.price))*dirN;
-            if (key==='name') return String(a.name).localeCompare(String(b.name), 'vi')*dirN;
-            return 0;
-          });
-        }
-        const total = rs.length, pages = Math.max(1, Math.ceil(total/state.perPage));
-        const page = Math.min(Math.max(1, state.page), pages);
-        const items = rs.slice((page-1)*state.perPage, (page-1)*state.perPage + state.perPage);
-        return { items, pages, page };
-      }
+  function buildPagination(pages, current){
+    if (pages <= 1) return '';
+    const link = p => {
+      const u = new URL(location.href);
+      u.searchParams.set('page', String(p));
+      return u.pathname + '?' + u.searchParams.toString();
+    };
+    let html = '';
+    if (current > 1) html += `<li class="page-item"><a class="page-link" data-page="${current-1}" href="${link(current-1)}">&larr;</a></li>`;
+    for (let i=1;i<=pages;i++){
+      html += (i===current)
+        ? `<li class="page-item active"><span class="page-link">${i}</span></li>`
+        : `<li class="page-item"><a class="page-link" data-page="${i}" href="${link(i)}">${i}</a></li>`;
+    }
+    if (current < pages) html += `<li class="page-item"><a class="page-link" data-page="${current+1}" href="${link(current+1)}">&rarr;</a></li>`;
+    return html;
+  }
 
-      function buildPagination(pages, current){
-        if (pages <= 1) return '';
-        let html = '';
-        if (current > 1) html += `<li class=\"page-item\"><a class=\"page-link\" data-page=\"${current-1}\" href=\"#\">&larr;</a></li>`;
-        for (let i=1;i<=pages;i++){
-          html += `<li class=\"page-item ${i===current?'active':''}\"><a class=\"page-link\" data-page=\"${i}\" href=\"#\">${i}</a></li>`;
-        }
-        if (current < pages) html += `<li class=\"page-item\"><a class=\"page-link\" data-page=\"${current+1}\" href=\"#\">&rarr;</a></li>`;
-        return html;
-      }
+  function render(){
+    const total = listNew.length;
+    const pages = Math.max(1, Math.ceil(total / state.perPage));
+    state.page  = Math.min(Math.max(1, state.page), pages);
 
-      function render(){
-        const res = filterSortPaginate();
-        grid.innerHTML = res.items.map(cardHTML).join('');
-        pagination.innerHTML = buildPagination(res.pages, res.page);
-      }
+    const start = (state.page - 1) * state.perPage;
+    const items = listNew.slice(start, start + state.perPage);
 
-      pagination.addEventListener('click', e=>{
-        const a = e.target.closest('a.page-link');
-        if (!a) return;
-        e.preventDefault();
-        state.page = Number(a.dataset.page) || 1;
-        render();
-      });
+    grid.innerHTML = items.length
+      ? items.map(card).join('')
+      : `<div class="col-12 py-5 text-center text-muted">Chưa có sản phẩm mới.</div>`;
 
-      form.addEventListener('submit', e=>{
-        e.preventDefault();
-        state.q = (document.getElementById('q').value||'').trim();
-        state.category = document.getElementById('category').value || 'all';
-        state.minPrice = document.getElementById('priceMin').value || '';
-        state.maxPrice = document.getElementById('priceMax').value || '';
-        state.sort = document.getElementById('sort').value || '';
-        state.page = 1;
-        render();
-      });
+    if (pag) pag.innerHTML = buildPagination(pages, state.page);
 
-      render();
-    })();
-  </script>
+    if (window.SVStore?.count) {
+      const el = document.querySelector('#cartCount, .cart-count');
+      if (el) el.textContent = SVStore.count();
+    }
+  }
+
+  pag?.addEventListener('click', e=>{
+    const a = e.target.closest('a.page-link'); if (!a) return;
+    e.preventDefault();
+    state.page = Number(a.dataset.page) || 1;
+    const u = new URL(location.href);
+    u.searchParams.set('page', String(state.page));
+    history.replaceState({}, '', u.pathname + '?' + u.searchParams.toString());
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('click', e=>{
+    const btn = e.target.closest('.btn-add-cart'); if (!btn) return;
+    const id = btn.getAttribute('data-id'); if (!id) return;
+    if (window.SVStore?.addToCart) SVStore.addToCart(id, 1);
+    const el = document.querySelector('#cartCount, .cart-count');
+    if (el && window.SVStore?.count) el.textContent = SVStore.count();
+    const old = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
+    setTimeout(()=>{ btn.disabled=false; btn.innerHTML = old; }, 800);
+  });
+
+  render();
+});
+</script>
+
+
+
 
   <!-- Vendor JS -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"

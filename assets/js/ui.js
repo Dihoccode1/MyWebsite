@@ -186,4 +186,26 @@ document.addEventListener('click', function (e) {
   btn.disabled = true;
   btn.innerHTML = `<i class="fas fa-check"></i> Đã thêm`;
   setTimeout(()=>{ btn.disabled=false; btn.innerHTML = old; }, 800);
-});
+});// === Cập nhật số giỏ ở header (universal) ===
+window.SVUI = window.SVUI || {};
+window.SVUI.updateCartCount = function () {
+  const el = document.querySelector('#cartCount') || document.querySelector('.cart-count');
+  if (!el) return;
+
+  let n = 0;
+  if (window.SVCart?.count) {
+    n = SVCart.count(); // stack dùng SVCart
+  } else if (window.SVStore?.count) {
+    n = SVStore.count(); // nếu bạn có SVStore.count()
+  } else {
+    // fallback đọc trực tiếp localStorage theo key phổ biến
+    try {
+      const c = JSON.parse(localStorage.getItem('sv_cart_v1') || '[]');
+      n = c.reduce((s, x) => s + (x.qty || 0), 0);
+    } catch (_) {}
+  }
+  el.textContent = n;
+};
+
+// chạy khi trang tải xong
+document.addEventListener('DOMContentLoaded', () => window.SVUI.updateCartCount());

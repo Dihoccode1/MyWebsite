@@ -98,53 +98,53 @@
 <body>
   <?php include __DIR__ . '/../partials/header.php'; ?>
 
-  <div class="container">
-    <nav class="breadcrumbs">
-      <a href="/trangchu.php">Trang chủ</a> / <span>Sản phẩm khuyến mãi</span>
-    </nav>
-    <hr/>
+<!-- KHUNG DANH SÁCH + PHÂN TRANG -->
+<!-- KHUNG DANH SÁCH + PHÂN TRANG -->
+<div class="container my-4">
+  <h1 class="h4 mb-3">Sản phẩm khuyến mãi</h1>
 
-    <!-- Form lọc/tìm kiếm -->
-    <form id="searchForm" class="form-inline mb-2">
-      <input id="q" class="form-control mr-2" placeholder="Tìm theo tên..."/>
-      <select id="category" class="form-control mr-2">
-        <option value="all">Tất cả</option>
-        <option value="hair_wax">Sáp vuốt tóc</option>
-        <option value="hair_spray">Gôm xịt tóc</option>
-        <option value="hair_conditioner">Dưỡng tóc</option>
-        <option value="volumizing_powder">Bột tạo phồng</option>
-      </select>
-      <input id="priceMin" class="form-control mr-2" type="number" min="0" placeholder="Giá từ"/>
-      <input id="priceMax" class="form-control mr-2" type="number" min="0" placeholder="Giá đến"/>
-      <select id="sort" class="form-control mr-2">
-        <option value="">Mặc định</option>
-        <option value="price-asc">Giá tăng dần</option>
-        <option value="price-desc">Giá giảm dần</option>
-        <option value="name-asc">Tên A→Z</option>
-        <option value="name-desc">Tên Z→A</option>
-      </select>
-      <button class="btn btn-primary">Tìm</button>
-    </form>
-
-    <div class="product-list">
-            <div id="product-grid" class="row equalize-cards"></div>
+  <!-- (tuỳ chọn) form lọc/ tìm kiếm -->
+  <form id="searchForm" class="mb-3">
+    <div class="form-row">
+      <div class="col-md-4 mb-2">
+        <input name="q" class="form-control" placeholder="Tìm theo tên…">
+      </div>
+      <div class="col-md-3 mb-2">
+        <select name="category" class="form-control">
+          <option value="all">Tất cả danh mục</option>
+          <option value="hair_wax">Sáp vuốt tóc</option>
+          <option value="hair_spray">Gôm xịt</option>
+          <option value="hair_conditioner">Dưỡng tóc</option>
+          <option value="volumizing_powder">Bột tạo phồng</option>
+        </select>
+      </div>
+      <div class="col-md-2 mb-2">
+        <input name="priceMin" class="form-control" placeholder="Giá từ">
+      </div>
+      <div class="col-md-2 mb-2">
+        <input name="priceMax" class="form-control" placeholder="Giá đến">
+      </div>
+      <div class="col-md-1 mb-2">
+        <button class="btn btn-dark btn-block">Lọc</button>
+      </div>
     </div>
+  </form>
 
-    <nav class="pagination-nav" aria-label="Page navigation">
-      <ul id="pagination" class="pagination-list"></ul>
-    </nav>
-  </div>
-
+  <div id="product-grid" class="row"></div>
+  <ul id="pagination" class="pagination justify-content-center mt-3"></ul>
+</div>
   <?php include __DIR__ . '/../partials/footer.php'; ?>
 
-  <!-- Data & Store -->
-  <script src="/assets/js/products.seed.js"></script>
-  <script src="/assets/js/store.js"></script>
-  <!-- UI chung -->
-  <script src="/assets/js/ui.js"></script>
-  <script>
-    // Chỉ lấy SALE, và link chi tiết luôn là /sanpham/pages/product_detail.php?id=...
-    window.SVUI.init({ saleOnly: true });
-  </script>
+<!-- DATA + STORE + UI -->
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script>
+  // Chỉ hiển thị sản phẩm có badge = "sale"
+  window.SVUI?.init({ saleOnly: true });
+
+  // Cập nhật số giỏ trên header ngay khi vào trang
+  document.addEventListener('DOMContentLoaded', () => window.SVUI?.updateCartCount?.());
+</script>
 </body>
 </html>

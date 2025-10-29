@@ -64,7 +64,7 @@
 .product-name {
   min-height: calc(1.4em * 2); /* ~2 dòng */
   line-height: 1.4;
-  display: -webkit-box;     /* hiển thị 2 dòng */
+  display: -webkit-box;      /* hiển thị 2 dòng */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -75,172 +75,27 @@
 /* Nếu có nút thêm giỏ đặt ngoài <a>, vẫn giữ dưới cùng */
 .product-item .mt-2 { margin-top: 8px; }
 
-    /* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
-
-    /* 4. Breadcrumbs (Trang chủ / ...) */
-    .breadcrumbs {
-        padding: 15px 0;
-        font-size: 13px;
-        color: #777;
-    }
-
-    .breadcrumbs a {
-        color: #333;
-    }
-
-    /* 5. View Controls (Bộ lọc) */
-    .view-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 0;
-    }
-
-    .filter-select {
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        font-size: 13px;
-    }
-
-    .view-buttons button {
-        padding: 8px 12px;
-        border: 1px solid #ccc;
-        background: #fff;
-        margin-left: 5px;
-        font-size: 13px;
-        cursor: pointer;
-    }
-
-    .view-buttons button.active {
-        background-color: #f0f0f0;
-        border-color: #aaa;
-    }
-
-    .view-buttons button i {
-        margin-right: 5px;
-    }
-
-    /* ====== CSS SẢN PHẨM (MỚI THÊM) ====== */
-    .product-list {
-        padding-top: 30px;
-        /* Khoảng cách với bộ lọc */
-    }
-
-    .product-item {
-        text-align: center;
-        margin-bottom: 30px;
-        /* Khoảng cách giữa các hàng */
-    }
-
-    .product-item a {
-        text-decoration: none;
-        color: #333;
-    }
-
-    .product-image {
-        position: relative;
-        margin-bottom: 15px;
-        overflow: hidden;
-        /* Giúp ảnh không bị tràn */
-    }
-
-    .product-image img {
-        width: 100%;
-        height: auto;
-        display: block;
-        /* Hiệu ứng zoom nhẹ khi hover (tùy chọn) */
-        transition: transform 0.3s ease;
-    }
-
-    .product-item:hover .product-image img {
-        transform: scale(1.05);
-    }
-
-    /* CSS cho các nhãn (Hết hàng, Sale) */
-    .product-badge {
-        position: absolute;
-        top: 10px;
-        padding: 4px 8px;
-        color: white;
-        font-size: 11px;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    .badge-out-of-stock {
-        left: 10px;
-        background-color: #000;
-        /* Màu đen cho Hết hàng */
-    }
-
-    .badge-sale {
-        right: 10px;
-        background-color: #d9534f;
-        /* Màu đỏ cho Sale */
-    }
-
-    .product-name {
-        font-size: 14px;
-        margin-bottom: 8px;
-        /* Giới hạn tên 1 dòng (tùy chọn) */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .product-price .sale-price {
-        color: #d00;
-        /* Màu đỏ cho giá */
-        font-weight: bold;
-        font-size: 15px;
-    }
-
-    .product-price .original-price {
-        color: #888;
-        text-decoration: line-through;
-        margin-left: 8px;
-        font-size: 13px;
-    }
-
-    /* ====== CSS PHÂN TRANG (MỚI THÊM) ====== */
-    .pagination-nav {
-        display: flex;
-        justify-content: center;
-        /* Căn giữa */
-        padding: 30px 0 20px 0;
-        /* Khoảng cách trên/dưới */
-    }
-
-    .pagination-list {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        gap: 15px;
-        /* Khoảng cách giữa các mục */
-    }
-
-    .page-item .page-link {
-        display: block;
-        padding: 8px 12px;
-        text-decoration: none;
-        color: #333;
-        font-size: 16px;
-        border: 1px solid transparent;
-        /* Để giữ layout ổn định */
-    }
-
-    .page-item.active .page-link {
-        color: #000;
-        font-weight: bold;
-        border-bottom: 2px solid #000;
-        /* Hiệu ứng active */
-    }
-
-    .page-item:not(.active) .page-link:hover {
-        color: #000;
-        text-decoration: underline;
-    }
+    .breadcrumbs{padding:15px 0;font-size:13px;color:#777}
+    .breadcrumbs a{color:#333}
+    .product-list{padding-top:30px}
+    .product-item{text-align:center;margin-bottom:30px;border:1px solid #eee;border-radius:6px;padding:12px;transition:.2s}
+    .product-item:hover{box-shadow:0 6px 16px rgba(0,0,0,.06);border-color:#ddd}
+    .product-item a{text-decoration:none;color:#333;display:flex;flex-direction:column;height:100%}
+    .product-image{position:relative;margin-bottom:12px;overflow:hidden}
+    .product-image img{width:100%;height:auto;display:block;transition:transform .3s}
+    .product-item:hover .product-image img{transform:scale(1.05)}
+    .product-badge{position:absolute;top:10px;padding:4px 8px;color:#fff;font-size:11px;font-weight:700;text-transform:uppercase}
+    .badge-sale{right:10px;background:#d9534f}
+    .badge-out-of-stock{left:10px;background:#000}
+    .badge-new{right:10px;background:#2e7d32}
+    .product-name{font-size:14px;margin:6px 0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .product-price .sale-price{color:#d00;font-weight:700;font-size:15px}
+    .product-price .original-price{color:#888;text-decoration:line-through;margin-left:8px;font-size:13px}
+    .pagination-nav{display:flex;justify-content:center;padding:24px 0 16px}
+    .pagination-list{display:flex;list-style:none;margin:0;padding:0;gap:12px}
+    .page-item .page-link{display:block;padding:8px 12px;text-decoration:none;color:#333;font-size:15px;border:1px solid transparent}
+    .page-item.active .page-link{color:#000;font-weight:700;border-bottom:2px solid #000}
+    .page-item:not(.active) .page-link:hover{text-decoration:underline}
 </style>
 
 <body>

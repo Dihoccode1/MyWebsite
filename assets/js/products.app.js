@@ -1,23 +1,24 @@
 // /assets/js/products.app.js
-(function () {
+(function () {  
+  if (window.SV_DISABLE_LISTING_APP) return;
   // ====== Config ======
-  const PAGE_SIZE = 8;               // mỗi trang 8 sp
+  const PAGE_SIZE = 8; // mỗi trang 8 sp
 
   // ====== Utils DOM & Format ======
-  const $  = (s, r=document) => r.querySelector(s);
-  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const moneyVND = (n) =>
     (n ?? 0).toLocaleString("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
-  const stripVN = (str="") => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const stripVN = (str = "") => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   // ====== URL query helpers (giữ tiêu chí khi back/forward) ======
-  const getQuery = (k, def="") => {
+  const getQuery = (k, def = "") => {
     const u = new URL(location.href);
     return u.searchParams.get(k) ?? def;
   };
   const setQuery = (obj) => {
     const u = new URL(location.href);
-    Object.entries(obj).forEach(([k, v])=>{
+    Object.entries(obj).forEach(([k, v]) => {
       if (v === null || v === "" || v === undefined) u.searchParams.delete(k);
       else u.searchParams.set(k, v);
     });
@@ -30,42 +31,64 @@
   }
 
   // ====== Cart (localStorage) ======
-  const CART_KEY = 'sv_cart_v1';
-  function readCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)||'[]'); }catch{ return []; } }
-  function writeCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+  const CART_KEY = "sv_cart_v1";
+  function readCart() {
+    try {
+      return JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+  function writeCart(c) {
+    localStorage.setItem(CART_KEY, JSON.stringify(c));
+    // báo cho các listener (header / trang hiện tại) cập nhật badge ngay
+    window.dispatchEvent(new CustomEvent("cart:changed"));
+  }
 
   const SVCart = {
-    add(id, qty=1){
+    add(id, qty = 1) {
       qty = Number(qty) || 1;
       if (qty < 1) qty = 1;
       const c = readCart();
-      const i = c.findIndex(x=>x.id===id);
-      if (i>-1) c[i].qty += qty; else c.push({id, qty});
-      writeCart(c); return c;
+      const i = c.findIndex((x) => x.id === id);
+      if (i > -1) c[i].qty = (c[i].qty || 0) + qty;
+      else c.push({ id, qty });
+      writeCart(c);
+      return c;
     },
-    setQty(id, qty){
+    setQty(id, qty) {
       qty = Number(qty) || 1;
       if (qty < 1) qty = 1;
-      const c = readCart().map(x=> x.id===id ? {...x, qty} : x);
-      writeCart(c); return c;
+      const c = readCart().map((x) => (x.id === id ? { ...x, qty } : x));
+      writeCart(c);
+      return c;
     },
-    remove(id){ const c = readCart().filter(x=>x.id!==id); writeCart(c); return c; },
-    clear(){ writeCart([]); },
-    count(){ return readCart().reduce((s,x)=>s+(x.qty||0),0); },
-    total(products=null){
+    remove(id) {
+      const c = readCart().filter((x) => x.id !== id);
+      writeCart(c);
+      return c;
+    },
+    clear() {
+      writeCart([]);
+    },
+    count() {
+      return readCart().reduce((s, x) => s + (x.qty || 0), 0);
+    },
+    total(products = null) {
       const list = products || getAllProducts();
-      const map = new Map(list.map(p=>[p.id,p]));
-      return readCart().reduce((s,x)=>{
+      const map = new Map(list.map((p) => [p.id, p]));
+      return readCart().reduce((s, x) => {
         const p = map.get(x.id);
-        return s + (p ? (Number(p.price)||0) * (x.qty||0) : 0);
+        return s + (p ? (Number(p.price) || 0) * (x.qty || 0) : 0);
       }, 0);
-    }
+    },
   };
   // expose nếu bạn cần dùng nơi khác
   window.SVCart = SVCart;
 
-  function updateCartBadge(){
-    const el = $("#cartCount");
+  function updateCartBadge() {
+    // hỗ trợ cả #cartCount và .cart-count
+    const el = document.querySelector("#cartCount, .cart-count");
     if (el) el.textContent = SVCart.count();
   }
 
@@ -74,30 +97,32 @@
     if (!badge) return "";
     const map = {
       sale: { cls: "badge-sale", text: "Sale" },
-      new:  { cls: "badge-sale", text: "Mới" },
-      oos:  { cls: "badge-out-of-stock", text: "Hết hàng" },
-      out_of_stock: { cls: "badge-out-of-stock", text: "Hết hàng" }
+      new: { cls: "badge-sale", text: "Mới" },
+      oos: { cls: "badge-out-of-stock", text: "Hết hàng" },
+      out_of_stock: { cls: "badge-out-of-stock", text: "Hết hàng" },
     };
     const meta = map[String(badge).toLowerCase()] || null;
     return meta ? `<span class="product-badge ${meta.cls}">${meta.text}</span>` : "";
   }
 
-  function isOutOfStock(p){
-    const b = String(p.badge||'').toLowerCase();
-    return b==='oos' || b==='out_of_stock' || (typeof p.stock==='number' && p.stock<=0);
+  function isOutOfStock(p) {
+    const b = String(p.badge || "").toLowerCase();
+    return b === "oos" || b === "out_of_stock" || (typeof p.stock === "number" && p.stock <= 0);
   }
 
-  function productDetailUrl(p){
+  function productDetailUrl(p) {
     // dùng đường dẫn tuyệt đối để tránh lỗi cấp thư mục
     return `/sanpham/pages/product_detail.php?id=${encodeURIComponent(p.id)}`;
   }
 
   function itemHTML(p) {
-    const ori = p.original_price && Number(p.original_price) > Number(p.price)
-      ? `<span class="original-price">${moneyVND(p.original_price)}</span>` : "";
+    const ori =
+      p.original_price && Number(p.original_price) > Number(p.price)
+        ? `<span class="original-price">${moneyVND(p.original_price)}</span>`
+        : "";
 
-    const disabled = isOutOfStock(p) ? 'disabled' : '';
-    const btnText  = isOutOfStock(p) ? 'Hết hàng' : 'Thêm giỏ';
+    const disabled = isOutOfStock(p) ? "disabled" : "";
+    const btnText = isOutOfStock(p) ? "Hết hàng" : "Thêm giỏ";
 
     return `
       <div class="col-lg-3 col-md-4 col-sm-6 col-6">
@@ -125,22 +150,22 @@
 
   // Lọc theo: q (tên), category, minprice, maxprice
   function filterProducts(all) {
-    const q        = (getQuery("q","") || "").trim();
-    const category = (getQuery("category","all") || "all").toLowerCase();
-    const minprice = Number(getQuery("minprice","")) || null;
-    const maxprice = Number(getQuery("maxprice","")) || null;
+    const q = (getQuery("q", "") || "").trim();
+    const category = (getQuery("category", "all") || "all").toLowerCase();
+    const minprice = Number(getQuery("minprice", "")) || null;
+    const maxprice = Number(getQuery("maxprice", "")) || null;
 
     const qNorm = stripVN(q);
 
     let result = all;
 
     if (q) {
-      result = result.filter(p => stripVN(p.name).includes(qNorm));
+      result = result.filter((p) => stripVN(p.name).includes(qNorm));
     }
     if (category !== "all") {
-      result = result.filter(p => (p.category || "").toLowerCase() === category);
+      result = result.filter((p) => (p.category || "").toLowerCase() === category);
     }
-    result = result.filter(p => {
+    result = result.filter((p) => {
       const price = Number(p.price || 0);
       if (minprice !== null && price < minprice) return false;
       if (maxprice !== null && price > maxprice) return false;
@@ -174,10 +199,12 @@
     const info = $("#categoryInfo");
     if (info) {
       const priceText =
-        (minprice || maxprice)
+        minprice || maxprice
           ? ` • giá ${minprice ? moneyVND(minprice) : "0"} – ${maxprice ? moneyVND(maxprice) : "∞"}`
           : "";
-      info.textContent = `${total} sản phẩm${q ? ` • từ khóa: "${q}"` : ""}${category!=="all" ? ` • loại: ${category}` : ""}${priceText}`;
+      info.textContent = `${total} sản phẩm${q ? ` • từ khóa: "${q}"` : ""}${
+        category !== "all" ? ` • loại: ${category}` : ""
+      }${priceText}`;
     }
 
     // vẽ phân trang giữ nguyên tiêu chí
@@ -192,28 +219,34 @@
         params.set("page", String(p));
         return `?${params.toString()}`;
       };
-      const li = (label, p, active=false, disabled=false) =>
+      const li = (label, p, active = false, disabled = false) =>
         active
           ? `<li class="page-item active"><span class="page-link">${label}</span></li>`
-          : `<li class="page-item${disabled?' disabled':''}"><a class="page-link" href="${buildHref(p)}">${label}</a></li>`;
+          : `<li class="page-item${disabled ? " disabled" : ""}"><a class="page-link" href="${buildHref(
+              p
+            )}">${label}</a></li>`;
 
       let html = "";
-      html += li("«", Math.max(1, cur-1), false, cur===1);
-      for (let i=1;i<=totalPages;i++) html += li(String(i), i, i===cur);
-      html += li("»", Math.min(totalPages, cur+1), false, cur===totalPages);
+      html += li("«", Math.max(1, cur - 1), false, cur === 1);
+      for (let i = 1; i <= totalPages; i++) html += li(String(i), i, i === cur);
+      html += li("»", Math.min(totalPages, cur + 1), false, cur === totalPages);
       pag.innerHTML = html;
 
       // chặn reload & render lại mượt
-      pag.addEventListener("click", function(e){
-        const a = e.target.closest("a.page-link");
-        if (!a) return;
-        e.preventDefault();
-        const u = new URL(a.href, location.origin);
-        const next = Number(u.searchParams.get("page") || "1");
-        setQuery(Object.fromEntries(u.searchParams.entries()));
-        render(all, next, pageSize);
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, { once:true });
+      pag.addEventListener(
+        "click",
+        function (e) {
+          const a = e.target.closest("a.page-link");
+          if (!a) return;
+          e.preventDefault();
+          const u = new URL(a.href, location.origin);
+          const next = Number(u.searchParams.get("page") || "1");
+          setQuery(Object.fromEntries(u.searchParams.entries()));
+          render(all, next, pageSize);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+        { once: true }
+      );
     }
 
     // cập nhật badge giỏ sau mỗi lần render
@@ -226,14 +259,14 @@
     // nạp tham số lên form (để người dùng thấy lại tiêu chí đã chọn)
     const form = $("#searchForm");
     if (form) {
-      if (form.q)        form.q.value = getQuery("q","");
-      if (form.category) form.category.value = getQuery("category","all") || "all";
-      if (form.minprice) form.minprice.value = getQuery("minprice","");
-      if (form.maxprice) form.maxprice.value = getQuery("maxprice","");
+      if (form.q) form.q.value = getQuery("q", "");
+      if (form.category) form.category.value = getQuery("category", "all") || "all";
+      if (form.minprice) form.minprice.value = getQuery("minprice", "");
+      if (form.maxprice) form.maxprice.value = getQuery("maxprice", "");
 
-      form.addEventListener("submit", (e)=>{
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const q        = (form.q?.value || "").trim();
+        const q = (form.q?.value || "").trim();
         const category = form.category ? form.category.value : "all";
         const minprice = form.minprice && form.minprice.value ? Number(form.minprice.value) : null;
         const maxprice = form.maxprice && form.maxprice.value ? Number(form.maxprice.value) : null;
@@ -244,33 +277,85 @@
           category: category || "all",
           minprice: minprice != null ? String(minprice) : null,
           maxprice: maxprice != null ? String(maxprice) : null,
-          page: "1"
+          page: "1",
         });
         render(all, 1, PAGE_SIZE);
       });
     }
 
     // === Event: Thêm giỏ (delegation toàn trang) ===
-    document.addEventListener('click', function (e) {
-      const btn = e.target.closest('.btn-add-cart');
+    document.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn-add-cart");
       if (!btn) return;
-      const id = btn.getAttribute('data-id');
+      const id = btn.getAttribute("data-id");
       if (!id) return;
 
-      SVCart.add(id, 1);
-      updateCartBadge();
+      SVCart.add(id, 1);                 // ghi giỏ
+      updateCartBadge();                 // cập nhật badge ở trang hiện tại
+      window.SVUI?.updateCartCount?.();  // cập nhật badge ở header (nếu SVUI có)
 
       // Feedback nhanh
       const prev = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = `<i class="fas fa-check"></i> Đã thêm`;
-      setTimeout(()=>{ btn.disabled=false; btn.innerHTML = prev; }, 800);
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = prev;
+      }, 800);
     });
 
-    const page = Number(getQuery("page","1")) || 1;
+    // đồng bộ badge nếu giỏ đổi từ tab khác
+    window.addEventListener("storage", (e) => {
+      if (e.key === CART_KEY) updateCartBadge();
+    });
+
+    // đồng bộ badge khi có sự kiện cart:changed (cùng tab)
+    window.addEventListener("cart:changed", updateCartBadge);
+
+    const page = Number(getQuery("page", "1")) || 1;
     render(all, page, PAGE_SIZE);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
+  // === Event: Thêm giỏ (delegation toàn trang) — phiên bản chống nhân bản ===
+document.addEventListener("click", function (e) {
+  const btn = e.target.closest(".btn-add-cart");
+  if (!btn) return;
+
+  // chặn toàn bộ lan truyền để tránh các handler khác bắn trùng
+  e.preventDefault();
+  e.stopPropagation();
+  if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+
+  // chống click liên tiếp
+  if (btn.disabled || btn.dataset.busy === "1") return;
+
+  // dữ liệu
+  const id  = btn.dataset.id || btn.getAttribute("data-id");
+  let qty   = parseInt(btn.dataset.qty || "1", 10);
+  if (!id) return;
+  if (!Number.isFinite(qty) || qty < 1) qty = 1;
+
+  // đánh dấu bận
+  btn.dataset.busy = "1";
+
+  // ghi giỏ
+  SVCart.add(id, qty);
+
+  // cập nhật badge (trang hiện tại + header)
+  updateCartBadge();
+  window.SVUI?.updateCartCount?.();
+
+  // feedback
+  const prev = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fas fa-check"></i> Đã thêm`;
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = prev;
+    btn.dataset.busy = ""; // cho click lại
+  }, 800);
+}, true); // dùng capture để chặn sớm các handler khác
+
 })();
