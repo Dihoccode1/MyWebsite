@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="assets/css/base.css">
 </head>
 <style>
-/* ===== Breadcrumb ===== */
+/* ===== CSS CŨ CỦA BẠN (TÔI GIỮ NGUYÊN) ===== */
 .bread-crumb {
     padding: 10px 0;
     border-bottom: 1px solid #eee;
@@ -56,8 +56,6 @@
     color: #000
 }
 
-/* Tiêu đề */
-/* Tiêu đề */
 .title {
     font-size: 22px;
     font-weight: 700;
@@ -66,7 +64,6 @@
     text-align: center;
 }
 
-/* Icon giỏ hàng */
 .empty-icon {
     font-size: 60px;
     color: #bdc3c7;
@@ -74,7 +71,6 @@
     text-align: center;
 }
 
-/* Thông điệp */
 .message {
     font-size: 16px;
     color: #7f8c8d;
@@ -82,37 +78,167 @@
     text-align: center;
 }
 
-/* Nút quay lại */
 .btn-back {
     display: block;
-    /* chiếm 1 hàng */
     width: fit-content;
-    /* vừa với nội dung */
     margin: 0 auto 20px;
-    /* căn giữa ngang */
     background: #000;
     color: #fff;
     padding: 12px 24px;
     border-radius: 30px;
     font-size: 15px;
     font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s ease;
     text-decoration: none !important;
     border: 1px solid transparent;
+    transition: background 0.2s ease;
 }
-
 
 .btn-back:hover {
     background: #fff;
     border: 1px solid #000;
     color: #000;
 }
+
+/* --- CSS BỔ SUNG CHO GIỎ HÀNG CÓ SẢN PHẨM (ĐÃ CHÈN TỪ BƯỚC 1) --- */
+.cart-product-list {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.product-item {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.cart-img {
+    max-width: 100px;
+    border-radius: 5px;
+}
+
+.cart-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.cart-variant {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.cart-price {
+    font-weight: 500;
+    color: #888;
+}
+
+.cart-subtotal {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+
+.quantity-control {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-qty {
+    width: 30px;
+    height: 30px;
+    background: #f8f8f8;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #333;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.btn-qty:hover {
+    background: #e0e0e0;
+}
+
+.qty-input {
+    width: 35px;
+    text-align: center;
+    border: none;
+    outline: none;
+    height: 30px;
+    padding: 0;
+}
+
+.cart-summary {
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.cart-summary h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #555;
+}
+
+.total-final {
+    font-size: 18px;
+    color: #000;
+}
+
+.btn-checkout {
+    margin-top: 15px;
+    background: #27ae60;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-checkout:hover {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.btn-back-shopping {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #3498db;
+    text-decoration: none;
+}
 </style>
 
 <body>
     <?php include __DIR__ . '/partials/header.php'; ?>
-    <!-- BREADCRUMB -->
+
     <section class="bread-crumb">
         <div class="container">
             <ul class="breadcrumb">
@@ -122,24 +248,66 @@
             </ul>
         </div>
     </section>
+
     <div class="container">
         <div class="title">Giỏ hàng của bạn</div>
 
-        <div class="empty-icon">
-            <i class="fa-solid fa-bag-shopping"></i>
+        <div class="empty-cart-block">
+            <div class="empty-icon">
+                <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <div class="message">
+                Giỏ hàng của bạn đang trống.<br>
+                Hãy khám phá ngay nhiều sản phẩm hấp dẫn!
+            </div>
+            <a href="sanpham.html" class="btn-back">
+                Tiếp tục mua sắm
+            </a>
         </div>
+        <div class="full-cart-block" style="display: none;">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="cart-product-list">
+                    </div>
+                </div>
 
-        <div class="message">
-            Giỏ hàng của bạn đang trống.<br>
-            Hãy khám phá ngay nhiều sản phẩm hấp dẫn!
+                <div class="col-lg-3">
+                    <div class="cart-summary">
+                        <h4>Tóm tắt đơn hàng</h4>
+                        <hr>
+                        <div class="summary-line">
+                            <span>Tổng tiền (0 sản phẩm)</span>
+                            <span class="total-price">0₫</span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Phí vận chuyển</span>
+                            <span class="shipping-fee">Miễn phí</span>
+                        </div>
+                        <hr>
+                        <div class="summary-line total-final">
+                            <strong>Tổng thanh toán</strong>
+                            <strong class="grand-total">0₫</strong>
+                        </div>
+                        <a href="thanhtoan.php" class="btn btn-block btn-checkout">
+                            Tiến hành thanh toán
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <a href="sanpham.html" class="btn-back-shopping">
+                <i class="fa-solid fa-angle-left"></i> Tiếp tục mua sắm
+            </a>
         </div>
-
-        <a href="sanpham.html" class="btn-back">
-            Tiếp tục mua sắm
-        </a>
     </div>
 
     <?php include __DIR__ . '/partials/footer.php'; ?>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3E8d4R4mQ2Q+rW9yLg9F7l3w4ePqR4hW9Jq7yI9A7Pz0YJ3jP0v5o+I/yD9s" crossorigin="anonymous">
+    </script>
+    <script src="assets/js/cart.js"></script>
+
 </body>
 
 </html>

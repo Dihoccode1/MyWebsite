@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-<head>
+<head> 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Giới thiệu - Gentleman</title>
