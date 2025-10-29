@@ -1407,7 +1407,7 @@
                     </div>
 
                     <div class="btn_xemthem">
-                        <a href="san-pham-noi-bat" title="Xem thêm">Xem thêm</a>
+                        <a href="/sanpham/sanpham.php" title="Xem thêm">Xem thêm</a>
                     </div>
                 </div>
             </section>
