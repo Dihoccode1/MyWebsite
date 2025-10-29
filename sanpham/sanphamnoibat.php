@@ -19,6 +19,63 @@
     <title>Trang bán sản phẩm sáp</title>
 </head>
 <style>
+    /* Ép các cột là flex để con cao 100% */
+.row.equalize-cards > [class^="col-"],
+.row.equalize-cards > [class*=" col-"] { display: flex; }
+
+/* Thẻ product fill full chiều cao cột */
+.product-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;       /* chìa khóa: bằng nhau */
+}
+
+/* Link bên trong chiếm hết phần còn lại để nội dung dàn đều */
+.product-item > a {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;     /* kéo giãn */
+}
+
+/* Khung ảnh cố định tỷ lệ, mọi ảnh “vào khung” gọn gàng */
+.product-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1;  /* hoặc 4/5, 3/4 tùy bạn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+/* Ảnh co giãn trong khung mà không vỡ bố cục */
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* giữ nguyên tỉ lệ, không bị cắt */
+  transition: transform .3s ease;
+}
+
+/* Tên sản phẩm: chặn 2 dòng cho đều nhau */
+.product-name {
+  min-height: calc(1.4em * 2); /* ~2 dòng */
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* hiển thị 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Đẩy khu vực giá & nút xuống dưới cùng, các thẻ bằng nhau */
+.product-price { margin-top: auto; }
+
+/* Nếu có nút thêm giỏ đặt ngoài <a>, vẫn giữ dưới cùng */
+.product-item .mt-2 { margin-top: 8px; }
+
     /* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
 
     /* 4. Breadcrumbs (Trang chủ / ...) */
@@ -215,7 +272,7 @@
 
 
         <div class="product-list">
-            <div id="product-grid" class="row"></div>
+      <div id="product-grid" class="row equalize-cards"></div>
         </div>
 
         <div class="container">

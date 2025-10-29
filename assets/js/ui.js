@@ -171,3 +171,19 @@ window.SVUI = (function () {
 
   return { init, updateCartCount };
 })();
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.btn-add-cart');
+  if (!btn) return;
+
+  const id = btn.getAttribute('data-id');
+  SVCart.add(id, 1);
+
+  // Cập nhật NGAY lập tức
+  SV_UpdateCartBadge();   // <— gọi liền tay
+
+  // feedback nhanh cho nút (giữ nguyên nếu bạn đã có)
+  const old = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fas fa-check"></i> Đã thêm`;
+  setTimeout(()=>{ btn.disabled=false; btn.innerHTML = old; }, 800);
+});

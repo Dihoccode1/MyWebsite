@@ -59,3 +59,12 @@
     <li><a href="/lienhe.php">LIÊN HỆ</a></li>
   </ul>
 </nav>
+<script>
+function SV_UpdateCartBadge() {
+  const el = document.querySelector('#cartCount') || document.querySelector('.cart-count');
+  if (!el || !window.SVCart) return;
+  el.textContent = SVCart.count();
+}
+document.addEventListener('DOMContentLoaded', SV_UpdateCartBadge);
+
+</script>
