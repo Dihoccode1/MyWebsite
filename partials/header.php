@@ -60,11 +60,7 @@
   </ul>
 </nav>
 <script>
-function SV_UpdateCartBadge() {
-  const el = document.querySelector('#cartCount') || document.querySelector('.cart-count');
-  if (!el || !window.SVCart) return;
-  el.textContent = SVCart.count();
-}
-document.addEventListener('DOMContentLoaded', SV_UpdateCartBadge);
-
+  // hiện badge giỏ ngay khi tải trang
+  window.SVUI?.updateCartCount?.();
+  document.addEventListener('DOMContentLoaded', ()=> window.SVUI?.updateCartCount?.());
 </script>

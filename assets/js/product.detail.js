@@ -127,3 +127,17 @@
   const product = getAll().find(p => String(p.id) === String(id));
   if (!product) renderNotFound(); else renderDetail(product);
 })(window, document);
+document.getElementById('buyForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const qty = Math.max(1, Number(document.getElementById('qty').value) || 1);
+  // dùng API cart có sẵn
+  if (window.SVStore?.addToCart) {
+    SVStore.addToCart(p.id, qty);
+    window.SVUI?.updateCartCount?.();
+    // feedback
+    const btn = e.target.querySelector('button[type="submit"]');
+    const prev = btn.innerText;
+    btn.disabled = true; btn.innerText = 'Đã thêm';
+    setTimeout(()=>{ btn.disabled=false; btn.innerText = prev; }, 900);
+  }
+});

@@ -64,8 +64,7 @@
 .product-name {
   min-height: calc(1.4em * 2); /* ~2 dòng */
   line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;       /* hiển thị 2 dòng */
+  display: -webkit-box;     /* hiển thị 2 dòng */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
