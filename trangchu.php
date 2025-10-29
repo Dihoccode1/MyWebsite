@@ -17,869 +17,869 @@
     <title>Trang bán sản phẩm sáp</title>
 
     <style>
-    :root {
-        --bg: #fff;
-        --text: #111;
-        --muted: #6b7280;
-        --line: #eceff3;
-        --brand: #111;
-        --brand-ghost: #f3f4f6;
-        --radius: 14px;
-        --shadow-sm: 0 6px 16px rgba(17, 24, 39, .08);
-        --shadow-md: 0 12px 28px rgba(17, 24, 39, .12);
-        --ease: cubic-bezier(.22, 1, .36, 1);
-    }
-
-    /* ================== SCOPE TOÀN BỘ CSS NỘI DUNG VÀO .page-main ================== */
-    .page-main .policy-box {
-        margin: 10px 0;
-    }
-
-    .page-main .policy-box .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-    }
-
-    .page-main .policy-item {
-        flex: 1;
-        background: #202020;
-        border: 1px solid #333;
-        text-align: center;
-        padding: 5px;
-        border-radius: 4px;
-    }
-
-    .page-main .policy-item span {
-        display: block;
-        border: 1px solid #545454;
-        line-height: 40px;
-        font-size: 14px;
-        color: #B8D0E0;
-        text-transform: uppercase;
-    }
-
-    .page-main .awe-section-2 {
-        margin: 30px 0;
-    }
-
-    .page-main .awe-section-2 .section_slider,
-    .page-main .awe-section-2 .swiper-wrapper,
-    .page-main .awe-section-2 .swiper-slide,
-    .page-main .awe-section-2 .swiper-slide a,
-    .page-main .awe-section-2 .swiper-slide picture,
-    .page-main .awe-section-2 .swiper-slide img {
-        width: 100% !important;
-    }
-
-    .page-main .awe-section-2 .swiper-slide img {
-        display: block;
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-
-    .page-main .swiper-slide img {
-        display: block;
-        margin-bottom: 30px;
-    }
-
-    .page-main .awe-section-3 {
-        padding: 20px 0;
-        background: #fff;
-    }
-
-    .page-main .adv_bottom {
-        display: block;
-    }
-
-    /* container riêng cho page (không ảnh hưởng footer) */
-    .page-main .container,
-    .page-main .container-pag {
-        width: 90%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 16px;
-        position: relative;
-    }
-
-    /* Banner 3 cột */
-    .page-main .adv-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-    }
-
-    .page-main .adv_bottom_inner figure {
-        margin: 0;
-    }
-
-    .page-main .adv_bottom_inner {
-        border: 1px solid #e6e6e6;
-    }
-
-    .page-main .adv_bottom_inner a {
-        display: block;
-        text-decoration: none;
-    }
-
-    .page-main .adv_bottom_inner img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 6px;
-        transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    /* Brand slider */
-    .page-main .section-brand {
-        background: #fff;
-    }
-
-    .page-main .brand-slider {
-        position: relative;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    .page-main .slider-track {
-        display: flex;
-        transition: transform .4s ease;
-    }
-
-    .page-main .slide {
-        min-width: 200px;
-        margin: 0 10px;
-    }
-
-    .page-main .slide img {
-        width: 100%;
-        border-radius: 10px;
-        transition: transform .3s;
-    }
-
-    .page-main .btn-1 {
-        background: #B8D0E0;
-        color: #fff;
-        border: none;
-        font-size: 30px;
-        padding: 10px 15px;
-        cursor: pointer;
-        transition: .3s;
-        z-index: 5;
-    }
-
-    .page-main .prev {
-        color: #000;
-        position: absolute;
-        left: 0;
-    }
-
-    .page-main .next {
-        color: #000;
-        position: absolute;
-        right: 0;
-    }
-
-    /* ===== GRID SẢN PHẨM – dùng class riêng, không đụng Bootstrap footer ===== */
-    .page-main .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin: -20px;
-    }
-
-    .page-main .col {
-        padding: 20px;
-        box-sizing: border-box;
-    }
-
-    .page-main .col-3 {
-        width: 25%;
-    }
-
-    @media (max-width: 991.98px) {
-        .page-main .col-3 {
-            width: 50%;
+        :root {
+            --bg: #fff;
+            --text: #111;
+            --muted: #6b7280;
+            --line: #eceff3;
+            --brand: #111;
+            --brand-ghost: #f3f4f6;
+            --radius: 14px;
+            --shadow-sm: 0 6px 16px rgba(17, 24, 39, .08);
+            --shadow-md: 0 12px 28px rgba(17, 24, 39, .12);
+            --ease: cubic-bezier(.22, 1, .36, 1);
         }
-    }
 
-    @media (max-width: 575.98px) {
-        .page-main .col-3 {
+        /* ================== SCOPE TOÀN BỘ CSS NỘI DUNG VÀO .page-main ================== */
+        .page-main .policy-box {
+            margin: 10px 0;
+        }
+
+        .page-main .policy-box .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .page-main .policy-item {
+            flex: 1;
+            background: #202020;
+            border: 1px solid #333;
+            text-align: center;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        .page-main .policy-item span {
+            display: block;
+            border: 1px solid #545454;
+            line-height: 40px;
+            font-size: 14px;
+            color: #B8D0E0;
+            text-transform: uppercase;
+        }
+
+        .page-main .awe-section-2 {
+            margin: 30px 0;
+        }
+
+        .page-main .awe-section-2 .section_slider,
+        .page-main .awe-section-2 .swiper-wrapper,
+        .page-main .awe-section-2 .swiper-slide,
+        .page-main .awe-section-2 .swiper-slide a,
+        .page-main .awe-section-2 .swiper-slide picture,
+        .page-main .awe-section-2 .swiper-slide img {
+            width: 100% !important;
+        }
+
+        .page-main .awe-section-2 .swiper-slide img {
+            display: block;
             width: 100%;
-        }
-    }
-
-    /* Card */
-    .page-main .product-box {
-        background: var(--bg);
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
-        position: relative;
-    }
-
-    .page-main .product-box:hover {
-        box-shadow: var(--shadow-md);
-        border-color: #e6ebf0;
-    }
-
-    .page-main .product-thumbnail {
-        position: relative;
-        overflow: hidden;
-        background: linear-gradient(180deg, #fafbfc 0%, #f7fafc 100%);
-    }
-
-    /* Slider sản phẩm (JS thuần, giữ class giống Swiper) */
-    .page-main .owl_product_item_content {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .page-main .owl_product_item_content .swiper-wrapper {
-        display: flex;
-        will-change: transform;
-    }
-
-    .page-main .owl_product_item_content .swiper-slide {
-        flex: 0 0 100%;
-        width: auto !important;
-    }
-
-    .page-main .image_link {
-        display: block;
-    }
-
-    .page-main .image_link img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform .5s var(--ease), filter .4s var(--ease);
-    }
-
-    .page-main .product-box:hover .image_link img {
-        transform: scale(1.03);
-    }
-
-    /* Nút điều hướng slider */
-    .page-main .owl_product_item_content .swiper-button-prev,
-    .page-main .owl_product_item_content .swiper-button-next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        background: rgba(255, 255, 255, .96);
-        border: 1px solid #e5eaf0;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
-        display: grid;
-        place-items: center;
-        cursor: pointer;
-        user-select: none;
-        z-index: 2;
-        transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s;
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .page-main .owl_product_item_content .swiper-button-prev {
-        left: 10px;
-    }
-
-    .page-main .owl_product_item_content .swiper-button-next {
-        right: 10px;
-    }
-
-    .page-main .product-thumbnail:hover .swiper-button-prev,
-    .page-main .product-thumbnail:hover .swiper-button-next {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .page-main .owl_product_item_content .swiper-button-prev::after,
-    .page-main .owl_product_item_content .swiper-button-next::after {
-        content: "";
-        width: 10px;
-        height: 10px;
-        display: block;
-        border-top: 2px solid #333;
-        border-right: 2px solid #333;
-    }
-
-    .page-main .owl_product_item_content .swiper-button-prev::after {
-        transform: rotate(-135deg);
-    }
-
-    .page-main .owl_product_item_content .swiper-button-next::after {
-        transform: rotate(45deg);
-    }
-
-    .page-main .owl_product_item_content .swiper-button-disabled {
-        opacity: .35;
-        pointer-events: none;
-        filter: grayscale(1);
-    }
-
-    /* Label */
-    .page-main .product-label {
-        position: absolute;
-        left: 12px;
-        top: 12px;
-        display: flex;
-        gap: 8px;
-    }
-
-    .page-main .product-label .label,
-    .page-main .product-label .sold-out-label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: .04em;
-        padding: 6px 10px;
-        background: #fff;
-        color: #FF0000;
-        border: 1px #ff0000 solid;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
-    }
-
-    .page-main .product-label .sold-out-label {
-        background: #f1f5f9;
-        border-color: #e8edf3;
-    }
-
-    /* Info */
-    .page-main .product-info {
-        padding: 12px 14px 14px;
-    }
-
-    .page-main .product-name {
-        margin: 2px 0 8px;
-        font-size: 16px;
-        line-height: 1.35;
-    }
-
-    .page-main .product-name a {
-        color: var(--text);
-        text-decoration: none;
-        background: linear-gradient(currentColor, currentColor) 0 100%/0 2px no-repeat;
-        transition: background-size .35s var(--ease), color .35s var(--ease);
-    }
-
-    .page-main .product-name a:hover {
-        color: #000;
-        background-size: 100% 2px;
-    }
-
-    .page-main .price-box {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .page-main .product-price {
-        color: #ff0000;
-        font-weight: 800;
-        font-size: 17px;
-    }
-
-    .page-main .product-price-old {
-        color: var(--muted);
-        font-size: 14px;
-        text-decoration: line-through;
-    }
-
-    /* Action (nút giỏ hàng dạng overlay ở mép dưới ảnh) */
-    .page-main .product-action-grid {
-        padding: 0 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        transform: none !important;
-    }
-
-    .page-main .product-thumbnail>.product-action-grid {
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 5;
-        opacity: 0;
-        transform: translateY(100%);
-        pointer-events: none;
-        transition: opacity .25s var(--ease), transform .25s var(--ease);
-    }
-
-    .page-main .product-thumbnail>.product-action-grid .btn-cart {
-        display: block;
-        width: 100%;
-        padding: 12px 16px;
-        border: 0;
-        border-radius: 0;
-        background: #111;
-        color: #fff;
-        font-weight: 800;
-        box-shadow: none;
-    }
-
-    .page-main .product-box:hover .product-thumbnail>.product-action-grid {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    .page-main .product-box:hover .image_link img {
-        filter: brightness(.88);
-    }
-
-    /* Mobile: luôn hiện nút vì không có hover */
-    @media (hover:none) and (pointer:coarse) {
-        .page-main .product-thumbnail>.product-action-grid {
-            opacity: 1;
-            transform: none;
-            pointer-events: auto;
+            height: auto;
+            object-fit: cover;
         }
 
+        .page-main .swiper-slide img {
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .page-main .awe-section-3 {
+            padding: 20px 0;
+            background: #fff;
+        }
+
+        .page-main .adv_bottom {
+            display: block;
+        }
+
+        /* container riêng cho page (không ảnh hưởng footer) */
+        .page-main .container,
+        .page-main .container-pag {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        /* Banner 3 cột */
+        .page-main .adv-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .page-main .adv_bottom_inner figure {
+            margin: 0;
+        }
+
+        .page-main .adv_bottom_inner {
+            border: 1px solid #e6e6e6;
+        }
+
+        .page-main .adv_bottom_inner a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .page-main .adv_bottom_inner img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        /* Brand slider */
+        .page-main .section-brand {
+            background: #fff;
+        }
+
+        .page-main .brand-slider {
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .page-main .slider-track {
+            display: flex;
+            transition: transform .4s ease;
+        }
+
+        .page-main .slide {
+            min-width: 200px;
+            margin: 0 10px;
+        }
+
+        .page-main .slide img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform .3s;
+        }
+
+        .page-main .btn-1 {
+            background: #B8D0E0;
+            color: #fff;
+            border: none;
+            font-size: 30px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: .3s;
+            z-index: 5;
+        }
+
+        .page-main .prev {
+            color: #000;
+            position: absolute;
+            left: 0;
+        }
+
+        .page-main .next {
+            color: #000;
+            position: absolute;
+            right: 0;
+        }
+
+        /* ===== GRID SẢN PHẨM – dùng class riêng, không đụng Bootstrap footer ===== */
+        .page-main .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -20px;
+        }
+
+        .page-main .col {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .page-main .col-3 {
+            width: 25%;
+        }
+
+        @media (max-width: 991.98px) {
+            .page-main .col-3 {
+                width: 50%;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .page-main .col-3 {
+                width: 100%;
+            }
+        }
+
+        /* Card */
+        .page-main .product-box {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s;
+            position: relative;
+        }
+
+        .page-main .product-box:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #e6ebf0;
+        }
+
+        .page-main .product-thumbnail {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fafbfc 0%, #f7fafc 100%);
+        }
+
+        /* Slider sản phẩm (JS thuần, giữ class giống Swiper) */
+        .page-main .owl_product_item_content {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-main .owl_product_item_content .swiper-wrapper {
+            display: flex;
+            will-change: transform;
+        }
+
+        .page-main .owl_product_item_content .swiper-slide {
+            flex: 0 0 100%;
+            width: auto !important;
+        }
+
+        .page-main .image_link {
+            display: block;
+        }
+
+        .page-main .image_link img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform .5s var(--ease), filter .4s var(--ease);
+        }
+
+        .page-main .product-box:hover .image_link img {
+            transform: scale(1.03);
+        }
+
+        /* Nút điều hướng slider */
         .page-main .owl_product_item_content .swiper-button-prev,
         .page-main .owl_product_item_content .swiper-button-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, .96);
+            border: 1px solid #e5eaf0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            user-select: none;
+            z-index: 2;
+            transition: transform .2s var(--ease), box-shadow .2s var(--ease), background .2s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .page-main .owl_product_item_content .swiper-button-prev {
+            left: 10px;
+        }
+
+        .page-main .owl_product_item_content .swiper-button-next {
+            right: 10px;
+        }
+
+        .page-main .product-thumbnail:hover .swiper-button-prev,
+        .page-main .product-thumbnail:hover .swiper-button-next {
             opacity: 1;
             visibility: visible;
-            transform: translateY(-50%)
         }
-    }
 
-    /* Heading khu vực */
-    .page-main .heading_spbc {
-        display: flex;
-        justify-content: center;
-        margin: 10px 0 30px;
-    }
+        .page-main .owl_product_item_content .swiper-button-prev::after,
+        .page-main .owl_product_item_content .swiper-button-next::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            display: block;
+            border-top: 2px solid #333;
+            border-right: 2px solid #333;
+        }
 
-    .page-main .heading_spbc .title-head {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        margin: 0;
-        font-size: 22px;
-    }
+        .page-main .owl_product_item_content .swiper-button-prev::after {
+            transform: rotate(-135deg);
+        }
 
-    .page-main .heading_spbc .title-head::after {
-        display: none;
-    }
+        .page-main .owl_product_item_content .swiper-button-next::after {
+            transform: rotate(45deg);
+        }
 
-    .page-main .heading_spbc .title-head a {
-        color: var(--text);
-        text-decoration: none;
-        text-align: center;
-        margin: 50px 0;
-    }
+        .page-main .owl_product_item_content .swiper-button-disabled {
+            opacity: .35;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
 
-    /* Nút xem thêm */
-    .page-main .btn_xemthem {
-        display: flex;
-        justify-content: center;
-        margin: 60px 0;
-    }
+        /* Label */
+        .page-main .product-label {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            display: flex;
+            gap: 8px;
+        }
 
-    .page-main .btn_xemthem a {
-        --btn-h: 46px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: var(--btn-h);
-        padding: 20px 100px;
-        font-weight: 700;
-        text-decoration: none;
-        background: #fff;
-        color: #000;
-        border: 1px solid #000;
-        box-shadow: 0 8px 22px rgba(17, 24, 39, .18);
-    }
+        .page-main .product-label .label,
+        .page-main .product-label .sold-out-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            padding: 6px 10px;
+            background: #fff;
+            color: #FF0000;
+            border: 1px #ff0000 solid;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, .06);
+        }
 
-    .page-main .btn_xemthem a:hover {
-        box-shadow: 0 14px 28px rgba(17, 24, 39, .22);
-        background: #000;
-        color: #fff;
-    }
+        .page-main .product-label .sold-out-label {
+            background: #f1f5f9;
+            border-color: #e8edf3;
+        }
 
-    @media (max-width:575.98px) {
-        .page-main .btn_xemthem a {
+        /* Info */
+        .page-main .product-info {
+            padding: 12px 14px 14px;
+        }
+
+        .page-main .product-name {
+            margin: 2px 0 8px;
+            font-size: 16px;
+            line-height: 1.35;
+        }
+
+        .page-main .product-name a {
+            color: var(--text);
+            text-decoration: none;
+            background: linear-gradient(currentColor, currentColor) 0 100%/0 2px no-repeat;
+            transition: background-size .35s var(--ease), color .35s var(--ease);
+        }
+
+        .page-main .product-name a:hover {
+            color: #000;
+            background-size: 100% 2px;
+        }
+
+        .page-main .price-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-main .product-price {
+            color: #ff0000;
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        .page-main .product-price-old {
+            color: var(--muted);
+            font-size: 14px;
+            text-decoration: line-through;
+        }
+
+        /* Action (nút giỏ hàng dạng overlay ở mép dưới ảnh) */
+        .page-main .product-action-grid {
+            padding: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            transform: none !important;
+        }
+
+        .page-main .product-thumbnail>.product-action-grid {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 5;
+            opacity: 0;
+            transform: translateY(100%);
+            pointer-events: none;
+            transition: opacity .25s var(--ease), transform .25s var(--ease);
+        }
+
+        .page-main .product-thumbnail>.product-action-grid .btn-cart {
+            display: block;
             width: 100%;
-            max-width: 340px;
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 0;
+            background: #111;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: none;
         }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
+        .page-main .product-box:hover .product-thumbnail>.product-action-grid {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .page-main .product-box:hover .image_link img {
+            filter: brightness(.88);
+        }
+
+        /* Mobile: luôn hiện nút vì không có hover */
+        @media (hover:none) and (pointer:coarse) {
+            .page-main .product-thumbnail>.product-action-grid {
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+
+            .page-main .owl_product_item_content .swiper-button-prev,
+            .page-main .owl_product_item_content .swiper-button-next {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(-50%)
+            }
+        }
+
+        /* Heading khu vực */
+        .page-main .heading_spbc {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 30px;
+        }
+
+        .page-main .heading_spbc .title-head {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .page-main .heading_spbc .title-head::after {
+            display: none;
+        }
+
+        .page-main .heading_spbc .title-head a {
+            color: var(--text);
+            text-decoration: none;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        /* Nút xem thêm */
+        .page-main .btn_xemthem {
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+        }
+
         .page-main .btn_xemthem a {
-            transition: none;
+            --btn-h: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: var(--btn-h);
+            padding: 20px 100px;
+            font-weight: 700;
+            text-decoration: none;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            box-shadow: 0 8px 22px rgba(17, 24, 39, .18);
         }
-    }
 
-    /* Responsive nhỏ cho brand */
-    @media (max-width:768px) {
-        .page-main .slide {
-            min-width: 150px;
+        .page-main .btn_xemthem a:hover {
+            box-shadow: 0 14px 28px rgba(17, 24, 39, .22);
+            background: #000;
+            color: #fff;
         }
-    }
 
-    /* ================== RESET NHẸ TRONG FOOTER – CHỐNG “DÍNH” ================== */
-    .footer .row {
-        /* Trả margin đúng chuẩn Bootstrap */
-        margin-right: -15px;
-        margin-left: -15px;
-        display: flex;
-        flex-wrap: wrap;
-    }
+        @media (max-width:575.98px) {
+            .page-main .btn_xemthem a {
+                width: 100%;
+                max-width: 340px;
+            }
+        }
 
-    .footer .container {
-        max-width: 1140px;
-        margin-right: auto;
-        margin-left: auto;
-        padding-right: 15px;
-        padding-left: 15px;
-    }
+        @media (prefers-reduced-motion: reduce) {
+            .page-main .btn_xemthem a {
+                transition: none;
+            }
+        }
 
-    .footer .col,
-    .footer .col-3 {
-        padding: 0;
-        width: auto;
-    }
+        /* Responsive nhỏ cho brand */
+        @media (max-width:768px) {
+            .page-main .slide {
+                min-width: 150px;
+            }
+        }
 
-    .product-action-grid {
-        padding: 0 14px 14px;
-        max-height: 0;
-        opacity: 0;
-        transform: translateY(-6px);
-        overflow: hidden;
-        /* tránh tràn khi ẩn */
-        pointer-events: none;
-        transition: max-height .35s var(--ease), opacity .25s var(--ease), transform .25s var(--ease);
-    }
+        /* ================== RESET NHẸ TRONG FOOTER – CHỐNG “DÍNH” ================== */
+        .footer .row {
+            /* Trả margin đúng chuẩn Bootstrap */
+            margin-right: -15px;
+            margin-left: -15px;
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-    /* Hover vào toàn bộ card thì hiện “Giỏ hàng” */
-    .product-box:hover .product-action-grid {
-        max-height: 80px;
-        /* đủ cao cho 1 nút */
-        opacity: 1;
-        pointer-events: auto;
-    }
+        .footer .container {
+            max-width: 1140px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
 
-    /* (Tuỳ chọn) Tô mờ nhẹ ảnh khi hover để nổi các nút */
-    .product-box:hover .image_link img {
-        filter: brightness(.96);
-    }
+        .footer .col,
+        .footer .col-3 {
+            padding: 0;
+            width: auto;
+        }
 
-    /* (Tuỳ chọn) Mobile: luôn hiện “Giỏ hàng” vì không có hover */
-    @media (hover: none) and (pointer: coarse) {
         .product-action-grid {
+            padding: 0 14px 14px;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-6px);
+            overflow: hidden;
+            /* tránh tràn khi ẩn */
+            pointer-events: none;
+            transition: max-height .35s var(--ease), opacity .25s var(--ease), transform .25s var(--ease);
+        }
+
+        /* Hover vào toàn bộ card thì hiện “Giỏ hàng” */
+        .product-box:hover .product-action-grid {
             max-height: 80px;
+            /* đủ cao cho 1 nút */
             opacity: 1;
-            transform: none;
             pointer-events: auto;
         }
 
-        .owl_product_item_content .swiper-button-prev,
-        .owl_product_item_content .swiper-button-next {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-50%) scale(1);
+        /* (Tuỳ chọn) Tô mờ nhẹ ảnh khi hover để nổi các nút */
+        .product-box:hover .image_link img {
+            filter: brightness(.96);
         }
-    }
 
-    .product-box {
-        position: relative;
-    }
+        /* (Tuỳ chọn) Mobile: luôn hiện “Giỏ hàng” vì không có hover */
+        @media (hover: none) and (pointer: coarse) {
+            .product-action-grid {
+                max-height: 80px;
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
 
-    .product-thumbnail {
-        position: relative;
-        overflow: hidden;
-    }
+            .owl_product_item_content .swiper-button-prev,
+            .owl_product_item_content .swiper-button-next {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(-50%) scale(1);
+            }
+        }
 
-    /* Đổi “Giỏ hàng” thành overlay đè lên ảnh */
+        .product-box {
+            position: relative;
+        }
 
-    /* Khi hover vào khung ảnh hoặc cả card -> hiện nút */
-    .product-box:hover .product-action-grid,
-    .product-thumbnail:hover .product-action-grid {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
+        .product-thumbnail {
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* Nút to, nổi bật trên ảnh */
-    .btn-cart {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid var(--brand);
-        background: var(--brand);
-        color: #fff;
-        font-weight: 800;
-        box-shadow: 0 10px 24px rgba(17, 24, 39, .18);
-    }
+        /* Đổi “Giỏ hàng” thành overlay đè lên ảnh */
 
-    /* Mobile: luôn hiện vì không có hover */
-    @media (hover:none) and (pointer:coarse) {
+        /* Khi hover vào khung ảnh hoặc cả card -> hiện nút */
+        .product-box:hover .product-action-grid,
+        .product-thumbnail:hover .product-action-grid {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Nút to, nổi bật trên ảnh */
+        .btn-cart {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--brand);
+            background: var(--brand);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 10px 24px rgba(17, 24, 39, .18);
+        }
+
+        /* Mobile: luôn hiện vì không có hover */
+        @media (hover:none) and (pointer:coarse) {
+            .product-action-grid {
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+        }
+
+        /* (tuỳ chọn) Làm tối ảnh nhẹ khi hover để nút nổi hơn */
+        .product-box:hover .image_link img {
+            filter: brightness(.94);
+        }
+
+        /* end sản phẩm */
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                min-width: 150px;
+            }
+
+            .btn {
+                font-size: 20px;
+                padding: 8px 12px;
+            }
+        }
+
+        /* 0) Xoá khoảng trống dưới ảnh slider */
+        .swiper-slide img {
+            margin-bottom: 0 !important;
+        }
+
+        /* 1) Làm mốc cho overlay */
+        .product-thumbnail {
+            position: relative !important;
+            overflow: hidden;
+        }
+
+        /* 2) Reset các rule cũ đang đè (max-height/transform/top:280px/…) */
         .product-action-grid {
-            opacity: 1;
-            transform: none;
-            pointer-events: auto;
-        }
-    }
-
-    /* (tuỳ chọn) Làm tối ảnh nhẹ khi hover để nút nổi hơn */
-    .product-box:hover .image_link img {
-        filter: brightness(.94);
-    }
-
-    /* end sản phẩm */
-    /* Responsive */
-    @media (max-width: 768px) {
-        .slide {
-            min-width: 150px;
+            padding: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            transform: none !important;
+            /* sẽ set lại ở selector bên dưới */
         }
 
-        .btn {
-            font-size: 20px;
-            padding: 8px 12px;
-        }
-    }
-
-    /* 0) Xoá khoảng trống dưới ảnh slider */
-    .swiper-slide img {
-        margin-bottom: 0 !important;
-    }
-
-    /* 1) Làm mốc cho overlay */
-    .product-thumbnail {
-        position: relative !important;
-        overflow: hidden;
-    }
-
-    /* 2) Reset các rule cũ đang đè (max-height/transform/top:280px/…) */
-    .product-action-grid {
-        padding: 0 !important;
-        max-height: none !important;
-        overflow: visible !important;
-        transform: none !important;
-        /* sẽ set lại ở selector bên dưới */
-    }
-
-    /* 3) Thanh giỏ hàng phủ mép dưới ảnh */
-    .product-thumbnail>.product-action-grid {
-        position: absolute !important;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 5;
-        opacity: 0;
-        transform: translateY(100%);
-        /* ẩn dưới mép ảnh */
-        pointer-events: none;
-        transition: opacity .25s var(--ease), transform .25s var(--ease);
-    }
-
-    /* 4) Nút full-bleed màu đen như demo */
-    .product-thumbnail>.product-action-grid .btn-cart {
-        display: block;
-        width: 100%;
-        padding: 12px 16px;
-        border: 0;
-        border-radius: 0;
-        background: #111;
-        color: #fff;
-        font-weight: 800;
-        box-shadow: none;
-    }
-
-    /* 5) Hover: kéo thanh lên và làm tối ảnh nhẹ */
-    .product-box:hover .product-thumbnail>.product-action-grid {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    .product-box:hover .image_link img {
-        filter: brightness(.88);
-    }
-
-    /* 6) Mobile: luôn hiện (không có hover) */
-    @media (hover:none) and (pointer:coarse) {
+        /* 3) Thanh giỏ hàng phủ mép dưới ảnh */
         .product-thumbnail>.product-action-grid {
+            position: absolute !important;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 5;
+            opacity: 0;
+            transform: translateY(100%);
+            /* ẩn dưới mép ảnh */
+            pointer-events: none;
+            transition: opacity .25s var(--ease), transform .25s var(--ease);
+        }
+
+        /* 4) Nút full-bleed màu đen như demo */
+        .product-thumbnail>.product-action-grid .btn-cart {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            border: 0;
+            border-radius: 0;
+            background: #111;
+            color: #fff;
+            font-weight: 800;
+            box-shadow: none;
+        }
+
+        /* 5) Hover: kéo thanh lên và làm tối ảnh nhẹ */
+        .product-box:hover .product-thumbnail>.product-action-grid {
             opacity: 1;
-            transform: none;
+            transform: translateY(0);
             pointer-events: auto;
         }
-    }
 
-    .awe-section-6 {
-        padding: 32px 0 48px;
-    }
+        .product-box:hover .image_link img {
+            filter: brightness(.88);
+        }
 
+        /* 6) Mobile: luôn hiện (không có hover) */
+        @media (hover:none) and (pointer:coarse) {
+            .product-thumbnail>.product-action-grid {
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+        }
 
-    .home-two-banner {
-        position: relative
-    }
-
-
-    .content_banner {
-        position: relative;
-        margin-bottom: var(--gap)
-    }
-
-    .content_banner .des {
-        position: absolute;
-        left: 16px;
-        bottom: 16px;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
-        border-radius: 12px;
-        padding: 14px 16px;
-        max-width: 80%;
-        transition: transform .3s ease, box-shadow .3s ease
-    }
-
-    .content_banner .des h4 {
-        margin: 0 0 4px;
-        font-size: 20px;
-        line-height: 1.2
-    }
-
-    .content_banner .des h4 span {
-        border-bottom: 2px solid #fff;
-        padding-bottom: 2px;
-        color: #fff;
-        font-size: 15px;
-    }
-
-    .content_banner .des p {
-        margin: 6px 0 10px;
-        color: #fff;
-
-        font-size: 14px
-    }
-
-    .content_banner .des a {
-        font-weight: 600;
-        font-size: 20px;
-        color: #fff;
-    }
+        .awe-section-6 {
+            padding: 32px 0 48px;
+        }
 
 
-    /* About block */
-    .about-home {
-        margin-top: 24px
-    }
-
-    .about-home .inner {
-        border-radius: 14px;
-        padding: 24px
-    }
-
-    .about-home h2 {
-        margin: 0 0 8px;
-        font-size: 24px;
-        text-align: center;
-    }
-
-    .about-home p {
-        margin: 0;
-        font-size: 15px;
-        color: #454242ff;
-    }
+        .home-two-banner {
+            position: relative
+        }
 
 
-    /* Utility to mimic .hidden-xs: hide on extra small (<576px) */
-    .hidden-xs {
-        display: none
-    }
+        .content_banner {
+            position: relative;
+            margin-bottom: var(--gap)
+        }
 
-    @media (min-width:576px) {
+        .content_banner .des {
+            position: absolute;
+            left: 16px;
+            bottom: 16px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            max-width: 80%;
+            transition: transform .3s ease, box-shadow .3s ease
+        }
+
+        .content_banner .des h4 {
+            margin: 0 0 4px;
+            font-size: 20px;
+            line-height: 1.2
+        }
+
+        .content_banner .des h4 span {
+            border-bottom: 2px solid #fff;
+            padding-bottom: 2px;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .content_banner .des p {
+            margin: 6px 0 10px;
+            color: #fff;
+
+            font-size: 14px
+        }
+
+        .content_banner .des a {
+            font-weight: 600;
+            font-size: 20px;
+            color: #fff;
+        }
+
+
+        /* About block */
+        .about-home {
+            margin-top: 24px
+        }
+
+        .about-home .inner {
+            border-radius: 14px;
+            padding: 24px
+        }
+
+        .about-home h2 {
+            margin: 0 0 8px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .about-home p {
+            margin: 0;
+            font-size: 15px;
+            color: #454242ff;
+        }
+
+
+        /* Utility to mimic .hidden-xs: hide on extra small (<576px) */
         .hidden-xs {
-            display: inline-block
+            display: none
         }
-    }
+
+        @media (min-width:576px) {
+            .hidden-xs {
+                display: inline-block
+            }
+        }
 
 
-    /* Optional: rounded corners & subtle image hover */
-    .content_banner a img {
-        width: 100%;
-        /* Luôn lấp đầy chiều ngang cột */
-        height: 250px;
-        /* Chiều cao mặc định (cho mobile) */
-        object-fit: cover;
-        /* LỆNH QUAN TRỌNG: Cắt ảnh vừa khung, không méo */
-        border-radius: 14px;
-        /* Giữ bo góc */
-        transition: transform .4s ease;
-        /* Giữ hiệu ứng */
-    }
-
-    /* Khi 2 cột hiển thị (màn hình lớn hơn 576px) */
-    @media (min-width: 576px) {
+        /* Optional: rounded corners & subtle image hover */
         .content_banner a img {
-            height: 320px;
-            /* Đặt chiều cao cao hơn cho desktop */
+            width: 100%;
+            /* Luôn lấp đầy chiều ngang cột */
+            height: 250px;
+            /* Chiều cao mặc định (cho mobile) */
+            object-fit: cover;
+            /* LỆNH QUAN TRỌNG: Cắt ảnh vừa khung, không méo */
+            border-radius: 14px;
+            /* Giữ bo góc */
+            transition: transform .4s ease;
+            /* Giữ hiệu ứng */
         }
-    }
 
-    :root {
-        --container: 1140px;
-        --gap: 24px;
-        --text: #111;
-        --muted: #555;
-        --brand: #111;
-    }
+        /* Khi 2 cột hiển thị (màn hình lớn hơn 576px) */
+        @media (min-width: 576px) {
+            .content_banner a img {
+                height: 320px;
+                /* Đặt chiều cao cao hơn cho desktop */
+            }
+        }
 
-    * {
-        box-sizing: border-box
-    }
+        :root {
+            --container: 1140px;
+            --gap: 24px;
+            --text: #111;
+            --muted: #555;
+            --brand: #111;
+        }
 
-    body {
-        margin: 0;
-        color: var(--text)
-    }
+        * {
+            box-sizing: border-box
+        }
 
-    a {
-        color: inherit;
-        text-decoration: none
-    }
+        body {
+            margin: 0;
+            color: var(--text)
+        }
 
-    img {
-        max-width: 100%;
-        display: block;
-        height: auto
-    }
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            height: auto
+        }
 
 
-    /* Container & grid (Bootstrap-like, but pure CSS) */
-    .container {
-        max-width: var(--container);
-        margin: 0 auto;
-        padding: 0 16px
-    }
+        /* Container & grid (Bootstrap-like, but pure CSS) */
+        .container {
+            max-width: var(--container);
+            margin: 0 auto;
+            padding: 0 16px
+        }
 
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: calc(var(--gap)/-2);
-        margin-right: calc(var(--gap)/-2)
-    }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: calc(var(--gap)/-2);
+            margin-right: calc(var(--gap)/-2)
+        }
 
-    .col {
-        padding-left: calc(var(--gap)/2);
-        padding-right: calc(var(--gap)/2)
-    }
+        .col {
+            padding-left: calc(var(--gap)/2);
+            padding-right: calc(var(--gap)/2)
+        }
 
-    /* 2 columns on >=576px, 1 column on small */
-    .col-6 {
-        width: 100%
-    }
-
-    @media (min-width:576px) {
+        /* 2 columns on >=576px, 1 column on small */
         .col-6 {
-            width: 50%
+            width: 100%
         }
-    }
+
+        @media (min-width:576px) {
+            .col-6 {
+                width: 50%
+            }
+        }
     </style>
 </head>
 
@@ -1476,152 +1476,152 @@
     <?php include __DIR__ . '/partials/footer.php'; ?>
 
     <script>
-    // Brand slider đơn giản
-    const track = document.querySelector('.slider-track');
-    const slides = document.querySelectorAll('.slide');
-    const prevBtn = document.querySelector('.prev');
-    const nextBtn = document.querySelector('.next');
-    let index = 0;
-    const visibleSlides = 4;
-    const totalSlides = slides.length;
+        // Brand slider đơn giản
+        const track = document.querySelector('.slider-track');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let index = 0;
+        const visibleSlides = 4;
+        const totalSlides = slides.length;
 
-    function updateSlider() {
-        const slideWidth = slides[0].offsetWidth + 20;
-        track.style.transform = `translateX(-${index * slideWidth}px)`;
-    }
-    nextBtn?.addEventListener('click', () => {
-        if (index < totalSlides - visibleSlides) index++;
-        else index = 0;
-        updateSlider();
-    });
-    prevBtn?.addEventListener('click', () => {
-        if (index > 0) index--;
-        else index = totalSlides - visibleSlides;
-        updateSlider();
-    });
-    window.addEventListener('resize', updateSlider);
-
-    // Slider cho từng thẻ sản phẩm (JS thuần)
-    (function() {
-        function initItemSlider(root) {
-            const track = root.querySelector('.swiper-wrapper');
-            const slides = Array.from(root.querySelectorAll('.swiper-slide'));
-            const prev = root.querySelector('.swiper-button-prev');
-            const next = root.querySelector('.swiper-button-next');
-            if (!track || slides.length <= 1) {
-                prev?.remove();
-                next?.remove();
-                return;
-            }
-            let idx = 0;
-
-            function lazyShow(i) {
-                const img = slides[i]?.querySelector('img[data-src]');
-                if (img && (!img.src || img.src.startsWith('data:'))) {
-                    img.src = img.getAttribute('data-src');
-                    img.removeAttribute('data-src');
-                }
-            }
-
-            function update() {
-                const w = root.clientWidth;
-                track.style.transform = 'translateX(' + (-idx * w) + 'px)';
-                lazyShow(idx);
-                if (idx + 1 < slides.length) lazyShow(idx + 1);
-                prev?.classList.toggle('swiper-button-disabled', idx === 0);
-                next?.classList.toggle('swiper-button-disabled', idx >= slides.length - 1);
-            }
-            prev?.addEventListener('click', () => {
-                if (idx > 0) {
-                    idx--;
-                    update();
-                }
-            });
-            next?.addEventListener('click', () => {
-                if (idx < slides.length - 1) {
-                    idx++;
-                    update();
-                }
-            });
-
-            // touch
-            let startX = 0,
-                dx = 0,
-                dragging = false;
-            root.addEventListener('touchstart', e => {
-                dragging = true;
-                startX = e.touches[0].clientX;
-                dx = 0;
-            }, {
-                passive: true
-            });
-            root.addEventListener('touchmove', e => {
-                if (dragging) dx = e.touches[0].clientX - startX;
-            }, {
-                passive: true
-            });
-            root.addEventListener('touchend', () => {
-                if (!dragging) return;
-                dragging = false;
-                const th = Math.max(40, root.clientWidth * 0.12);
-                if (dx > th && idx > 0) idx--;
-                else if (dx < -th && idx < slides.length - 1) idx++;
-                update();
-            });
-
-            // mouse drag (đơn giản)
-            let isDown = false,
-                startMX = 0;
-            root.addEventListener('mousedown', e => {
-                isDown = true;
-                startMX = e.clientX;
-                e.preventDefault();
-            });
-            window.addEventListener('mouseup', e => {
-                if (!isDown) return;
-                isDown = false;
-                const moved = e.clientX - startMX;
-                const th = Math.max(40, root.clientWidth * 0.12);
-                if (moved > th && idx > 0) idx--;
-                else if (moved < -th && idx < slides.length - 1) idx++;
-                update();
-            });
-
-            window.addEventListener('resize', update);
-            lazyShow(0);
-            update();
+        function updateSlider() {
+            const slideWidth = slides[0].offsetWidth + 20;
+            track.style.transform = `translateX(-${index * slideWidth}px)`;
         }
-        document.querySelectorAll('.owl_product_item_content').forEach(initItemSlider);
-    })();
-    (function() {
-        const lazyImgs = [].slice.call(document.querySelectorAll('img.lazyload'));
-        if ('IntersectionObserver' in window) {
-            const io = new IntersectionObserver((entries, obs) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const src = img.getAttribute('data-src');
-                        if (src) {
-                            img.src = src;
-                            img.removeAttribute('data-src');
-                        }
-                        img.classList.remove('lazyload');
-                        obs.unobserve(img);
+        nextBtn?.addEventListener('click', () => {
+            if (index < totalSlides - visibleSlides) index++;
+            else index = 0;
+            updateSlider();
+        });
+        prevBtn?.addEventListener('click', () => {
+            if (index > 0) index--;
+            else index = totalSlides - visibleSlides;
+            updateSlider();
+        });
+        window.addEventListener('resize', updateSlider);
+
+        // Slider cho từng thẻ sản phẩm (JS thuần)
+        (function() {
+            function initItemSlider(root) {
+                const track = root.querySelector('.swiper-wrapper');
+                const slides = Array.from(root.querySelectorAll('.swiper-slide'));
+                const prev = root.querySelector('.swiper-button-prev');
+                const next = root.querySelector('.swiper-button-next');
+                if (!track || slides.length <= 1) {
+                    prev?.remove();
+                    next?.remove();
+                    return;
+                }
+                let idx = 0;
+
+                function lazyShow(i) {
+                    const img = slides[i]?.querySelector('img[data-src]');
+                    if (img && (!img.src || img.src.startsWith('data:'))) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
                     }
-                })
-            }, {
-                rootMargin: '200px'
-            });
-            lazyImgs.forEach(img => io.observe(img));
-        } else {
-            // Fallback: load immediately
-            lazyImgs.forEach(img => {
-                const src = img.getAttribute('data-src');
-                if (src) img.src = src;
-                img.classList.remove('lazyload');
-            });
-        }
-    })();
+                }
+
+                function update() {
+                    const w = root.clientWidth;
+                    track.style.transform = 'translateX(' + (-idx * w) + 'px)';
+                    lazyShow(idx);
+                    if (idx + 1 < slides.length) lazyShow(idx + 1);
+                    prev?.classList.toggle('swiper-button-disabled', idx === 0);
+                    next?.classList.toggle('swiper-button-disabled', idx >= slides.length - 1);
+                }
+                prev?.addEventListener('click', () => {
+                    if (idx > 0) {
+                        idx--;
+                        update();
+                    }
+                });
+                next?.addEventListener('click', () => {
+                    if (idx < slides.length - 1) {
+                        idx++;
+                        update();
+                    }
+                });
+
+                // touch
+                let startX = 0,
+                    dx = 0,
+                    dragging = false;
+                root.addEventListener('touchstart', e => {
+                    dragging = true;
+                    startX = e.touches[0].clientX;
+                    dx = 0;
+                }, {
+                    passive: true
+                });
+                root.addEventListener('touchmove', e => {
+                    if (dragging) dx = e.touches[0].clientX - startX;
+                }, {
+                    passive: true
+                });
+                root.addEventListener('touchend', () => {
+                    if (!dragging) return;
+                    dragging = false;
+                    const th = Math.max(40, root.clientWidth * 0.12);
+                    if (dx > th && idx > 0) idx--;
+                    else if (dx < -th && idx < slides.length - 1) idx++;
+                    update();
+                });
+
+                // mouse drag (đơn giản)
+                let isDown = false,
+                    startMX = 0;
+                root.addEventListener('mousedown', e => {
+                    isDown = true;
+                    startMX = e.clientX;
+                    e.preventDefault();
+                });
+                window.addEventListener('mouseup', e => {
+                    if (!isDown) return;
+                    isDown = false;
+                    const moved = e.clientX - startMX;
+                    const th = Math.max(40, root.clientWidth * 0.12);
+                    if (moved > th && idx > 0) idx--;
+                    else if (moved < -th && idx < slides.length - 1) idx++;
+                    update();
+                });
+
+                window.addEventListener('resize', update);
+                lazyShow(0);
+                update();
+            }
+            document.querySelectorAll('.owl_product_item_content').forEach(initItemSlider);
+        })();
+        (function() {
+            const lazyImgs = [].slice.call(document.querySelectorAll('img.lazyload'));
+            if ('IntersectionObserver' in window) {
+                const io = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute('data-src');
+                            if (src) {
+                                img.src = src;
+                                img.removeAttribute('data-src');
+                            }
+                            img.classList.remove('lazyload');
+                            obs.unobserve(img);
+                        }
+                    })
+                }, {
+                    rootMargin: '200px'
+                });
+                lazyImgs.forEach(img => io.observe(img));
+            } else {
+                // Fallback: load immediately
+                lazyImgs.forEach(img => {
+                    const src = img.getAttribute('data-src');
+                    if (src) img.src = src;
+                    img.classList.remove('lazyload');
+                });
+            }
+        })();
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>

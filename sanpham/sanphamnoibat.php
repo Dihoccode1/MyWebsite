@@ -14,127 +14,11 @@
         integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
     <title>Trang bán sản phẩm sáp</title>
 </head>
 <style>
-/* ====== CSS CHUNG ====== */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    color: #333;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
-
-/* Đường kẻ ngang */
-hr {
-    border: 0;
-    border-top: 1px solid #eee;
-}
-
-/* ====== CSS CHO HEADER (GENTLEMAN) ====== */
-/* 1. Top Bar */
-.top-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 8px 0;
-    font-size: 12px;
-    color: #888;
-}
-
-.top-bar a {
-    margin-left: 15px;
-    text-transform: uppercase;
-}
-
-/* 2. Main Header */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px 0;
-}
-
-/* 2.1. Search Bar */
-.search-bar {
-    display: flex;
-    border: 1px solid #ccc;
-}
-
-.search-bar input {
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    outline: none;
-}
-
-.search-bar button {
-    border: none;
-    background: #333;
-    color: white;
-    padding: 0 12px;
-    cursor: pointer;
-}
-
-/* 2.2. Logo (ĐÃ SỬA) */
-.logo {
-    margin: 0;
-    text-align: center;
-}
-
-.logo img {
-    max-height: 45px;
-    /* Đặt chiều cao tối đa cho logo */
-    width: auto;
-    /* Giữ đúng tỷ lệ */
-    display: block;
-}
-
-/* 2.3. Cart */
-.cart-link {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* 3. Navigation Bar */
-.main-nav {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
-
-.main-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-.main-nav li a {
-    padding: 10px 20px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    display: block;
-}
-
-/* Nút "Sản phẩm" đang active */
-.main-nav li a.active {
-    background-color: #000;
-    color: #fff;
-}
 
 /* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
 
@@ -305,42 +189,7 @@ hr {
 </style>
 
 <body>
-
-    <div class="container">
-        <div class="top-bar">
-            <span>HOTLINE: 19000150</span>
-            <a href="#">ĐĂNG NHẬP</a>
-        </div>
-        <hr />
-
-        <header class="main-header">
-            <form class="search-bar">
-                <input type="text" placeholder="Tìm kiếm" />
-                <button type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-
-            <a href="#" class="logo">
-                <img src="../assets/images/logo.jpg" alt="Nobility 1800s Logo" />
-            </a>
-
-            <a href="../giohang.php" class="cart-link">GIỎ HÀNG (0)</a>
-        </header>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#" class="active">TRANG CHỦ</a></li>
-                <li><a href="#">GIỚI THIỆU</a></li>
-                <li>
-                    <a href="#">SẢN PHẨM <i class="fas fa-chevron-down fa-xs"></i></a>
-                </li>
-                <li><a href="#">TIN TỨC</a></li>
-                <li><a href="#">LIÊN HỆ</a></li>
-            </ul>
-        </nav>
-        <hr />
-    </div>
+        <?php include __DIR__ . '/../partials/header.php'; ?>
     <div class="container">
         <nav class="breadcrumbs">
             <a href="#">Trang chủ</a> / <span>Tất cả sản phẩm</span>
@@ -522,11 +371,10 @@ hr {
             </ul>
         </nav>
     </div>
-    <?php include __DIR__ . '/partials/footer.php'; ?>
+    <?php include __DIR__ . '/../partials/footer.php'; ?>
 </body>
 
 </html>
-<?php include __DIR__ . '/partials/footer.php'; ?>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
 </script>

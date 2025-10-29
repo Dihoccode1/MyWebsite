@@ -414,3 +414,12 @@ html, body {
   }
 }
 /* end-footer */
+/* List view (nếu sau này bạn muốn nút BẢNG/DANH SÁCH) */
+.product-item.list-view{display:flex;text-align:left;gap:16px}
+.product-item.list-view .product-image{width:180px;flex:0 0 180px;margin-bottom:0}
+.product-item.list-view .product-image img{width:100%;height:auto}
+
+/* Pagination */
+.pagination-list{display:flex;gap:10px;list-style:none;padding:0;margin:0}
+.pagination-list .page-item .page-link{display:block;padding:6px 10px;border:1px solid #e0e0e0}
+.pagination-list .page-item.active .page-link{font-weight:700;border-color:#000}
