@@ -19,361 +19,222 @@
     <title>Trang bán sản phẩm sáp</title>
 </head>
 <style>
-/* ====== CSS CHUNG ====== */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    color: #333;
-}
+    /* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+    /* 4. Breadcrumbs (Trang chủ / ...) */
+    .breadcrumbs {
+        padding: 15px 0;
+        font-size: 13px;
+        color: #777;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
+    .breadcrumbs a {
+        color: #333;
+    }
 
-/* Đường kẻ ngang */
-hr {
-    border: 0;
-    border-top: 1px solid #eee;
-}
+    /* 5. View Controls (Bộ lọc) */
+    .view-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+    }
 
-/* ====== CSS CHO HEADER (GENTLEMAN) ====== */
-/* 1. Top Bar */
-.top-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 8px 0;
-    font-size: 12px;
-    color: #888;
-}
+    .filter-select {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        font-size: 13px;
+    }
 
-.top-bar a {
-    margin-left: 15px;
-    text-transform: uppercase;
-}
+    .view-buttons button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        background: #fff;
+        margin-left: 5px;
+        font-size: 13px;
+        cursor: pointer;
+    }
 
-/* 2. Main Header */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px 0;
-}
+    .view-buttons button.active {
+        background-color: #f0f0f0;
+        border-color: #aaa;
+    }
 
-/* 2.1. Search Bar */
-.search-bar {
-    display: flex;
-    border: 1px solid #ccc;
-}
+    .view-buttons button i {
+        margin-right: 5px;
+    }
 
-.search-bar input {
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    outline: none;
-}
+    /* ====== CSS SẢN PHẨM (MỚI THÊM) ====== */
+    .product-list {
+        padding-top: 30px;
+        /* Khoảng cách với bộ lọc */
+    }
 
-.search-bar button {
-    border: none;
-    background: #333;
-    color: white;
-    padding: 0 12px;
-    cursor: pointer;
-}
+    .product-item {
+        text-align: center;
+        margin-bottom: 30px;
+        /* Khoảng cách giữa các hàng */
+    }
 
-/* 2.2. Logo (ĐÃ SỬA) */
-.logo {
-    margin: 0;
-    text-align: center;
-}
+    .product-item a {
+        text-decoration: none;
+        color: #333;
+    }
 
-.logo img {
-    max-height: 45px;
-    /* Đặt chiều cao tối đa cho logo */
-    width: auto;
-    /* Giữ đúng tỷ lệ */
-    display: block;
-}
+    .product-image {
+        position: relative;
+        margin-bottom: 15px;
+        overflow: hidden;
+        /* Giúp ảnh không bị tràn */
+    }
 
-/* 2.3. Cart */
-.cart-link {
-    font-size: 14px;
-    font-weight: bold;
-}
+    .product-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        /* Hiệu ứng zoom nhẹ khi hover (tùy chọn) */
+        transition: transform 0.3s ease;
+    }
 
-/* 3. Navigation Bar */
-.main-nav {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
+    .product-item:hover .product-image img {
+        transform: scale(1.05);
+    }
 
-.main-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
+    /* CSS cho các nhãn (Hết hàng, Sale) */
+    .product-badge {
+        position: absolute;
+        top: 10px;
+        padding: 4px 8px;
+        color: white;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
-.main-nav li a {
-    padding: 10px 20px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    display: block;
-}
+    .badge-out-of-stock {
+        left: 10px;
+        background-color: #000;
+        /* Màu đen cho Hết hàng */
+    }
 
-/* Nút "Sản phẩm" đang active */
-.main-nav li a.active {
-    background-color: #000;
-    color: #fff;
-}
+    .badge-sale {
+        right: 10px;
+        background-color: #d9534f;
+        /* Màu đỏ cho Sale */
+    }
 
-/* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
+    .product-name {
+        font-size: 14px;
+        margin-bottom: 8px;
+        /* Giới hạn tên 1 dòng (tùy chọn) */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-/* 4. Breadcrumbs (Trang chủ / ...) */
-.breadcrumbs {
-    padding: 15px 0;
-    font-size: 13px;
-    color: #777;
-}
+    .product-price .sale-price {
+        color: #d00;
+        /* Màu đỏ cho giá */
+        font-weight: bold;
+        font-size: 15px;
+    }
 
-.breadcrumbs a {
-    color: #333;
-}
+    .product-price .original-price {
+        color: #888;
+        text-decoration: line-through;
+        margin-left: 8px;
+        font-size: 13px;
+    }
 
-/* 5. View Controls (Bộ lọc) */
-.view-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-}
+    /* ====== CSS PHÂN TRANG (MỚI THÊM) ====== */
+    .pagination-nav {
+        display: flex;
+        justify-content: center;
+        /* Căn giữa */
+        padding: 30px 0 20px 0;
+        /* Khoảng cách trên/dưới */
+    }
 
-.filter-select {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-}
+    .pagination-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 15px;
+        /* Khoảng cách giữa các mục */
+    }
 
-.view-buttons button {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    background: #fff;
-    margin-left: 5px;
-    font-size: 13px;
-    cursor: pointer;
-}
+    .page-item .page-link {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        border: 1px solid transparent;
+        /* Để giữ layout ổn định */
+    }
 
-.view-buttons button.active {
-    background-color: #f0f0f0;
-    border-color: #aaa;
-}
+    .page-item.active .page-link {
+        color: #000;
+        font-weight: bold;
+        border-bottom: 2px solid #000;
+        /* Hiệu ứng active */
+    }
 
-.view-buttons button i {
-    margin-right: 5px;
-}
-
-/* ====== CSS SẢN PHẨM (MỚI THÊM) ====== */
-.product-list {
-    padding-top: 30px;
-    /* Khoảng cách với bộ lọc */
-}
-
-.product-item {
-    text-align: center;
-    margin-bottom: 30px;
-    /* Khoảng cách giữa các hàng */
-}
-
-.product-item a {
-    text-decoration: none;
-    color: #333;
-}
-
-.product-image {
-    position: relative;
-    margin-bottom: 15px;
-    overflow: hidden;
-    /* Giúp ảnh không bị tràn */
-}
-
-.product-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    /* Hiệu ứng zoom nhẹ khi hover (tùy chọn) */
-    transition: transform 0.3s ease;
-}
-
-.product-item:hover .product-image img {
-    transform: scale(1.05);
-}
-
-/* CSS cho các nhãn (Hết hàng, Sale) */
-.product-badge {
-    position: absolute;
-    top: 10px;
-    padding: 4px 8px;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.badge-out-of-stock {
-    left: 10px;
-    background-color: #000;
-    /* Màu đen cho Hết hàng */
-}
-
-.badge-sale {
-    right: 10px;
-    background-color: #d9534f;
-    /* Màu đỏ cho Sale */
-}
-
-.product-name {
-    font-size: 14px;
-    margin-bottom: 8px;
-    /* Giới hạn tên 1 dòng (tùy chọn) */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.product-price .sale-price {
-    color: #d00;
-    /* Màu đỏ cho giá */
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.product-price .original-price {
-    color: #888;
-    text-decoration: line-through;
-    margin-left: 8px;
-    font-size: 13px;
-}
-
-/* ====== CSS PHÂN TRANG (MỚI THÊM) ====== */
-.pagination-nav {
-    display: flex;
-    justify-content: center;
-    /* Căn giữa */
-    padding: 30px 0 20px 0;
-    /* Khoảng cách trên/dưới */
-}
-
-.pagination-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 15px;
-    /* Khoảng cách giữa các mục */
-}
-
-.page-item .page-link {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    border: 1px solid transparent;
-    /* Để giữ layout ổn định */
-}
-
-.page-item.active .page-link {
-    color: #000;
-    font-weight: bold;
-    border-bottom: 2px solid #000;
-    /* Hiệu ứng active */
-}
-
-.page-item:not(.active) .page-link:hover {
-    color: #000;
-    text-decoration: underline;
-}
+    .page-item:not(.active) .page-link:hover {
+        color: #000;
+        text-decoration: underline;
+    }
 </style>
 
 <body>
-
+    <?php include __DIR__ . '/../partials/header.php'; ?>
     <div class="container">
-        <div class="top-bar">
-            <span>HOTLINE: 19000150</span>
-            <a href="#">ĐĂNG NHẬP</a>
-        </div>
-        <hr />
-
-        <header class="main-header">
-            <form class="search-bar">
-                <input type="text" placeholder="Tìm kiếm" />
-                <button type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-
-            <a href="#" class="logo">
-                <img src="../assets/images/logo.jpg" alt="Nobility 1800s Logo" />
-            </a>
-
-            <a href="../giohang.php" class="cart-link">GIỎ HÀNG (0)</a>
-        </header>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#" class="active">TRANG CHỦ</a></li>
-                <li><a href="#">GIỚI THIỆU</a></li>
-                <li>
-                    <a href="#">SẢN PHẨM <i class="fas fa-chevron-down fa-xs"></i></a>
-                </li>
-                <li><a href="#">TIN TỨC</a></li>
-                <li><a href="#">LIÊN HỆ</a></li>
-            </ul>
-        </nav>
-        <hr />
-    </div>
-    <div class="container">
-        <nav class="breadcrumbs">
-            <a href="#">Trang chủ</a> / <span>Tất cả sản phẩm</span>
-        </nav>
-        <hr />
-
-        <div class="view-controls">
-            <select class="filter-select">
-                <option value="">CHỌN THEO</option>
+            <hr>
+       <input type="hidden" id="featuredFlag" value="1" />
+        <form id="searchForm" class="form-inline mb-2">
+            <input id="q" class="form-control mr-2" placeholder="Tìm theo tên..." />
+            <select id="category" class="form-control mr-2">
+                <option value="all">Tất cả</option>
+                <option value="hair_wax">Sáp vuốt tóc</option>
+                <option value="hair_spray">Gôm xịt tóc</option>
+                <option value="hair_conditioner">Dưỡng tóc</option>
+                <option value="volumizing_powder">Bột tạo phồng</option>
+            </select>
+            <input id="priceMin" class="form-control mr-2" type="number" min="0" placeholder="Giá từ" />
+            <input id="priceMax" class="form-control mr-2" type="number" min="0" placeholder="Giá đến" />
+            <select id="sort" class="form-control mr-2">
+                <option value="">Mặc định</option>
                 <option value="price-asc">Giá tăng dần</option>
                 <option value="price-desc">Giá giảm dần</option>
                 <option value="name-asc">Tên A→Z</option>
                 <option value="name-desc">Tên Z→A</option>
             </select>
             <button class="btn btn-primary">Tìm</button>
-            </form>
+        </form>
 
 
-            <div class="product-list">
-                <div id="product-grid" class="row"></div>
-            </div>
-
-            <div class="container">
-                <nav class="pagination-nav" aria-label="Page navigation">
-                    <ul id="pagination" class="pagination-list"></ul>
-                </nav>
-            </div>
+        <div class="product-list">
+            <div id="product-grid" class="row"></div>
         </div>
-        <?php include __DIR__ . '/../partials/footer.php'; ?>
+
+        <div class="container">
+            <nav class="pagination-nav" aria-label="Page navigation">
+                <ul id="pagination" class="pagination-list"></ul>
+            </nav>
+        </div>
+    </div>
+    <?php include __DIR__ . '/../partials/footer.php'; ?>
 </body>
 
 </html>
-<?php include __DIR__ . '/partials/footer.php'; ?>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script>
+  // CHỈ hiện sản phẩm có featured === true
+  window.SVUI?.init({ featuredOnly: true });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
 </script>

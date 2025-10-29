@@ -13,6 +13,7 @@ window.SVUI = (function () {
     if (b === "oos" || b === "out_of_stock") return "out_of_stock";
     return "";
   };
+  const isOOS = (p) => normalizeBadge(p) === "out_of_stock" || (typeof p.stock === 'number' && p.stock <= 0);
 
   // Luôn dùng đường dẫn tuyệt đối để tránh lặp cấp thư mục
   const productDetailUrl = (p) => `/sanpham/pages/product_detail.php?id=${encodeURIComponent(p.id)}`;
@@ -25,9 +26,14 @@ window.SVUI = (function () {
     return "";
   };
 
+  // === CARD HTML có nút "Thêm giỏ" ===
   const cardHTML = (p) => {
     const original = p.original_price && toNumber(p.original_price) > toNumber(p.price)
       ? `<span class="original-price">${fmtVND(p.original_price)}</span>` : "";
+
+    const disabled = isOOS(p) ? 'disabled' : '';
+    const btnText  = isOOS(p) ? 'Hết hàng' : 'Thêm giỏ';
+
     return `
       <div class="col-6 col-md-4 col-lg-3">
         <div class="product-item">
@@ -41,6 +47,11 @@ window.SVUI = (function () {
               <span class="sale-price">${fmtVND(p.price)}</span>${original}
             </div>
           </a>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-dark btn-add-cart" data-id="${p.id}" ${disabled}>
+              <i class="fas fa-cart-plus"></i> ${btnText}
+            </button>
+          </div>
         </div>
       </div>`;
   };
@@ -56,6 +67,12 @@ window.SVUI = (function () {
     return html;
   };
 
+  // Badge giỏ ở header
+  function updateCartCount() {
+    const el = $("#cartCount");
+    if (el && window.SVStore?.count) el.textContent = SVStore.count();
+  }
+
   function init(opts = {}) {
     const grid       = $("#product-grid");
     const pagination = $("#pagination");
@@ -66,9 +83,9 @@ window.SVUI = (function () {
     let base = (window.SVStore?.getAllProducts?.() || window.SV_PRODUCT_SEED || []).slice();
 
     // Chế độ trang
-    if (opts.saleOnly)    base = base.filter(p => normalizeBadge(p) === "sale");
-    if (opts.newOnly)     base = base.filter(p => normalizeBadge(p) === "new");
-    if (opts.featuredOnly)base = base.filter(p => p.featured === true);
+    if (opts.saleOnly)     base = base.filter(p => normalizeBadge(p) === "sale");
+    if (opts.newOnly)      base = base.filter(p => normalizeBadge(p) === "new");
+    if (opts.featuredOnly) base = base.filter(p => p.featured === true);
 
     // State
     const state = { q:"", category:"all", minPrice:"", maxPrice:"", sort:"", page:1, perPage:8 };
@@ -107,6 +124,7 @@ window.SVUI = (function () {
       const { items, pages, page } = filterSortPaginate();
       grid.innerHTML = items.map(cardHTML).join("") || `<div class="col-12 py-5 text-center text-muted">Không có sản phẩm phù hợp.</div>`;
       pagination.innerHTML = buildPagination(pages, page);
+      updateCartCount(); // cập nhật badge sau mỗi lần render
     };
 
     pagination.addEventListener("click", e=>{
@@ -127,8 +145,29 @@ window.SVUI = (function () {
       render();
     });
 
+    // === Event: Add to cart (delegation) ===
+    document.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn-add-cart');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      if (!id || !window.SVStore?.addToCart) return;
+
+      // Thêm vào giỏ
+      SVStore.addToCart(id, 1);
+      updateCartCount();
+
+      // Feedback nhanh
+      const old = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fas fa-check"></i> Đã thêm`;
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = old;
+      }, 800);
+    });
+
     render();
   }
 
-  return { init };
+  return { init, updateCartCount };
 })();

@@ -29,8 +29,6 @@
             --shadow-md: 0 12px 28px rgba(17, 24, 39, .12);
             --ease: cubic-bezier(.22, 1, .36, 1);
         }
-
-        /* ================== SCOPE TOÀN BỘ CSS NỘI DUNG VÀO .page-main ================== */
         .page-main .policy-box {
             margin: 10px 0;
         }

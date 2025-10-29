@@ -54,7 +54,7 @@
     const dirN = dir === 'desc' ? -1 : 1;
     return list.slice().sort((a, b) => {
       if (key === 'price') return (toNumber(a.price) - toNumber(b.price)) * dirN;
-      if (key === 'name') return String(a.name).localeCompare(String(b.name), 'vi') * dirN;
+      if (key === 'name')  return String(a.name).localeCompare(String(b.name), 'vi') * dirN;
       return 0;
     });
   }
@@ -66,6 +66,50 @@
     const start = (cur - 1) * perPage;
     const end = start + perPage;
     return { items: list.slice(start, end), total, pages, page: cur, perPage };
+  }
+
+  // ===== Cart (localStorage) =====
+  const CART_KEY = 'sv_cart_v1';
+  const getCart = () => {
+    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
+    catch { return []; }
+  };
+  const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+  function addToCart(id, qty = 1) {
+    qty = clampNonNegative(qty) || 1;
+    const cart = getCart();
+    const i = cart.findIndex(x => x.id === id);
+    if (i > -1) cart[i].qty += qty;
+    else cart.push({ id, qty });
+    saveCart(cart);
+    return cart;
+  }
+
+  function setQty(id, qty) {
+    qty = clampNonNegative(qty) || 1;
+    const cart = getCart().map(x => x.id === id ? { ...x, qty } : x);
+    saveCart(cart);
+    return cart;
+  }
+
+  function removeFromCart(id) {
+    const cart = getCart().filter(x => x.id !== id);
+    saveCart(cart);
+    return cart;
+  }
+
+  const clearCart = () => saveCart([]);
+
+  const count = () => getCart().reduce((s, x) => s + (x.qty || 0), 0);
+
+  function total(products = null) {
+    const list = products || getAllProducts();
+    const map = new Map(list.map(p => [p.id, p]));
+    return getCart().reduce((s, x) => {
+      const p = map.get(x.id);
+      return s + (p ? toNumber(p.price) * (x.qty || 0) : 0);
+    }, 0);
   }
 
   w.SVStore = {
@@ -85,6 +129,9 @@
       const filtered = filterProducts(baseByFeatured, { q, category, minPrice, maxPrice });
       const sorted = sortProducts(filtered, sort);
       return paginate(sorted, page, perPage);
-    }
+    },
+
+    // Cart API
+    getCart, addToCart, setQty, removeFromCart, clearCart, count, total
   };
 })(window);
