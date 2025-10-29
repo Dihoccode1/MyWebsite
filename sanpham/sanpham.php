@@ -14,519 +14,231 @@
         integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
     <title>Trang bán sản phẩm sáp</title>
 </head>
 <style>
-/* ====== CSS CHUNG ====== */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    color: #333;
-}
+    /* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
+    /* 4. Breadcrumbs (Trang chủ / ...) */
+    .breadcrumbs {
+        padding: 15px 0;
+        font-size: 13px;
+        color: #777;
+    }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
+    .breadcrumbs a {
+        color: #333;
+    }
 
-/* Đường kẻ ngang */
-hr {
-    border: 0;
-    border-top: 1px solid #eee;
-}
+    /* 5. View Controls (Bộ lọc) */
+    .view-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+    }
 
-/* ====== CSS CHO HEADER (GENTLEMAN) ====== */
-/* 1. Top Bar */
-.top-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 8px 0;
-    font-size: 12px;
-    color: #888;
-}
+    .filter-select {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        font-size: 13px;
+    }
 
-.top-bar a {
-    margin-left: 15px;
-    text-transform: uppercase;
-}
+    .view-buttons button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        background: #fff;
+        margin-left: 5px;
+        font-size: 13px;
+        cursor: pointer;
+    }
 
-/* 2. Main Header */
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px 0;
-}
+    .view-buttons button.active {
+        background-color: #f0f0f0;
+        border-color: #aaa;
+    }
 
-/* 2.1. Search Bar */
-.search-bar {
-    display: flex;
-    border: 1px solid #ccc;
-}
+    .view-buttons button i {
+        margin-right: 5px;
+    }
 
-.search-bar input {
-    border: none;
-    padding: 8px 12px;
-    font-size: 14px;
-    outline: none;
-}
+    /* ====== CSS SẢN PHẨM (MỚI THÊM) ====== */
+    .product-list {
+        padding-top: 30px;
+        /* Khoảng cách với bộ lọc */
+    }
 
-.search-bar button {
-    border: none;
-    background: #333;
-    color: white;
-    padding: 0 12px;
-    cursor: pointer;
-}
+    .product-item {
+        text-align: center;
+        margin-bottom: 30px;
+        /* Khoảng cách giữa các hàng */
+    }
 
-/* 2.2. Logo (ĐÃ SỬA) */
-.logo {
-    margin: 0;
-    text-align: center;
-}
+    .product-item a {
+        text-decoration: none;
+        color: #333;
+    }
 
-.logo img {
-    max-height: 45px;
-    /* Đặt chiều cao tối đa cho logo */
-    width: auto;
-    /* Giữ đúng tỷ lệ */
-    display: block;
-}
+    .product-image {
+        position: relative;
+        margin-bottom: 15px;
+        overflow: hidden;
+        /* Giúp ảnh không bị tràn */
+    }
 
-/* 2.3. Cart */
-.cart-link {
-    font-size: 14px;
-    font-weight: bold;
-}
+    .product-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        /* Hiệu ứng zoom nhẹ khi hover (tùy chọn) */
+        transition: transform 0.3s ease;
+    }
 
-/* 3. Navigation Bar */
-.main-nav {
-    display: flex;
-    justify-content: center;
-    padding: 10px 0;
-}
+    .product-item:hover .product-image img {
+        transform: scale(1.05);
+    }
 
-.main-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
+    /* CSS cho các nhãn (Hết hàng, Sale) */
+    .product-badge {
+        position: absolute;
+        top: 10px;
+        padding: 4px 8px;
+        color: white;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
 
-.main-nav li a {
-    padding: 10px 20px;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 14px;
-    display: block;
-}
+    .badge-out-of-stock {
+        left: 10px;
+        background-color: #000;
+        /* Màu đen cho Hết hàng */
+    }
 
-/* Nút "Sản phẩm" đang active */
-.main-nav li a.active {
-    background-color: #000;
-    color: #fff;
-}
+    .badge-sale {
+        right: 10px;
+        background-color: #d9534f;
+        /* Màu đỏ cho Sale */
+    }
 
-/* ====== CSS CHO PHẦN SẢN PHẨM (TỪ ẢNH) ====== */
+    .product-name {
+        font-size: 14px;
+        margin-bottom: 8px;
+        /* Giới hạn tên 1 dòng (tùy chọn) */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-/* 4. Breadcrumbs (Trang chủ / ...) */
-.breadcrumbs {
-    padding: 15px 0;
-    font-size: 13px;
-    color: #777;
-}
+    .product-price .sale-price {
+        color: #d00;
+        /* Màu đỏ cho giá */
+        font-weight: bold;
+        font-size: 15px;
+    }
 
-.breadcrumbs a {
-    color: #333;
-}
+    .product-price .original-price {
+        color: #888;
+        text-decoration: line-through;
+        margin-left: 8px;
+        font-size: 13px;
+    }
 
-/* 5. View Controls (Bộ lọc) */
-.view-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-}
+    /* ====== CSS PHÂN TRANG (MỚI THÊM) ====== */
+    .pagination-nav {
+        display: flex;
+        justify-content: center;
+        /* Căn giữa */
+        padding: 30px 0 20px 0;
+        /* Khoảng cách trên/dưới */
+    }
 
-.filter-select {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    font-size: 13px;
-}
+    .pagination-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 15px;
+        /* Khoảng cách giữa các mục */
+    }
 
-.view-buttons button {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    background: #fff;
-    margin-left: 5px;
-    font-size: 13px;
-    cursor: pointer;
-}
+    .page-item .page-link {
+        display: block;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+        border: 1px solid transparent;
+        /* Để giữ layout ổn định */
+    }
 
-.view-buttons button.active {
-    background-color: #f0f0f0;
-    border-color: #aaa;
-}
+    .page-item.active .page-link {
+        color: #000;
+        font-weight: bold;
+        border-bottom: 2px solid #000;
+        /* Hiệu ứng active */
+    }
 
-.view-buttons button i {
-    margin-right: 5px;
-}
-
-/* ====== CSS SẢN PHẨM (MỚI THÊM) ====== */
-.product-list {
-    padding-top: 30px;
-    /* Khoảng cách với bộ lọc */
-}
-
-.product-item {
-    text-align: center;
-    margin-bottom: 30px;
-    /* Khoảng cách giữa các hàng */
-}
-
-.product-item a {
-    text-decoration: none;
-    color: #333;
-}
-
-.product-image {
-    position: relative;
-    margin-bottom: 15px;
-    overflow: hidden;
-    /* Giúp ảnh không bị tràn */
-}
-
-.product-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-    /* Hiệu ứng zoom nhẹ khi hover (tùy chọn) */
-    transition: transform 0.3s ease;
-}
-
-.product-item:hover .product-image img {
-    transform: scale(1.05);
-}
-
-/* CSS cho các nhãn (Hết hàng, Sale) */
-.product-badge {
-    position: absolute;
-    top: 10px;
-    padding: 4px 8px;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.badge-out-of-stock {
-    left: 10px;
-    background-color: #000;
-    /* Màu đen cho Hết hàng */
-}
-
-.badge-sale {
-    right: 10px;
-    background-color: #d9534f;
-    /* Màu đỏ cho Sale */
-}
-
-.product-name {
-    font-size: 14px;
-    margin-bottom: 8px;
-    /* Giới hạn tên 1 dòng (tùy chọn) */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.product-price .sale-price {
-    color: #d00;
-    /* Màu đỏ cho giá */
-    font-weight: bold;
-    font-size: 15px;
-}
-
-.product-price .original-price {
-    color: #888;
-    text-decoration: line-through;
-    margin-left: 8px;
-    font-size: 13px;
-}
-
-/* ====== CSS PHÂN TRANG (MỚI THÊM) ====== */
-.pagination-nav {
-    display: flex;
-    justify-content: center;
-    /* Căn giữa */
-    padding: 30px 0 20px 0;
-    /* Khoảng cách trên/dưới */
-}
-
-.pagination-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 15px;
-    /* Khoảng cách giữa các mục */
-}
-
-.page-item .page-link {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    color: #333;
-    font-size: 16px;
-    border: 1px solid transparent;
-    /* Để giữ layout ổn định */
-}
-
-.page-item.active .page-link {
-    color: #000;
-    font-weight: bold;
-    border-bottom: 2px solid #000;
-    /* Hiệu ứng active */
-}
-
-.page-item:not(.active) .page-link:hover {
-    color: #000;
-    text-decoration: underline;
-}
+    .page-item:not(.active) .page-link:hover {
+        color: #000;
+        text-decoration: underline;
+    }
 </style>
 
 <body>
-
-    <div class="container">
-        <div class="top-bar">
-            <span>HOTLINE: 19000150</span>
-            <a href="#">ĐĂNG NHẬP</a>
-        </div>
-        <hr />
-
-        <header class="main-header">
-            <form class="search-bar">
-                <input type="text" placeholder="Tìm kiếm" />
-                <button type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
-
-            <a href="#" class="logo">
-                <img src="../assets/images/logo.jpg" alt="Nobility 1800s Logo" />
-            </a>
-
-            <a href="../giohang.php" class="cart-link">GIỎ HÀNG (0)</a>
-        </header>
-
-        <nav class="main-nav">
-            <ul>
-                <li><a href="#">TRANG CHỦ</a></li>
-                <li><a href="#">GIỚI THIỆU</a></li>
-                <li>
-                    <a href="#" class="active">SẢN PHẨM <i class="fas fa-chevron-down fa-xs"></i></a>
-                </li>
-                <li><a href="#">TIN TỨC</a></li>
-                <li><a href="#">LIÊN HỆ</a></li>
-            </ul>
-        </nav>
-        <hr />
+    <?php include __DIR__ . '/../partials/header.php'; ?>
     </div>
+
     <div class="container">
-        <nav class="breadcrumbs">
-            <a href="#">Trang chủ</a> / <span>Tất cả sản phẩm</span>
-        </nav>
         <hr />
+        <!-- TÌM KIẾM (cơ bản + nâng cao) -->
+        <form id="searchForm" class="mb-3">
+            <div class="form-row">
+                <div class="col-md-4 mb-2">
+                    <input type="text" class="form-control" name="q" placeholder="Tìm theo tên sản phẩm...">
+                </div>
 
-        <div class="view-controls">
-            <select class="filter-select">
-                <option value="">CHỌN THEO</option>
-                <option value="price-asc">Giá tăng dần</option>
-                <option value="price-desc">Giá giảm dần</option>
-            </select>
+                <div class="col-md-3 mb-2">
+                    <select class="form-control" name="category">
+                        <option value="all">Tất cả phân loại</option>
+                        <option value="hair_wax">Sáp vuốt tóc</option>
+                        <option value="volumizing_powder">Bột tạo phồng</option>
+                        <option value="hair_spray">Gôm xịt tóc</option>
+                        <option value="hair_conditioner">Dưỡng tóc</option>
+                    </select>
+                </div>
+                <div class ="col-md-2 mb-2">
+                    <input type="number" class="form-control" name="minprice"
+                        placeholder="Giá từ (VND)" min="0" step="1000" inputmode="numeric">
+                </div>
+                <div class ="col-md-2 mb-2">
+                    <input type="number" class="form-control" name="maxprice"
+                        placeholder="đến (VND)" min="0" step="1000" inputmode="numeric">
+                </div>
 
-            <div class="view-buttons">
-                <button class="active"><i class="fas fa-th-large"></i> BẢNG</button>
-                <button><i class="fas fa-list"></i> DANH SÁCH</button>
+                <div class="col-md-1 mb-2">
+                    <button class="btn btn-dark btn-block">Tìm</button>
+                </div>
             </div>
-        </div>
-        <hr />
+        </form>
+
+        <!-- (tuỳ chọn) hiển thị tổng số kết quả -->
+        <div id="categoryInfo" class="mb-2 small text-muted"></div>
 
         <div class="product-list">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Davines_Energizing_Superactive/superactive.webp"
-                                    alt="Dưỡng Tóc Davines Energizing Superactive" />
-                            </div>
-                            <h3 class="product-name">
-                                Dưỡng Tóc Davines Energizing Superactive
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">450.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp"
-                                    alt="Tinh dầu dưỡng tóc Blumaan Hydrating Hair Oil" />
-                                <span class="product-badge badge-sale">Sale</span>
-                            </div>
-                            <h3 class="product-name">
-                                Tinh dầu dưỡng tóc Blumaan Hydrating Hair Oil
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">700.000₫</span>
-                                <span class="original-price">1.200.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Davines_Purifying_AntiDandruff_150ml/1-8032aa89-6cb8-4399-8652-36261af27560.webp"
-                                    alt="Gel Chống Gàu Davines Purifying AntiDandruff " />
-                            </div>
-                            <h3 class="product-name">
-                                Gel Chống Gàu Davines Purifying AntiDandruff
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">360.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Davines_Oi_Oil/tinh-dau-duong-toc-bong-mem-davines-oi-oil-50ml.webp"
-                                    alt="Tinh dầu dưỡng tóc Davines Oi Oil" />
-                                <span class="product-badge badge-sale">Sale</span>
-                            </div>
-                            <h3 class="product-name">Tinh dầu dưỡng tóc Davines Oi Oil</h3>
-                            <div class="product-price">
-                                <span class="sale-price">350.000₫</span>
-                                <span class="original-price">500.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Man_Made_Elixir_13/elixir-new-1800x1800.webp"
-                                    alt="Xịt dưỡng trị rụng tóc 18.21 Man Made Elixir 13" />
-                            </div>
-                            <h3 class="product-name">
-                                Xịt dưỡng trị rụng tóc 18.21 Man Made Elixir 13
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">380.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Man_Made_Oil_60ml/oil-spicedvanilla-400x.webp"
-                                    alt="Tinh dầu 18.21 Man Made Oil 60ml" />
-                                <span class="product-badge badge-sale">Sale</span>
-                            </div>
-                            <h3 class="product-name">Tinh dầu 18.21 Man Made Oil 60ml</h3>
-                            <div class="product-price">
-                                <span class="sale-price">500.000₫</span>
-                                <span class="original-price">680.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp"
-                                    alt="Tinh Dầu Dưỡng Tóc Moroccanoil Treatment" />
-                            </div>
-                            <h3 class="product-name">
-                                Tinh Dầu Dưỡng Tóc Moroccanoil Treatment
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">300.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product-item">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="../assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp"
-                                    alt="Bột Tạo Phồng Dapper Dan ULTRA MATTE TEXTURE DUST" />
-                                <span class="product-badge badge-sale">Sale</span>
-                            </div>
-                            <h3 class="product-name">
-                                Bột Tạo Phồng Dapper Dan ULTRA MATTE TEXTURE DUST
-                            </h3>
-                            <div class="product-price">
-                                <span class="sale-price">400.000₫</span>
-                                <span class="original-price">450.000₫</span>
-                            </div>
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     <div class="container">
         <nav class="pagination-nav" aria-label="Page navigation">
-            <ul class="pagination-list">
-                <li class="page-item active">
-                    <span class="page-link">1</span>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="sanpham2.php">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="sanpham3.php">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="sanpham4.php">4</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="sanpham2.php" aria-label="Next">&rarr;</a>
-                </li>
-            </ul>
+            <ul class="pagination-list"></ul>
         </nav>
     </div>
-
+    <?php include __DIR__ . '/../partials/footer.php'; ?>
 </body>
 
 </html>
@@ -536,6 +248,9 @@ hr {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
 </script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
+
 </body>
 
 </html>
