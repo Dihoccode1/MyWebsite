@@ -68,6 +68,10 @@
 
 /* Đẩy khu vực giá & nút xuống dưới cùng, các thẻ bằng nhau */
 .product-price { margin-top: auto; }
+/* Tạo khoảng cách rõ ràng giữa các hàng sản phẩm */
+.row.equalize-cards {
+  row-gap: 24px; /* 👈 cách hàng trên và dưới 24px */
+}
 
 /* Nếu có nút thêm giỏ đặt ngoài <a>, vẫn giữ dưới cùng */
 .product-item .mt-2 { margin-top: 8px; }
@@ -75,7 +79,7 @@
     .breadcrumbs{padding:15px 0;font-size:13px;color:#777}
     .breadcrumbs a{color:#333}
     .product-list{padding-top:30px}
-    .product-item{text-align:center;margin-bottom:30px;border:1px solid #eee;border-radius:6px;padding:12px;transition:.2s}
+    .product-item{text-align:center;margin-bottom:30px;border:1px solid #eee;border-radius:6px;padding:12px;transition:.2s;background: #ececec;}
     .product-item:hover{box-shadow:0 6px 16px rgba(0,0,0,.06);border-color:#ddd}
     .product-item a{text-decoration:none;color:#333;display:flex;flex-direction:column;height:100%}
     .product-image{position:relative;margin-bottom:12px;overflow:hidden}
@@ -130,7 +134,7 @@
     </div>
   </form>
 
-  <div id="product-grid" class="row"></div>
+  <div id="product-grid" class="row equalize-cards"></div>
   <ul id="pagination" class="pagination justify-content-center mt-3"></ul>
 </div>
   <?php include __DIR__ . '/../partials/footer.php'; ?>

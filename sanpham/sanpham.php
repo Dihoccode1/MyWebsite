@@ -74,11 +74,13 @@
 
 /* Nếu có nút thêm giỏ đặt ngoài <a>, vẫn giữ dưới cùng */
 .product-item .mt-2 { margin-top: 8px; }
-
-    .breadcrumbs{padding:15px 0;font-size:13px;color:#777}
+.row.equalize-cards {
+  row-gap: 20px; /* khoảng cách giữa hàng trên và hàng dưới */
+}
+    .breadcrumbs{padding:15px 0;font-size:13px;color:#777;}
     .breadcrumbs a{color:#333}
     .product-list{padding-top:30px}
-    .product-item{text-align:center;margin-bottom:30px;border:1px solid #eee;border-radius:6px;padding:12px;transition:.2s}
+    .product-item{text-align:center;margin-bottom:30px;border:1px solid #eee;border-radius:6px;padding:12px;transition:.2s;background: #ececec;}
     .product-item:hover{box-shadow:0 6px 16px rgba(0,0,0,.06);border-color:#ddd}
     .product-item a{text-decoration:none;color:#333;display:flex;flex-direction:column;height:100%}
     .product-image{position:relative;margin-bottom:12px;overflow:hidden}
@@ -96,6 +98,84 @@
     .page-item .page-link{display:block;padding:8px 12px;text-decoration:none;color:#333;font-size:15px;border:1px solid transparent}
     .page-item.active .page-link{color:#000;font-weight:700;border-bottom:2px solid #000}
     .page-item:not(.active) .page-link:hover{text-decoration:underline}
+/* ===== ISOLATED SEARCH FORM (sv-iso) ===== */
+#searchForm.sv-iso{
+  --line:#e6eaf0; --brand:#111;
+  --radius:12px;
+  --shadow-sm:0 6px 16px rgba(17,24,39,.08);
+  --shadow-md:0 12px 28px rgba(17,24,39,.12);
+  --ease:cubic-bezier(.22,1,.36,1);
+
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-sm);
+  padding:14px;
+
+  display:grid;
+  grid-template-columns: 1.6fr 1.2fr .9fr .9fr 1fr auto; /* q | category | min | max | sort | btn */
+  gap:12px;
+  align-items:center;
+}
+
+/* Không dùng .form-control để tránh “dính” Bootstrap */
+#searchForm.sv-iso input[type="text"],
+#searchForm.sv-iso input[type="number"],
+#searchForm.sv-iso select{
+  height:46px; width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  padding:0 14px;
+  color:#0f172a;
+  outline:none;
+  transition:border-color .18s var(--ease), box-shadow .18s var(--ease), transform .12s var(--ease);
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+}
+#searchForm.sv-iso input::placeholder{ color:#94a3b8; }
+#searchForm.sv-iso input:focus,
+#searchForm.sv-iso select:focus{
+  border-color:#d5dbe3;
+  box-shadow:0 0 0 4px rgba(0,0,0,.05);
+  transform:translateY(-1px);
+}
+
+/* Ẩn spinner number */
+#searchForm.sv-iso input[type=number]{ -moz-appearance:textfield; }
+#searchForm.sv-iso input[type=number]::-webkit-outer-spin-button,
+#searchForm.sv-iso input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+
+/* Nút Tìm */
+#searchForm.sv-iso button[type="submit"]{
+  height:46px; padding:0 22px; font-weight:800;
+  border-radius:10px; border:1px solid var(--brand);
+  background:var(--brand); color:#fff; cursor:pointer;
+  justify-self:end;
+  transition:transform .12s var(--ease), box-shadow .2s var(--ease);
+}
+#searchForm.sv-iso button[type="submit"]:hover{
+  transform:translateY(-1px); box-shadow:var(--shadow-md);
+}
+
+/* Tablet: 2 hàng */
+@media (max-width: 992px){
+  #searchForm.sv-iso{
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-rows:minmax(46px,auto);
+  }
+  #searchForm.sv-iso #q{ grid-column:1 / -1; }
+  #searchForm.sv-iso #category{ grid-column:1 / span 2; }
+  #searchForm.sv-iso #sort{ grid-column:3 / span 2; }
+  #searchForm.sv-iso #priceMin{ grid-column:1 / span 2; }
+  #searchForm.sv-iso #priceMax{ grid-column:3 / span 2; }
+  #searchForm.sv-iso button[type="submit"]{ grid-column:1 / -1; justify-self:stretch; }
+}
+/* Mobile: xếp cột */
+@media (max-width: 576px){
+  #searchForm.sv-iso{ grid-template-columns:1fr; }
+  #searchForm.sv-iso button[type="submit"]{ width:100%; }
+}
+
 </style>
 
 <body>
@@ -105,35 +185,31 @@
     <div class="container">
         <hr />
         <!-- TÌM KIẾM (cơ bản + nâng cao) -->
-        <form id="searchForm" class="mb-3">
-            <div class="form-row">
-                <div class="col-md-4 mb-2">
-                    <input type="text" class="form-control" name="q" placeholder="Tìm theo tên sản phẩm...">
-                </div>
+        <form id="searchForm" class="sv-iso mb-3">
+  <input id="q" type="text" placeholder="Tìm theo tên sản phẩm..." />
 
-                <div class="col-md-3 mb-2">
-                    <select class="form-control" name="category">
-                        <option value="all">Tất cả phân loại</option>
-                        <option value="hair_wax">Sáp vuốt tóc</option>
-                        <option value="volumizing_powder">Bột tạo phồng</option>
-                        <option value="hair_spray">Gôm xịt tóc</option>
-                        <option value="hair_conditioner">Dưỡng tóc</option>
-                    </select>
-                </div>
-                <div class ="col-md-2 mb-2">
-                    <input type="number" class="form-control" name="minprice"
-                        placeholder="Giá từ (VND)" min="0" step="1000" inputmode="numeric">
-                </div>
-                <div class ="col-md-2 mb-2">
-                    <input type="number" class="form-control" name="maxprice"
-                        placeholder="đến (VND)" min="0" step="1000" inputmode="numeric">
-                </div>
+  <select id="category">
+    <option value="all">Tất cả phân loại</option>
+    <option value="hair_wax">Sáp vuốt tóc</option>
+    <option value="volumizing_powder">Bột tạo phồng</option>
+    <option value="hair_spray">Gôm xịt tóc</option>
+    <option value="hair_conditioner">Dưỡng tóc</option>
+  </select>
 
-                <div class="col-md-1 mb-2">
-                    <button class="btn btn-dark btn-block">Tìm</button>
-                </div>
-            </div>
-        </form>
+  <input id="priceMin" type="number" min="0" step="1000" placeholder="Giá từ (VND)" />
+  <input id="priceMax" type="number" min="0" step="1000" placeholder="đến (VND)" />
+
+  <select id="sort">
+    <option value="">Sắp xếp</option>
+    <option value="price-asc">Giá ↑</option>
+    <option value="price-desc">Giá ↓</option>
+    <option value="name-asc">Tên A→Z</option>
+    <option value="name-desc">Tên Z→A</option>
+  </select>
+
+  <button type="submit">Tìm</button>
+</form>
+
 
         <!-- (tuỳ chọn) hiển thị tổng số kết quả -->
         <div id="categoryInfo" class="mb-2 small text-muted"></div>

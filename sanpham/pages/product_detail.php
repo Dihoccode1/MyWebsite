@@ -416,6 +416,7 @@ $id = $_GET['id'] ?? '';
             max-height: 100%;
             object-fit: contain;
         }
+        
     </style>
 
     </style>
