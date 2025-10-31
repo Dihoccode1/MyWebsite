@@ -25,3 +25,10 @@
 </script>
 </body>
 </html>
+<script src="/assets/js/auth.js"></script>
+
+<!-- Các file còn lại -->
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>

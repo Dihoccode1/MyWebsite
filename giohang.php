@@ -13,6 +13,11 @@
 <?php include __DIR__ . '/partials/header.php'; ?>
 
 <div class="container py-4">
+  <!-- Hiển thị thông tin tài khoản -->
+  <div class="alert alert-info mb-3" id="userInfo" style="display:none">
+    <i class="fas fa-user"></i> Giỏ hàng của: <strong id="userName"></strong> (<span id="userEmail"></span>)
+  </div>
+
   <h3 class="mb-3">Giỏ hàng</h3>
   <div class="row">
     <div class="col-lg-8">
@@ -66,10 +71,32 @@
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
 
-<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/auth.js"></script>
 <script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+
 <script>
 (function(){
+  // ✅ Kiểm tra đăng nhập
+  if (!window.AUTH?.loggedIn) {
+    alert('Vui lòng đăng nhập để xem giỏ hàng!');
+    const back = location.pathname + location.search + location.hash;
+    location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+    return;
+  }
+
+  // Hiển thị thông tin user
+  const userInfo = document.getElementById('userInfo');
+  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
+  
+  if (window.AUTH.user) {
+    userName.textContent = window.AUTH.user.name || 'Khách';
+    userEmail.textContent = window.AUTH.user.email || '';
+    userInfo.style.display = 'block';
+  }
+
   const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
   const body = document.querySelector('#cartTable tbody');
   const subTotalEl = document.getElementById('subTotal');
@@ -85,12 +112,17 @@
   function render(){
     const map = dataMap();
     const cart = window.SVStore.getCart();
+    
     body.innerHTML = cart.length ? cart.map(rowHTML).join('') :
-      `<tr><td colspan="6" class="text-center text-muted py-5">Giỏ hàng trống.</td></tr>`;
+      `<tr><td colspan="6" class="text-center text-muted py-5">
+        Giỏ hàng trống. <a href="/sanpham/sanpham.php">Tiếp tục mua sắm</a>
+      </td></tr>`;
+    
     const total = window.SVStore.total();
     subTotalEl.textContent = money(total);
-    grandTotalEl.textContent = money(total); // chưa tính ship
+    grandTotalEl.textContent = money(total);
     window.SVUI?.updateCartCount?.();
+    
     function rowHTML(x){
       const p = map.get(String(x.id));
       if(!p) return '';
@@ -135,8 +167,10 @@
       return render();
     }
     if(e.target.closest('.btn-del')) {
-      window.SVStore.removeFromCart(id);
-      return render();
+      if(confirm('Xóa sản phẩm này khỏi giỏ hàng?')) {
+        window.SVStore.removeFromCart(id);
+        return render();
+      }
     }
   });
 

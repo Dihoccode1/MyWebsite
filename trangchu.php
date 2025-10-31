@@ -109,15 +109,10 @@
     .content_banner .des{position:absolute;left:16px;bottom:16px;box-shadow:0 10px 24px rgba(0,0,0,.08);border-radius:12px;padding:14px 16px;max-width:80%}
     .content_banner .des h4{margin:0 0 4px;font-size:20px;line-height:1.2}
     .content_banner .des h4 span{border-bottom:2px solid #fff;padding-bottom:2px;color:#fff;font-size:15px}
-    .content_banner .des p{margin:6px 0 10px;color:#fff;font-size:14px}
+    .content_banner .des p{margin:6px 0 10px;color:#fff;font-size:12px}
     .content_banner .des a{font-weight:600;font-size:20px;color:#fff}
     .content_banner a img{width:100%;height:250px;object-fit:cover;border-radius:14px;transition:transform .4s ease}
     @media(min-width:576px){.content_banner a img{height:320px}}
-
-    /* Footer reset (prevent CSS clash) */
-    .footer .row{margin-right:-15px;margin-left:-15px;display:flex;flex-wrap:wrap}
-    .footer .container{max-width:1140px;margin-right:auto;margin-left:auto;padding-right:15px;padding-left:15px}
-    .footer .col,.footer .col-3{padding:0;width:auto}
 
     /* Mobile hoverless */
     @media(hover:none) and (pointer:coarse){
@@ -128,7 +123,6 @@
 <body>
   <?php include __DIR__ . '/partials/header.php'; ?>
 
-  <!-- ================== PAGE MAIN ================== -->
   <div class="page-main">
 
     <!-- Policy strip -->
@@ -221,7 +215,7 @@
         </div>
         <div class="about-home">
           <div class="inner">
-            <h2>Về chúng tôi</h2>
+            <h5>Về chúng tôi</h5>
             <p>Nobility 1800s mang đến trải nghiệm mua sắm hàng hiệu trực tuyến đẳng cấp – từ quần áo, giày dép, phụ kiện đến mỹ phẩm cho nam & nữ – bắt kịp xu hướng mới nhất.</p>
           </div>
         </div>
@@ -230,7 +224,7 @@
   </section>
 
   <?php include __DIR__ . '/partials/footer.php'; ?>
-
+<script src="/assets/js/auth.frontend.js"></script>
   <!-- ===== JS ===== -->
   <script>
   // ===== Brand slider (simple) =====
@@ -341,5 +335,90 @@
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+  // Cho anchor cũ: <a class="quick-add" href="/cart/..."> → chuyển sang cơ chế chuẩn
+  document.addEventListener('click', function(e) {
+    const a = e.target.closest('a.quick-add');
+    if (!a) return;
+    e.preventDefault();
+    const id = a.dataset.id || a.getAttribute('data-id') || a.href.split('id=')[1];
+    if (!id) return;
+
+    // Dùng cùng flow với .btn-add-cart
+    if (!window.AUTH?.loggedIn) {
+      alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+      const back = location.pathname + location.search + location.hash;
+      location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+      return;
+    }
+    window.SVStore?.addToCart?.(id, 1);
+    window.dispatchEvent(new CustomEvent('cart:changed'));
+    window.SVUI?.updateCartCount?.();
+  }, true);
+</script>
+
 </body>
 </html>
+<script src="/assets/js/auth.js"></script>
+
+<!-- Các file còn lại -->
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
+<script>
+(function () {
+  // 1) Cấu hình URL trang đăng nhập (nhớ thống nhất 1 đường dẫn)
+  const LOGIN_URL = '/account/login.php';
+
+  function goLoginWithRedirect() {
+    const back = location.pathname + location.search + location.hash;
+    location.href = LOGIN_URL + '?redirect=' + encodeURIComponent(back);
+  }
+
+  // 2) Vá anchor cũ trong lớp hover (tránh 404 nếu còn href=/cart/...)
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.product-action-grid a').forEach(a => {
+      // giữ UI nhưng ngăn điều hướng thẳng
+      a.setAttribute('href', '#');
+      a.setAttribute('role', 'button');
+    });
+  });
+
+  // 3) Bắt mọi click "thêm giỏ" (kể cả icon trong hover, nút thường, anchor quick-add)
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.btn-add-cart, .btn-cart, [data-add-to-cart], .js-add-to-cart, a.quick-add');
+    if (!btn) return;
+
+    // chặn điều hướng mặc định để JS xử lý (tránh 404)
+    e.preventDefault();
+    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+    // Chưa đăng nhập → yêu cầu đăng nhập
+    if (!window.AUTH?.loggedIn) {
+      alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+      goLoginWithRedirect();
+      return;
+    }
+
+    // Đã đăng nhập → thêm giỏ
+    const id =
+      btn.dataset.id ||
+      btn.getAttribute('data-id') ||
+      ((btn.href || '').includes('id=') ? new URL(btn.href, location.origin).searchParams.get('id') : '');
+
+    if (!id) return;
+
+    // gọi API giỏ hàng
+    window.SVStore?.addToCart?.(id, 1);
+    window.dispatchEvent(new CustomEvent('cart:changed'));
+    window.SVUI?.updateCartCount?.();
+
+    // feedback nút
+    const prev = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = prev; }, 900);
+  }, true); // dùng capture để chặn trước mọi handler khác
+})();
+</script>
