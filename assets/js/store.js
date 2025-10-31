@@ -1,4 +1,4 @@
-// /assets/js/store.js
+// /assets/js/store.js - GIỎ HÀNG THEO TÀI KHOẢN
 (function (w) {
   // ===== Helpers =====
   const fmtVND = n =>
@@ -68,30 +68,56 @@
     return { items: list.slice(start, end), total, pages, page: cur, perPage };
   }
 
-  // ===== Cart (localStorage) =====
-  const CART_KEY = 'sv_cart_v1';
+  // ===== Cart (localStorage THEO EMAIL) =====
+  const CART_KEY_PREFIX = 'sv_cart_user_'; // prefix + email
+
+  function getCartKey() {
+    // Lấy email người dùng đang đăng nhập
+    const user = w.AUTH?.user;
+    if (!user || !user.email) return null;
+    return CART_KEY_PREFIX + user.email.toLowerCase();
+  }
+
   const getCart = () => {
-    try { return JSON.parse(localStorage.getItem(CART_KEY) || '[]'); }
-    catch { return []; }
+    const key = getCartKey();
+    if (!key) return []; // chưa đăng nhập = giỏ rỗng
+    try { 
+      return JSON.parse(localStorage.getItem(key) || '[]'); 
+    } catch { 
+      return []; 
+    }
   };
-  const saveCart = (cart) => localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+  const saveCart = (cart) => {
+    const key = getCartKey();
+    if (!key) return; // không lưu nếu chưa đăng nhập
+    localStorage.setItem(key, JSON.stringify(cart));
+  };
 
   // phát sự kiện toàn cục mỗi khi giỏ đổi
   function emitCartChanged() {
-    try { window.dispatchEvent(new CustomEvent('cart:changed')); } catch (_) {}
+    try { 
+      window.dispatchEvent(new CustomEvent('cart:changed')); 
+    } catch (_) {}
   }
 
   function addToCart(id, qty = 1) {
+    if (!w.AUTH?.loggedIn) {
+      console.warn('[SVStore] Chưa đăng nhập - không thể thêm vào giỏ');
+      return [];
+    }
     qty = clampNonNegative(qty) || 1;
     const cart = getCart();
     const i = cart.findIndex(x => x.id === id);
-    if (i > -1) cart[i].qty += qty; else cart.push({ id, qty });
+    if (i > -1) cart[i].qty += qty; 
+    else cart.push({ id, qty });
     saveCart(cart);
     emitCartChanged();
     return cart;
   }
 
   function setQty(id, qty) {
+    if (!w.AUTH?.loggedIn) return [];
     qty = clampNonNegative(qty) || 1;
     const cart = getCart().map(x => x.id === id ? { ...x, qty } : x);
     saveCart(cart);
@@ -100,6 +126,7 @@
   }
 
   function removeFromCart(id) {
+    if (!w.AUTH?.loggedIn) return [];
     const cart = getCart().filter(x => x.id !== id);
     saveCart(cart);
     emitCartChanged();
@@ -107,13 +134,18 @@
   }
 
   function clearCart() {
+    if (!w.AUTH?.loggedIn) return;
     saveCart([]);
     emitCartChanged();
   }
 
-  const count = () => getCart().reduce((s, x) => s + (x.qty || 0), 0);
+  const count = () => {
+    if (!w.AUTH?.loggedIn) return 0;
+    return getCart().reduce((s, x) => s + (x.qty || 0), 0);
+  };
 
   function total(products = null) {
+    if (!w.AUTH?.loggedIn) return 0;
     const list = products || getAllProducts();
     const map = new Map(list.map(p => [p.id, p]));
     return getCart().reduce((s, x) => {
@@ -121,7 +153,6 @@
       return s + (p ? toNumber(p.price) * (x.qty || 0) : 0);
     }, 0);
   }
-
 
   w.SVStore = {
     fmtVND, toNumber, normalizeBadge, getAllProducts,
@@ -141,18 +172,27 @@
       const sorted = sortProducts(filtered, sort);
       return paginate(sorted, page, perPage);
     },
-  
 
     // Cart API
     getCart, addToCart, setQty, removeFromCart, clearCart, count, total
   };
+
+  // Alias cho backward compat
   window.SVCart = {
-  add: (id, qty=1) => {
-    window.SVStore?.addToCart(id, qty);
-    window.dispatchEvent(new CustomEvent('cart:changed')); // báo cho header
-  },
-  count: () => window.SVStore?.count?.() ?? 0
-};
+    add: (id, qty=1) => {
+      if (!w.AUTH?.loggedIn) {
+        console.warn('[SVCart] Chưa đăng nhập');
+        return;
+      }
+      w.SVStore?.addToCart(id, qty);
+      window.dispatchEvent(new CustomEvent('cart:changed'));
+    },
+    count: () => w.SVStore?.count?.() ?? 0
+  };
+
+  // Khi auth thay đổi (login/logout) → refresh badge
+  document.addEventListener('auth:changed', () => {
+    emitCartChanged();
+  });
 
 })(window);
-

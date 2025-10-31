@@ -335,6 +335,28 @@
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+  // Cho anchor cũ: <a class="quick-add" href="/cart/..."> → chuyển sang cơ chế chuẩn
+  document.addEventListener('click', function(e) {
+    const a = e.target.closest('a.quick-add');
+    if (!a) return;
+    e.preventDefault();
+    const id = a.dataset.id || a.getAttribute('data-id') || a.href.split('id=')[1];
+    if (!id) return;
+
+    // Dùng cùng flow với .btn-add-cart
+    if (!window.AUTH?.loggedIn) {
+      alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+      const back = location.pathname + location.search + location.hash;
+      location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+      return;
+    }
+    window.SVStore?.addToCart?.(id, 1);
+    window.dispatchEvent(new CustomEvent('cart:changed'));
+    window.SVUI?.updateCartCount?.();
+  }, true);
+</script>
+
 </body>
 </html>
 <script src="/assets/js/auth.js"></script>
