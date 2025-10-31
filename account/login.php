@@ -104,7 +104,7 @@
       try{
         AUTH.login(document.getElementById('email').value, document.getElementById('password').value);
         AUTH.check();
-        location.href = redirect;
+        location.href = '/account/profile.php';
       }catch(err){
         showErr(err?.message);
       }

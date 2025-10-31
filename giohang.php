@@ -8,16 +8,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/products.seed.js"></script>
+  <script src="/assets/js/store.js"></script>
+  <script src="/assets/js/ui.js"></script>
 </head>
 <body>
 <?php include __DIR__ . '/partials/header.php'; ?>
 
 <div class="container py-4">
-  <!-- Hiển thị thông tin tài khoản -->
   <div class="alert alert-info mb-3" id="userInfo" style="display:none">
     <i class="fas fa-user"></i> Giỏ hàng của: <strong id="userName"></strong> (<span id="userEmail"></span>)
   </div>
-
   <h3 class="mb-3">Giỏ hàng</h3>
   <div class="row">
     <div class="col-lg-8">
@@ -33,18 +36,16 @@
               <th style="width:60px"></th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr><td colspan="6" class="text-center text-muted py-5">Đang tải giỏ hàng...</td></tr>
+          </tbody>
         </table>
       </div>
-
       <div class="d-flex justify-content-between">
-        <a href="/sanpham/sanpham.php" class="btn btn-outline-secondary">
-          ← Tiếp tục mua sắm
-        </a>
+        <a href="/sanpham/sanpham.php" class="btn btn-outline-secondary">← Tiếp tục mua sắm</a>
         <button id="btnClear" class="btn btn-outline-danger">Xóa giỏ hàng</button>
       </div>
     </div>
-
     <div class="col-lg-4">
       <div class="card">
         <div class="card-body">
@@ -71,128 +72,122 @@
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
 
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/store.js"></script>
-<script src="/assets/js/ui.js"></script>
-<script src="/assets/js/products.seed.js"></script>
-
 <script>
-(function(){
-  // ✅ Kiểm tra đăng nhập
-  if (!window.AUTH?.loggedIn) {
-    alert('Vui lòng đăng nhập để xem giỏ hàng!');
-    const back = location.pathname + location.search + location.hash;
-    location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
-    return;
-  }
+// Đợi trang tải xong
+document.addEventListener('DOMContentLoaded', function() {
 
-  // Hiển thị thông tin user
-  const userInfo = document.getElementById('userInfo');
-  const userName = document.getElementById('userName');
-  const userEmail = document.getElementById('userEmail');
+  // Đợi auth.js kiểm tra xong
+  AUTH.check().then(() => {
   
-  if (window.AUTH.user) {
-    userName.textContent = window.AUTH.user.name || 'Khách';
-    userEmail.textContent = window.AUTH.user.email || '';
-    userInfo.style.display = 'block';
-  }
+    // Bây giờ mới kiểm tra đăng nhập
+    if (!window.AUTH.loggedIn) {
+      alert('Vui lòng đăng nhập để xem giỏ hàng!');
+      const back = location.pathname + location.search + location.hash;
+      location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+      return;
+    }
 
-  const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
-  const body = document.querySelector('#cartTable tbody');
-  const subTotalEl = document.getElementById('subTotal');
-  const grandTotalEl = document.getElementById('grandTotal');
-  const btnClear = document.getElementById('btnClear');
+    // --- Toàn bộ code logic của giỏ hàng sẽ chạy ở đây ---
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
+    
+    if (window.AUTH.user) {
+      userName.textContent = window.AUTH.user.name || 'Khách';
+      userEmail.textContent = window.AUTH.user.email || '';
+      userInfo.style.display = 'block';
+    }
 
-  function dataMap(){
-    const list = window.SVStore.getAllProducts();
-    const map = new Map(list.map(p=>[String(p.id), p]));
-    return map;
-  }
+    const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
+    const body = document.querySelector('#cartTable tbody');
+    const subTotalEl = document.getElementById('subTotal');
+    const grandTotalEl = document.getElementById('grandTotal');
+    const btnClear = document.getElementById('btnClear');
 
-  function render(){
-    const map = dataMap();
-    const cart = window.SVStore.getCart();
-    
-    body.innerHTML = cart.length ? cart.map(rowHTML).join('') :
-      `<tr><td colspan="6" class="text-center text-muted py-5">
-        Giỏ hàng trống. <a href="/sanpham/sanpham.php">Tiếp tục mua sắm</a>
-      </td></tr>`;
-    
-    const total = window.SVStore.total();
-    subTotalEl.textContent = money(total);
-    grandTotalEl.textContent = money(total);
-    window.SVUI?.updateCartCount?.();
-    
-    function rowHTML(x){
-      const p = map.get(String(x.id));
-      if(!p) return '';
-      const line = (Number(p.price)||0) * (x.qty||0);
-      return `
-        <tr data-id="${p.id}">
-          <td><img src="${p.image}" alt="${p.name}" style="width:50px;height:50px;object-fit:cover"></td>
-          <td>${p.name}</td>
-          <td class="text-right">${money(p.price)}</td>
-          <td class="text-center">
-            <div class="input-group input-group-sm justify-content-center">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary btn-dec" type="button">–</button>
+    function dataMap(){
+      const list = window.SVStore.getAllProducts();
+      return new Map(list.map(p=>[String(p.id), p]));
+    }
+
+    function render(){
+      const map = dataMap();
+      const cart = window.SVStore.getCart();
+      
+      body.innerHTML = cart.length ? cart.map(rowHTML).join('') :
+        `<tr><td colspan="6" class="text-center text-muted py-5">
+          Giỏ hàng trống. <a href="/sanpham/sanpham.php">Tiếp tục mua sắm</a>
+        </td></tr>`;
+      
+      const total = window.SVStore.total();
+      subTotalEl.textContent = money(total);
+      grandTotalEl.textContent = money(total);
+      window.SVUI?.updateCartCount?.();
+      
+      function rowHTML(x){
+        const p = map.get(String(x.id));
+        if(!p) return '';
+        const line = (Number(p.price)||0) * (x.qty||0);
+        return `
+          <tr data-id="${p.id}">
+            <td><img src="${p.image}" alt="${p.name}" style="width:50px;height:50px;object-fit:cover"></td>
+            <td>${p.name}</td>
+            <td class="text-right">${money(p.price)}</td>
+            <td class="text-center">
+              <div class="input-group input-group-sm justify-content-center">
+                <div class="input-group-prepend"><button class="btn btn-outline-secondary btn-dec" type="button">–</button></div>
+                <input class="form-control text-center qty" style="max-width:60px" value="${x.qty}">
+                <div class="input-group-append"><button class="btn btn-outline-secondary btn-inc" type="button">+</button></div>
               </div>
-              <input class="form-control text-center qty" style="max-width:60px" value="${x.qty}">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary btn-inc" type="button">+</button>
-              </div>
-            </div>
-          </td>
-          <td class="text-right">${money(line)}</td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger btn-del"><i class="fas fa-trash"></i></button>
-          </td>
-        </tr>`;
-    }
-  }
-
-  document.addEventListener('click', function(e){
-    const tr = e.target.closest('tr[data-id]');
-    if(!tr) return;
-    const id = tr.getAttribute('data-id');
-
-    if(e.target.closest('.btn-inc')) {
-      const cur = Number(tr.querySelector('.qty').value)||1;
-      window.SVStore.setQty(id, cur+1);
-      return render();
-    }
-    if(e.target.closest('.btn-dec')) {
-      const cur = Math.max(1, Number(tr.querySelector('.qty').value)||1);
-      window.SVStore.setQty(id, Math.max(1, cur-1));
-      return render();
-    }
-    if(e.target.closest('.btn-del')) {
-      if(confirm('Xóa sản phẩm này khỏi giỏ hàng?')) {
-        window.SVStore.removeFromCart(id);
-        return render();
+            </td>
+            <td class="text-right">${money(line)}</td>
+            <td class="text-center"><button class="btn btn-sm btn-outline-danger btn-del"><i class="fas fa-trash"></i></button></td>
+          </tr>`;
       }
     }
-  });
 
-  document.addEventListener('change', function(e){
-    const input = e.target.closest('.qty');
-    if(!input) return;
-    const tr = input.closest('tr[data-id]');
-    const id = tr.getAttribute('data-id');
-    const val = Math.max(1, Number(input.value)||1);
-    window.SVStore.setQty(id, val);
+    document.addEventListener('click', function(e){
+      const tr = e.target.closest('tr[data-id]');
+      if(!tr) return;
+      const id = tr.getAttribute('data-id');
+      if(e.target.closest('.btn-inc')) {
+        const cur = Number(tr.querySelector('.qty').value)||1;
+        window.SVStore.setQty(id, cur+1);
+        render();
+      } else if(e.target.closest('.btn-dec')) {
+        const cur = Number(tr.querySelector('.qty').value)||1;
+        if (cur > 1) {
+          window.SVStore.setQty(id, cur-1);
+          render();
+        }
+      } else if(e.target.closest('.btn-del')) {
+        if(confirm('Xóa sản phẩm này khỏi giỏ hàng?')) {
+          window.SVStore.removeFromCart(id);
+          render();
+        }
+      }
+    });
+
+    document.addEventListener('change', function(e){
+      const input = e.target.closest('.qty');
+      if(!input) return;
+      const tr = input.closest('tr[data-id]');
+      const id = tr.getAttribute('data-id');
+      const val = Math.max(1, Number(input.value)||1);
+      window.SVStore.setQty(id, val);
+      render();
+    });
+
+    btnClear.addEventListener('click', ()=>{
+      if(confirm('Xóa toàn bộ giỏ hàng?')){
+        window.SVStore.clearCart();
+        render();
+      }
+    });
+
     render();
   });
-
-  btnClear.addEventListener('click', ()=>{
-    if(confirm('Xóa toàn bộ giỏ hàng?')){
-      window.SVStore.clearCart();
-      render();
-    }
-  });
-
-  render();
-})();
+});
 </script>
+
 </body>
 </html>

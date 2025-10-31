@@ -122,7 +122,7 @@
           // Lưu thông tin phụ (không ảnh hưởng auth)
           saveProfile(email, { phone, address, fullname: name, createdAt: new Date().toISOString() });
           AUTH.check();
-          location.href = redirect;
+          location.href = '/account/profile.php';
         }catch(err){
           showErr(err?.message);
         }
