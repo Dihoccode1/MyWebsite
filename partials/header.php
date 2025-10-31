@@ -3,9 +3,9 @@
     <div class="topbar">
         <div class="container">
             <div class="topbar-right">
-                    <a href="/account/register.php" class="btn btn-outline">ĐĂNG KÝ</a>
-                    <a href="/account/login.php" class="btn btn-primary">ĐĂNG NHẬP</a>
-
+                <!-- Khu vực này sẽ được JS cập nhật động -->
+                <a href="/account/register.php" class="btn btn-outline">ĐĂNG KÝ</a>
+                <a href="/account/login.php" class="btn btn-primary">ĐĂNG NHẬP</a>
             </div>
         </div>
     </div>
@@ -18,7 +18,7 @@
                 <form action="/search" method="get" class="search-bar">
                     <input type="text" name="query" placeholder="Tìm kiếm">
                     <button type="submit">
-                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                 </form>
             </div>
@@ -31,24 +31,31 @@
 
             <div class="header-right">
                 <a href="/giohang.php" class="cart-link">
-                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                    <i class="fa-solid fa-cart-shopping"></i>
                     GIỎ HÀNG (<span class="cart-count">0</span>)
                 </a>
             </div>
         </div>
     </div>
 </header>
-<!-- end header -->
 
 <nav class="main-nav">
     <ul>
         <li><a href="/trangchu.php">TRANG CHỦ</a></li>
         <li><a href="/gioithieu.php">GIỚI THIỆU</a></li>
-        <li class="has-submenu"><a href="/sanpham/sanpham.php">SẢN PHẨM</a></li>
+        <li><a href="/sanpham/sanpham.php">SẢN PHẨM</a></li>
         <li><a href="/tintuc.php">TIN TỨC</a></li>
         <li><a href="/lienhe.php">LIÊN HỆ</a></li>
     </ul>
 </nav>
+
+<!-- ✅ Script theo thứ tự ƯU TIÊN -->
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/auth.ui.bridge.js"></script>
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
 <script>
   // Đồng bộ badge giỏ
   function refreshBadge(){ window.SVUI?.updateCartCount?.(); }
