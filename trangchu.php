@@ -109,15 +109,10 @@
     .content_banner .des{position:absolute;left:16px;bottom:16px;box-shadow:0 10px 24px rgba(0,0,0,.08);border-radius:12px;padding:14px 16px;max-width:80%}
     .content_banner .des h4{margin:0 0 4px;font-size:20px;line-height:1.2}
     .content_banner .des h4 span{border-bottom:2px solid #fff;padding-bottom:2px;color:#fff;font-size:15px}
-    .content_banner .des p{margin:6px 0 10px;color:#fff;font-size:14px}
+    .content_banner .des p{margin:6px 0 10px;color:#fff;font-size:12px}
     .content_banner .des a{font-weight:600;font-size:20px;color:#fff}
     .content_banner a img{width:100%;height:250px;object-fit:cover;border-radius:14px;transition:transform .4s ease}
     @media(min-width:576px){.content_banner a img{height:320px}}
-
-    /* Footer reset (prevent CSS clash) */
-    .footer .row{margin-right:-15px;margin-left:-15px;display:flex;flex-wrap:wrap}
-    .footer .container{max-width:1140px;margin-right:auto;margin-left:auto;padding-right:15px;padding-left:15px}
-    .footer .col,.footer .col-3{padding:0;width:auto}
 
     /* Mobile hoverless */
     @media(hover:none) and (pointer:coarse){
@@ -128,7 +123,6 @@
 <body>
   <?php include __DIR__ . '/partials/header.php'; ?>
 
-  <!-- ================== PAGE MAIN ================== -->
   <div class="page-main">
 
     <!-- Policy strip -->
@@ -221,7 +215,7 @@
         </div>
         <div class="about-home">
           <div class="inner">
-            <h2>Về chúng tôi</h2>
+            <h5>Về chúng tôi</h5>
             <p>Nobility 1800s mang đến trải nghiệm mua sắm hàng hiệu trực tuyến đẳng cấp – từ quần áo, giày dép, phụ kiện đến mỹ phẩm cho nam & nữ – bắt kịp xu hướng mới nhất.</p>
           </div>
         </div>
@@ -230,7 +224,7 @@
   </section>
 
   <?php include __DIR__ . '/partials/footer.php'; ?>
-
+<script src="/assets/js/auth.frontend.js"></script>
   <!-- ===== JS ===== -->
   <script>
   // ===== Brand slider (simple) =====
@@ -343,3 +337,10 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+<script src="/assets/js/auth.js"></script>
+
+<!-- Các file còn lại -->
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>

@@ -66,8 +66,13 @@
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
 
-<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/auth.js"></script>
+
+<!-- Các file còn lại -->
 <script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
 <script>
 (function(){
   const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';

@@ -317,4 +317,10 @@
   <link rel="stylesheet" href="https://bizweb.dktcdn.net/100/004/366/themes/900241/assets/bpr-products-module.css" />
   <div class="bizweb-product-reviews-module"></div>
 </body>
-</html>
+</html><script src="/assets/js/auth.js"></script>
+
+<!-- Các file còn lại -->
+<script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>

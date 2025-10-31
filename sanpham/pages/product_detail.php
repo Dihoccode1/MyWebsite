@@ -446,7 +446,7 @@ $id = $_GET['id'] ?? '';
 
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/partials/footer.php'; ?>
-
+<script src="/assets/js/auth.js"></script>
        <!-- DATA + STORE -->
     <script src="/assets/js/products.seed.js"></script>
     <script src="/assets/js/store.js"></script>
