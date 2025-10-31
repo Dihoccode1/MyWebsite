@@ -366,3 +366,59 @@
 <script src="/assets/js/ui.js"></script>
 <script src="/assets/js/products.seed.js"></script>
 <script src="/assets/js/products.app.js"></script>
+<script>
+(function () {
+  // 1) Cấu hình URL trang đăng nhập (nhớ thống nhất 1 đường dẫn)
+  const LOGIN_URL = '/account/login.php';
+
+  function goLoginWithRedirect() {
+    const back = location.pathname + location.search + location.hash;
+    location.href = LOGIN_URL + '?redirect=' + encodeURIComponent(back);
+  }
+
+  // 2) Vá anchor cũ trong lớp hover (tránh 404 nếu còn href=/cart/...)
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.product-action-grid a').forEach(a => {
+      // giữ UI nhưng ngăn điều hướng thẳng
+      a.setAttribute('href', '#');
+      a.setAttribute('role', 'button');
+    });
+  });
+
+  // 3) Bắt mọi click "thêm giỏ" (kể cả icon trong hover, nút thường, anchor quick-add)
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.btn-add-cart, .btn-cart, [data-add-to-cart], .js-add-to-cart, a.quick-add');
+    if (!btn) return;
+
+    // chặn điều hướng mặc định để JS xử lý (tránh 404)
+    e.preventDefault();
+    if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+    // Chưa đăng nhập → yêu cầu đăng nhập
+    if (!window.AUTH?.loggedIn) {
+      alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+      goLoginWithRedirect();
+      return;
+    }
+
+    // Đã đăng nhập → thêm giỏ
+    const id =
+      btn.dataset.id ||
+      btn.getAttribute('data-id') ||
+      ((btn.href || '').includes('id=') ? new URL(btn.href, location.origin).searchParams.get('id') : '');
+
+    if (!id) return;
+
+    // gọi API giỏ hàng
+    window.SVStore?.addToCart?.(id, 1);
+    window.dispatchEvent(new CustomEvent('cart:changed'));
+    window.SVUI?.updateCartCount?.();
+
+    // feedback nút
+    const prev = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = prev; }, 900);
+  }, true); // dùng capture để chặn trước mọi handler khác
+})();
+</script>
