@@ -1,10 +1,8 @@
- <footer class="footer">
+<footer class="footer">
    <div class="site-footer">
-     <!-- TOP FOOTER -->
      <div class="top-footer">
        <div class="container">
          <div class="row">
-           <!-- Cột 1 -->
            <section class="widget-ft">
              <h4 class="title-menu">Thông tin</h4>
              <ul class="list-menu">
@@ -16,7 +14,6 @@
              </ul>
            </section>
 
-           <!-- Cột 2 -->
            <section class="widget-ft">
              <h4 class="title-menu">Hỗ trợ</h4>
              <ul class="list-menu">
@@ -28,7 +25,6 @@
              </ul>
            </section>
 
-           <!-- Cột 3 -->
            <section class="widget-ft">
              <h4 class="title-menu">Hướng dẫn</h4>
              <ul class="list-menu">
@@ -40,7 +36,6 @@
              </ul>
            </section>
 
-           <!-- Cột 4 -->
            <section class="widget-ft">
              <h4 class="title-menu">Chính sách</h4>
              <ul class="list-menu">
@@ -52,7 +47,6 @@
              </ul>
            </section>
 
-           <!-- Cột 5: Liên hệ -->
            <section class="wg-logo">
              <h4 class="title-menu">Liên hệ</h4>
              <ul class="contact">
@@ -64,13 +58,11 @@
                </li>
                <li class="sdt">
                  <span><i class="fa-solid fa-phone" aria-hidden="true"></i></span>
-                 <a href="tel:19006750">0338286525</a>
+                 <a href="tel:0338286525">0338286525</a>
                </li>
                <li class="sdt">
                  <span><i class="fa-solid fa-envelope"></i></span>
-                 <a href="/cdn-cgi/l/email-protection#34474144445b4640744755445b1a425a">
-                   <span class="__cf_email__" data-cfemail="bfcccacfcfd0cdcbffccdecfd091c9d1">thanhloc29052006@gmail.com</span>
-                 </a>
+                 <a href="mailto:thanhloc29052006@gmail.com">thanhloc29052006@gmail.com</a>
                </li>
              </ul>
            </section>
@@ -78,18 +70,12 @@
        </div>
      </div>
 
-     <!-- MID FOOTER -->
      <div class="mid-footer">
        <div class="container">
          <div class="row">
-           <!-- Bản quyền -->
            <div class="fot_copyright">
-             <span class="wsp">
-               <span class="mobile">Cung cấp bởi <a href="javascript:;">Sapo</a></span>
-             </span>
+             <span class="wsp"><span>Cung cấp bởi <a href="javascript:;">Sapo</a></span></span>
            </div>
-
-           <!-- Menu giữa -->
            <nav class="fot_menu_copyright">
              <ul class="ul_menu_fot">
                <li><a href="/trangchu.php" title="Trang chủ">Trang chủ</a></li>
@@ -99,27 +85,32 @@
                <li><a href="/lienhe.php" title="Liên hệ">Liên hệ</a></li>
              </ul>
            </nav>
-
-           <!-- Payment icons -->
            <div class="pay_footer">
              <ul class="follow_option">
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png?1753170970183" alt="Gentleman"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png?1753170970183" alt="Gentleman"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png" alt="Payment"></a></li>
              </ul>
            </div>
-
-           <!-- Back to top -->
            <a href="#" id="back-to-top" class="backtop" title="Lên đầu trang">
              <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
-             <span class="sr-only">Lên đầu trang</span>
            </a>
          </div>
        </div>
      </div>
    </div>
  </footer>
+
+ <script src="/assets/js/auth.js"></script>
+ <script src="/assets/js/auth.modal.bridge.js"></script>
+
+ <script src="/assets/js/products.seed.js"></script>
+ <script src="/assets/js/store.js"></script>
+ <script src="/assets/js/ui.js"></script>
+
+ </body>
+ </html>
