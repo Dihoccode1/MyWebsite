@@ -33,7 +33,7 @@
           <div class="loop-blog">
             <div class="name-right">
               <h3>
-                <a href="https://sapvuottocnam.com/danh-gia-chi-tiet-sap-vuot-toc-by-vilain-gold-digger/" target="_blank">
+                <a href="/News Section/Sáp-Vuốt-Tóc-By-Vilain-Gold-Digger-Giữ-nếp-mạnh-không-bóng.php" target="_blank">
                   Sáp Vuốt Tóc By Vilain Gold Digger – Giữ nếp mạnh, không bóng
                 </a>
               </h3>
@@ -43,7 +43,7 @@
 
           <div class="loop-blog">
             <div class="name-right">
-              <h3><a href="/huong-dan-su-dung-sap-vuot-toc.php">Hướng dẫn sử dụng sáp vuốt tóc đúng cách</a></h3>
+              <h3><a href="/News Section/huong-dan-su-dung-sap-vuot-toc.php">Hướng dẫn sử dụng sáp vuốt tóc đúng cách</a></h3>
               <div class="date">29/09/2025</div>
             </div>
           </div>
@@ -51,7 +51,7 @@
           <div class="loop-blog">
             <div class="name-right">
               <h3>
-                <a href="/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php">
+                <a href="/News Section/goi-y-loai-sap-vuot-toc-nam-nen-dung-thu.php">
                   Gợi ý loại sáp vuốt tóc nam tốt nhất nên dùng thử một lần trong đời
                 </a>
               </h3>
@@ -62,7 +62,7 @@
           <div class="loop-blog">
             <div class="name-right">
               <h3>
-                <a href="/cach-bao-quan-sap-vuot-toc.php">
+                <a href="/News Section/cach-bao-quan-sap-vuot-toc.php">
                   Cách bảo quản sáp vuốt tóc để dùng lâu và hiệu quả
                 </a>
               </h3>
@@ -72,7 +72,7 @@
 
           <div class="loop-blog">
             <div class="name-right">
-              <h3><a href="/cach-phan-biet-vuot-toc-that-ba-gia.php">Cách phân biệt sáp vuốt tóc thật và giả</a></h3>
+              <h3><a href="/News Section/Cach-phan-biet-sap-vuot-toc-that-va-gia.php">Cách phân biệt sáp vuốt tóc thật và giả</a></h3>
               <div class="date">29/09/2025</div>
             </div>
           </div>

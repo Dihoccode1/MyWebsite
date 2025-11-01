@@ -8,7 +8,7 @@
              <ul class="list-menu">
                <li class="li_menu"><a href="/trangchu.php">Trang chủ</a></li>
                <li class="li_menu"><a href="/gioithieu.php">Giới thiệu</a></li>
-               <li class="li_menu"><a href="/collections/all">Sản phẩm</a></li>
+               <li class="li_menu"><a href="/sanpham/sanpham.php">Sản phẩm</a></li>
                <li class="li_menu"><a href="/tintuc.php">Tin tức</a></li>
                <li class="li_menu"><a href="/lienhe.php">Liên hệ</a></li>
              </ul>
@@ -19,7 +19,7 @@
              <ul class="list-menu">
                <li class="li_menu"><a href="/trangchu.php">Trang chủ</a></li>
                <li class="li_menu"><a href="/gioithieu.php">Giới thiệu</a></li>
-               <li class="li_menu"><a href="/collections/all">Sản phẩm</a></li>
+               <li class="li_menu"><a href="/sanpham/sanpham.php">Sản phẩm</a></li>
                <li class="li_menu"><a href="/tintuc.php">Tin tức</a></li>
                <li class="li_menu"><a href="/lienhe.php">Liên hệ</a></li>
              </ul>
@@ -30,7 +30,7 @@
              <ul class="list-menu">
                <li class="li_menu"><a href="/trangchu.php">Trang chủ</a></li>
                <li class="li_menu"><a href="/gioithieu.php">Giới thiệu</a></li>
-               <li class="li_menu"><a href="/collections/all">Sản phẩm</a></li>
+               <li class="li_menu"><a href="/sanpham/sanpham.php">Sản phẩm</a></li>
                <li class="li_menu"><a href="/tintuc.php">Tin tức</a></li>
                <li class="li_menu"><a href="/lienhe.php">Liên hệ</a></li>
              </ul>
@@ -41,7 +41,7 @@
              <ul class="list-menu">
                <li class="li_menu"><a href="/trangchu.php">Trang chủ</a></li>
                <li class="li_menu"><a href="/gioithieu.php">Giới thiệu</a></li>
-               <li class="li_menu"><a href="/collections/all">Sản phẩm</a></li>
+               <li class="li_menu"><a href="/sanpham/sanpham.php">Sản phẩm</a></li>
                <li class="li_menu"><a href="/tintuc.php">Tin tức</a></li>
                <li class="li_menu"><a href="/lienhe.php">Liên hệ</a></li>
              </ul>
@@ -74,13 +74,13 @@
        <div class="container">
          <div class="row">
            <div class="fot_copyright">
-             <span class="wsp"><span>Cung cấp bởi <a href="javascript:;">Sapo</a></span></span>
+             <span class="wsp"><span>Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span></span>
            </div>
            <nav class="fot_menu_copyright">
              <ul class="ul_menu_fot">
                <li><a href="/trangchu.php" title="Trang chủ">Trang chủ</a></li>
                <li><a href="/gioithieu.php" title="Giới thiệu">Giới thiệu</a></li>
-               <li><a href="/collections/all" title="Sản phẩm">Sản phẩm</a></li>
+               <li><a href="/sanpham/sanpham.php" title="Sản phẩm">Sản phẩm</a></li>
                <li><a href="/tin-tuc" title="Tin tức">Tin tức</a></li>
                <li><a href="/lienhe.php" title="Liên hệ">Liên hệ</a></li>
              </ul>
