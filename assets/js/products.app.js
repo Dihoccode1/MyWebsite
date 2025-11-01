@@ -55,7 +55,7 @@
   }
 
   function productDetailUrl(p) {
-    return `/sanpham/pages/product_detail.php?id=${encodeURIComponent(p.id)}`;
+    return `/sanpham/pages/product_detail.html?id=${encodeURIComponent(p.id)}`;
   }
 
   function itemHTML(p) {
@@ -228,7 +228,7 @@
       if (!window.AUTH?.loggedIn) {
         alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
         const back = location.pathname + location.search + location.hash;
-        location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+        location.href = '/account/login.html?redirect=' + encodeURIComponent(back);
         return;
       }
 

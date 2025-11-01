@@ -284,7 +284,7 @@ $(document).ready(function () {
                     <td><span class="badge ${statusClass}">${
         order.status
       }</span></td>
-                    <td><a href="chitietdonhang.php?id=${
+                    <td><a href="chitietdonhang.html?id=${
                       order.id
                     }" class="btn btn-sm btn-info">Chi tiết</a></td>
                 </tr>

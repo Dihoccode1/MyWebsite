@@ -93,7 +93,7 @@ var chip = qs('#auth-chip');
           // dùng data-logout để JS xử lý
           chip.innerHTML = 'Xin chào, <strong>' + escapeHtml((AUTH.user && AUTH.user.name) || '') + '</strong> · <a href="#" data-logout>Đăng xuất</a>';
         } else {
-          chip.innerHTML = '<a href="/login.php">Đăng nhập</a> / <a href="/register.php">Đăng ký</a>';
+          chip.innerHTML = '<a href="/login.html">Đăng nhập</a> / <a href="/register.html">Đăng ký</a>';
         }
       }
     },

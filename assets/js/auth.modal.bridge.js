@@ -21,7 +21,7 @@
       topbarRight.innerHTML = `
         <div class="welcome-user">
             <span>Chào mừng,</span>
-            <a href="/account/profile.php">${escapeHtml(displayName)}</a>
+            <a href="/account/profile.html">${escapeHtml(displayName)}</a>
             <span>!</span>
         </div>
         <a href="#" data-logout class="btn btn-primary">ĐĂNG XUẤT</a>
@@ -30,8 +30,8 @@
     } else {
       // --- KHI CHƯA ĐĂNG NHẬP ---
       topbarRight.innerHTML = `
-        <a href="/account/register.php" class="btn btn-outline">ĐĂNG KÝ</a>
-        <a href="/account/login.php" class="btn btn-primary">ĐĂNG NHẬP</a>
+        <a href="/account/register.html" class="btn btn-outline">ĐĂNG KÝ</a>
+        <a href="/account/login.html" class="btn btn-primary">ĐĂNG NHẬP</a>
       `;
     }
     updateCartBadge();

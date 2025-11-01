@@ -79,7 +79,7 @@
     if (!window.AUTH?.loggedIn) {
       alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
       const back = location.pathname + location.search + location.hash;
-      location.href = '/account/login.php?redirect=' + encodeURIComponent(back);
+      location.href = '/account/login.html?redirect=' + encodeURIComponent(back);
       return;
     }
 
@@ -109,7 +109,7 @@
   const related = all.filter(x => x.category === p.category && x.id !== p.id).slice(0, 3);
   document.getElementById('pd-related').innerHTML = related.map(r => `
     <div class="col-6 col-md-4 related-col">
-      <a href="/sanpham/pages/product_detail.php?id=${encodeURIComponent(r.id)}" class="related-card text-reset">
+      <a href="/sanpham/pages/product_detail.html?id=${encodeURIComponent(r.id)}" class="related-card text-reset">
         <div class="img-wrap">
           <img src="${r.image}" alt="${escapeHtml(r.name)}">
         </div>
