@@ -40,9 +40,8 @@
             <label class="custom-control-label" for="addrSaved">Dùng địa chỉ từ tài khoản</label>
           </div>
           <div id="blockSaved" class="border rounded p-3 mb-3">
-            <div><strong id="savedName"></strong> • <span id="savedPhone"></span></div>
-            <div><span id="savedAddr"></span>, <span id="savedDistrict"></span>, <span id="savedCity"></span></div>
-          </div>
+    <div><strong id="savedName"></strong> • <span id="savedPhone"></span></div>
+    <div id="savedFullAddress"></div> </div>
 
           <div class="custom-control custom-radio">
             <input type="radio" id="addrNew" name="addrMode" class="custom-control-input" value="new">
@@ -285,15 +284,32 @@
     }
   };
 
-  // ===== Hiển thị địa chỉ từ tài khoản (demo) =====
-  function fillSaved(){
-    const u = window.CURRENT_USER || {};
-    if (els.savedName)     els.savedName.textContent     = u.fullname || '';
-    if (els.savedPhone)    els.savedPhone.textContent    = u.phone || '';
-    if (els.savedAddr)     els.savedAddr.textContent     = u.address || '';
-    if (els.savedDistrict) els.savedDistrict.textContent = u.district || '';
-    if (els.savedCity)     els.savedCity.textContent     = u.city || '';
-  }
+function fillSaved() {
+    // Lấy thông tin người dùng thật từ auth.js
+    const profileKey = 'sv_profiles_v1';
+    const profiles = JSON.parse(localStorage.getItem(profileKey) || '{}');
+    const currentUserProfile = profiles[(window.AUTH.user.email || '').toLowerCase()] || {};
+
+    // Điền tên và SĐT như cũ
+    document.getElementById('savedName').textContent = currentUserProfile.fullname || window.AUTH.user.name || '';
+    document.getElementById('savedPhone').textContent = currentUserProfile.phone || '';
+
+    // Tạo chuỗi địa chỉ một cách thông minh
+    const addressParts = [];
+    if (currentUserProfile.address) {
+        addressParts.push(currentUserProfile.address);
+    }
+    if (currentUserProfile.district) {
+        addressParts.push(currentUserProfile.district);
+    }
+    if (currentUserProfile.city) {
+        addressParts.push(currentUserProfile.city);
+    }
+
+    // Nối các phần có tồn tại lại với nhau bằng dấu phẩy và khoảng trắng
+    document.getElementById('savedFullAddress').textContent = addressParts.join(', ');
+}
+
 
   // ===== Tóm tắt giỏ hàng =====
   function renderSummary(){
