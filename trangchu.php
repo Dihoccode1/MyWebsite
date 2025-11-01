@@ -865,48 +865,4 @@
   window.addEventListener('cart:changed', updateBadge);
 })();
 </script>
-<!-- Welcome popup -->
-<style>
-  #sv-welcome-overlay{
-    position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-    background:rgba(0,0,0,.35);z-index:9999;padding:16px
-  }
-  #sv-welcome{
-    width:100%;max-width:420px;background:#fff;
-    box-shadow:0 20px 50px rgba(16,24,40,.18);padding:28px;text-align:center
-  }
-  #sv-welcome h3{margin:0 0 8px;font:700 22px/1.3 Inter,system-ui,Arial,sans-serif;color:#111}
-  #sv-welcome p{margin:0 0 16px;color:#444;font:400 15px/1.6 Inter,system-ui,Arial,sans-serif}
-  #sv-welcome .btn{
-    display:inline-block;padding:12px 18px;border:1px solid #e5e7eb;
-    background:#111;color:#fff;text-decoration:none;font-weight:700
-  }
-  #sv-welcome .btn:hover{filter:brightness(.95)}
-</style>
-<div id="sv-welcome-overlay" aria-hidden="true">
-  <div id="sv-welcome" role="dialog" aria-modal="true">
-    <h3>Chào mừng <span id="sv-welcome-name">bạn</span> 👋</h3>
-    <p>Tài khoản đã tạo thành công. Chúc bạn mua sắm vui vẻ tại <strong>Nobility 1800s</strong>!</p>
-    <a href="#" class="btn" id="sv-welcome-close">Bắt đầu xem sản phẩm</a>
-  </div>
-</div>
-<script>
-(function(){
-  const q = new URLSearchParams(location.search);
-  const who = q.get('welcome');
-  if(who){
-    document.getElementById('sv-welcome-name').textContent = decodeURIComponent(who);
-    const ov = document.getElementById('sv-welcome-overlay');
-    ov.style.display = 'flex';
-    document.getElementById('sv-welcome-close').addEventListener('click', function(e){
-      e.preventDefault();
-      ov.style.display = 'none';
-      // Xoá ?welcome khỏi URL cho sạch
-      const u = new URL(location.href);
-      u.searchParams.delete('welcome');
-      history.replaceState({}, '', u.pathname + (u.search ? '?'+u.searchParams.toString() : '') + u.hash);
-    });
-  }
-})();
-</script>
-</body>
+

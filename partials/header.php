@@ -75,4 +75,40 @@
   }, { passive: false });
 })(window, document);
 </script>
+<script>
+(function (w, d) {
+  // gọi sau khi auth sẵn sàng
+  function makeWelcomeClickable() {
+    // ưu tiên phần tử của header mới
+    var el = d.querySelector('.welcome-user');
+    if (el) { 
+      // đã là <a>, đảm bảo đúng href
+      el.setAttribute('href', '/account/profile.php');
+      return;
+    }
+
+    // các trường hợp site cũ: #welcomeName, [data-welcome-name], .js-welcome-name
+    var target = d.querySelector('#welcomeName, [data-welcome-name], .js-welcome-name');
+    if (!target) return;
+
+    // nếu chưa phải <a>, bọc lại thành <a>
+    if (target.tagName !== 'A') {
+      var a = d.createElement('a');
+      a.href = '/account/profile.php';
+      a.className = 'welcome-link';
+      // chuyển toàn bộ nội dung vào <a>
+      while (target.firstChild) a.appendChild(target.firstChild);
+      target.appendChild(a);
+    } else {
+      // đã là <a> thì gán href đúng
+      target.setAttribute('href', '/account/profile.php');
+    }
+  }
+
+  // chạy khi auth ready, và dự phòng nếu auth đã sẵn sàng
+  d.addEventListener('auth:ready', makeWelcomeClickable);
+  if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
+})();
+</script>
+
 

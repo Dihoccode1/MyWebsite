@@ -1,3 +1,4 @@
+
 <?php /* account/profile.php */ ?>
 <!doctype html>
 <html lang="vi">
@@ -84,11 +85,7 @@ document.addEventListener('auth:ready', renderProfile);
 if (window.AUTH && window.AUTH.ready) {
   renderProfile();
 }
-// Sau khi đăng ký thành công:
-const nameForWelcome = encodeURIComponent(name || 'bạn');
-location.href = '/trangchu.php?welcome=' + nameForWelcome;
 </script>
-
 
 </body>
 </html>

@@ -1,4 +1,3 @@
-<?php /* /account/register.php — Elegant e-commerce register (localStorage auth) */ ?>
 <!doctype html>
 <html lang="vi">
 <head>
@@ -249,8 +248,11 @@
         AUTH.register(name, email, pass);
         saveProfile(email, { phone, address, fullname: name, createdAt: new Date().toISOString() });
         AUTH.check();
-        // Chuyển vào trang hồ sơ (hoặc đổi thành redirect nếu muốn)
-        location.href = '/account/profile.php';
+        
+        // CHUYỂN VỀ TRANG CHỦ VỚI POPUP WELCOME (không phải profile)
+        const nameForWelcome = encodeURIComponent(name || 'bạn');
+        location.href = '/trangchu.php?welcome=' + nameForWelcome;
+        
       }catch(err){
         showErr(err?.message);
       }
