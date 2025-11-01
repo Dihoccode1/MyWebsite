@@ -202,9 +202,12 @@
 </div>
 
 <?php include __DIR__ . '/partials/footer.php'; ?>
-
-<script src="/assets/js/products.seed.js"></script>
+<!-- NẠP THƯ VIỆN TRƯỚC -->
+<script src="/assets/js/auth.js"></script>
 <script src="/assets/js/store.js"></script>
+<script src="/assets/js/ui.js"></script>
+<script src="/assets/js/products.seed.js"></script>
+<script src="/assets/js/products.app.js"></script>
 <!-- SCRIPT 1: checkout logic -->
 <script>
 (function(){
@@ -477,28 +480,36 @@
   els.citySel?.addEventListener('change', fillDistricts);
   els.distSel?.addEventListener('change', fillWards);
 
-  // ===== Init =====
+ // ===== Init =====
+function initCheckout(){
   fillSaved();
   renderSummary();
   fillCities();
   updateBiz();
   if (els.toggleDist && els.distInput && els.distSel) {
-  // chỉ click nếu hiện đang ẩn input (tức chưa bật manual)
-  if (els.distInput.classList.contains('d-none')) els.toggleDist.click();
+    if (els.distInput.classList.contains('d-none')) els.toggleDist.click();
+  }
+  if (els.toggleWard && els.wardInput && els.wardSel) {
+    if (els.wardInput.classList.contains('d-none')) els.toggleWard.click();
+  }
 }
-if (els.toggleWard && els.wardInput && els.wardSel) {
-  if (els.wardInput.classList.contains('d-none')) els.toggleWard.click();
-}
+
+// Đợi AUTH load xong rồi mới render
+const waitAuth = setInterval(() => {
+  if (window.AUTH && window.AUTH.loggedIn) {
+    clearInterval(waitAuth);
+    initCheckout();
+  }
+}, 200);
+
+// Trường hợp chưa có AUTH (guest demo)
+setTimeout(() => {
+  if (!window.AUTH) {
+    console.warn('AUTH chưa sẵn, chạy fallback guest.');
+    initCheckout();
+  }
+}, 1500);
 })();
 </script>
-<script src="/assets/js/auth.js"></script>
-
-<!-- Các file còn lại -->
-<script src="/assets/js/store.js"></script>
-<script src="/assets/js/ui.js"></script>
-<script src="/assets/js/products.seed.js"></script>
-<script src="/assets/js/products.app.js"></script>
-
-
 </body>
 </html>
