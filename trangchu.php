@@ -8,7 +8,7 @@
   <meta name="description" content="Cửa hàng sáp vuốt tóc – sản phẩm mới, ưu đãi, giao nhanh, đổi trả dễ dàng." />
 
   <!-- Vendor CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="/assets/css/style.css" />
 
   <style>
-    
+      
     /* ===== Variables & base ===== */
     :root {
       --bg: #fff;
