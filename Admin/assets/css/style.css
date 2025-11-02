@@ -510,3 +510,31 @@ body {
 .recentCustomers table tr:hover td h4 span {
   color: var(--white);
 }
+
+/* =============================== */
+/* ================================
+  STYLES CHO TRANG CUSTOMERS.HTML
+  ================================
+*/
+.details.customer-list table tr td {
+  padding: 12px 10px;
+  vertical-align: middle; /* Căn giữa các nút cho đẹp */
+}
+
+.btn.btn-action {
+  padding: 4px 8px; /* Làm nút nhỏ hơn */
+  font-size: 14px;
+  margin: 2px;
+  text-align: center;
+  min-width: 80px; /* Đảm bảo nút "Reset MK" và "Mở khóa" bằng nhau */
+}
+
+.btn-reset {
+  background-color: #1795ce; /* Màu xanh dương (status inProgress) */
+}
+.btn-lock {
+  background-color: #f00; /* Màu đỏ (status returned) */
+}
+.btn-unlock {
+  background-color: #8de02c; /* Màu xanh lá (status delivered) */
+}
