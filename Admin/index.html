@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- GUARD: chưa đăng nhập admin -> quay về /admin/login.html -->
+    <script>
+      (function () {
+        try {
+          const u = JSON.parse(
+            sessionStorage.getItem("session.user") || "null"
+          );
+          if (!u || u.role !== "admin") location.replace("./login.html");
+        } catch {
+          location.replace("./login.html");
+        }
+      })();
+    </script>
+
+    <!-- dùng đường dẫn TƯƠNG ĐỐI -->
     <link rel="stylesheet" href="./assets/css/style.css" />
-    <title>Bảng điều khiền dành cho quản trị viên</title>
+    <title>Bảng điều khiển dành cho quản trị viên</title>
   </head>
 
   <body>
@@ -12,92 +27,120 @@
       <div class="navagation">
         <ul>
           <li>
-            <a href="./Customers/index.html">
-              <span class="icon">
-                <ion-icon name="logo-apple"></ion-icon>
-              </span>
+            <a href="./index.html">
+              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
               <span class="title">Nobility 1800s</span>
             </a>
           </li>
 
           <li class="hovered" id="nav-dashboard">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="home-outline"></ion-icon>
-              </span>
-              <span class="title">Bảng điều khiển </span>
+            <a href="./index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Bảng điều khiển</span>
             </a>
           </li>
 
           <li id="nav-customers">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="people-outline"></ion-icon>
-              </span>
-              <span class="title"> Quản lý khách hàng</span>
+            <a href="./users.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý khách hàng</span>
             </a>
           </li>
 
           <li id="nav-categories">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="bookmarks-outline"></ion-icon>
-              </span>
-              <span class="title">Quản lý danh mục </span>
+            <a href="./categories.html">
+              <span class="icon"
+                ><ion-icon name="bookmarks-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý danh mục</span>
             </a>
           </li>
+
           <li id="nav-products">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="bag-remove-outline"></ion-icon>
-              </span>
+            <a href="./products.html">
+              <span class="icon"
+                ><ion-icon name="bag-remove-outline"></ion-icon
+              ></span>
               <span class="title">Quản lý sản phẩm</span>
             </a>
           </li>
+
+          <li id="nav-imports">
+            <a href="./imports.html">
+              <span class="icon"
+                ><ion-icon name="download-outline"></ion-icon
+              ></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
+          </li>
+
+          <li id="nav-pricing">
+            <a href="./pricing.html">
+              <span class="icon"
+                ><ion-icon name="pricetag-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý giá bán</span>
+            </a>
+          </li>
+
           <li id="nav-inventory">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="file-tray-stacked-outline"></ion-icon>
-              </span>
+            <a href="./inventory.html">
+              <span class="icon"
+                ><ion-icon name="file-tray-stacked-outline"></ion-icon
+              ></span>
               <span class="title">Quản lý hàng tồn kho</span>
             </a>
           </li>
+
           <li id="nav-orders">
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="newspaper-outline"></ion-icon>
-              </span>
+            <a href="./orders.html">
+              <span class="icon"
+                ><ion-icon name="newspaper-outline"></ion-icon
+              ></span>
               <span class="title">Quản lý đơn hàng</span>
             </a>
           </li>
+
           <hr />
+
+          <!-- CHÀO MỪNG: nằm dưới hr và trên Đăng xuất -->
+          <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border: 1px solid #2a2f8a;
+                border-radius: 12px;
+                background: #ffffff;
+                color: #1f235a;
+                font-weight: 700;
+              "
+            >
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <span>Chào mừng, Admin</span>
+            </div>
+          </li>
+
           <li>
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="log-in-outline"></ion-icon>
-              </span>
+            <a href="#" id="btn-logout-side">
+              <span class="icon"
+                ><ion-icon name="log-in-outline"></ion-icon
+              ></span>
               <span class="title">Đăng xuất</span>
             </a>
           </li>
         </ul>
       </div>
     </div>
-    <div class="main">
-      <div class="topbar">
-        <div class="toggle">
-          <ion-icon name="menu-outline"></ion-icon>
-        </div>
-        <div class="search">
-          <label>
-            <input type="text" placeholder="Tìm kiếm" />
-            <ion-icon name="search-outline"></ion-icon>
-          </label>
-        </div>
-        <div class="user">
-          <img src="./assets/img/user1.png" alt="" />
-        </div>
-      </div>
 
+    <div class="main">
+      <!-- DASHBOARD CONTENT giữ nguyên demo -->
       <div id="dashboard-content">
         <div class="cardBox">
           <div class="card">
@@ -105,18 +148,14 @@
               <div class="numbers">1,504</div>
               <div class="cardName">Lượt xem theo ngày</div>
             </div>
-            <div class="iconBx">
-              <ion-icon name="eye-outline"></ion-icon>
-            </div>
+            <div class="iconBx"><ion-icon name="eye-outline"></ion-icon></div>
           </div>
           <div class="card">
             <div>
               <div class="numbers">80</div>
               <div class="cardName">Doanh số</div>
             </div>
-            <div class="iconBx">
-              <ion-icon name="cart-outline"></ion-icon>
-            </div>
+            <div class="iconBx"><ion-icon name="cart-outline"></ion-icon></div>
           </div>
           <div class="card">
             <div>
@@ -132,16 +171,15 @@
               <div class="numbers">36.363.363đ</div>
               <div class="cardName">Doanh thu</div>
             </div>
-            <div class="iconBx">
-              <ion-icon name="cash-outline"></ion-icon>
-            </div>
+            <div class="iconBx"><ion-icon name="cash-outline"></ion-icon></div>
           </div>
         </div>
+
         <div class="details">
           <div class="recentOrders">
             <div class="cardHeader">
               <h2>Đơn hàng gần đây</h2>
-              <a href="#" class="btn">Xem tất cả</a>
+              <a href="./orders.html" class="btn">Xem tất cả</a>
             </div>
             <table>
               <thead>
@@ -182,9 +220,7 @@
           </div>
 
           <div class="recentCustomers">
-            <div class="cardHeader">
-              <h2>Khách hàng gần đây</h2>
-            </div>
+            <div class="cardHeader"><h2>Khách hàng gần đây</h2></div>
             <table>
               <tr>
                 <td width="60px">
@@ -241,11 +277,13 @@
         </div>
       </div>
 
+      <!-- Có thể bỏ block dưới nếu tách trang riêng -->
       <div id="customers-content" style="display: none">
         <div class="details customer-list">
           <div class="recentOrders">
             <div class="cardHeader">
               <h2>Danh sách Khách hàng</h2>
+              <a class="btn" href="./users.html">Sang trang quản lý</a>
             </div>
             <table>
               <thead>
@@ -295,7 +333,10 @@
       </div>
     </div>
 
-    <script src="/assets/js/main.js"></script>
+    <!-- JS TƯƠNG ĐỐI -->
+    <script src="./assets/js/main.js"></script>
+
+    <!-- Ionicons CDN -->
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -304,5 +345,19 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+
+    <!-- Đăng xuất (sidebar) -->
+    <script>
+      (function () {
+        const btn2 = document.getElementById("btn-logout-side"); // link ở sidebar
+        if (btn2) {
+          btn2.addEventListener("click", function (e) {
+            e.preventDefault();
+            sessionStorage.removeItem("session.user");
+            location.href = "./login.html";
+          });
+        }
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- GUARD -->
+    <script>
+      (function () {
+        try {
+          const u = JSON.parse(
+            sessionStorage.getItem("session.user") || "null"
+          );
+          if (!u || u.role !== "admin") location.replace("./login.html");
+        } catch {
+          location.replace("./login.html");
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>Quản lý danh mục</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="navagation">
+        <ul>
+          <li>
+            <a href="./index.html"
+              ><span class="icon"><ion-icon name="logo-apple"></ion-icon></span
+              ><span class="title">Nobility 1800s</span></a
+            >
+          </li>
+          <li id="nav-dashboard">
+            <a href="./index.html"
+              ><span class="icon"
+                ><ion-icon name="home-outline"></ion-icon></span
+              ><span class="title">Bảng điều khiển</span></a
+            >
+          </li>
+          <li id="nav-customers">
+            <a href="./users.html"
+              ><span class="icon"
+                ><ion-icon name="people-outline"></ion-icon></span
+              ><span class="title">Quản lý khách hàng</span></a
+            >
+          </li>
+          <li class="hovered" id="nav-categories">
+            <a href="./categories.html"
+              ><span class="icon"
+                ><ion-icon name="bookmarks-outline"></ion-icon></span
+              ><span class="title">Quản lý danh mục</span></a
+            >
+          </li>
+          <li id="nav-products">
+            <a href="./products.html"
+              ><span class="icon"
+                ><ion-icon name="bag-remove-outline"></ion-icon></span
+              ><span class="title">Quản lý sản phẩm</span></a
+            >
+          </li>
+          <li id="nav-imports">
+            <a href="./imports.html"
+              ><span class="icon"
+                ><ion-icon name="download-outline"></ion-icon></span
+              ><span class="title">Phiếu nhập hàng</span></a
+            >
+          </li>
+          <li id="nav-pricing">
+            <a href="./pricing.html"
+              ><span class="icon"
+                ><ion-icon name="pricetag-outline"></ion-icon></span
+              ><span class="title">Quản lý giá bán</span></a
+            >
+          </li>
+          <li id="nav-inventory">
+            <a href="./inventory.html"
+              ><span class="icon"
+                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
+              ><span class="title">Quản lý hàng tồn kho</span></a
+            >
+          </li>
+          <li id="nav-orders">
+            <a href="./orders.html"
+              ><span class="icon"
+                ><ion-icon name="newspaper-outline"></ion-icon></span
+              ><span class="title">Quản lý đơn hàng</span></a
+            >
+          </li>
+          <hr />
+          <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border: 1px solid #2a2f8a;
+                border-radius: 12px;
+                background: #fff;
+                color: #1f235a;
+                font-weight: 700;
+              "
+            >
+              <ion-icon name="person-circle-outline"></ion-icon
+              ><span>Chào mừng, Admin</span>
+            </div>
+          </li>
+          <li>
+            <a href="#" id="btn-logout-side"
+              ><span class="icon"
+                ><ion-icon name="log-in-outline"></ion-icon></span
+              ><span class="title">Đăng xuất</span></a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="details">
+        <div class="recentOrders" style="flex: 2">
+          <div class="cardHeader">
+            <h2>Danh sách loại sản phẩm</h2>
+            <div style="display: flex; gap: 8px; align-items: center">
+              <input
+                id="q"
+                type="text"
+                placeholder="Tìm theo mã/tên danh mục..."
+                style="
+                  padding: 8px 12px;
+                  border: 1px solid #d1d5db;
+                  border-radius: 10px;
+                  outline: none;
+                "
+              />
+              <button id="btn-new" class="btn">Thêm loại</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <td>#</td>
+                <td>Mã loại</td>
+                <td>Tên loại</td>
+                <td>Mô tả</td>
+                <td>Trạng thái</td>
+                <td>Hành động</td>
+              </tr>
+            </thead>
+            <tbody id="cat-body"></tbody>
+          </table>
+        </div>
+
+        <div class="recentCustomers" style="flex: 1">
+          <div class="cardHeader"><h2 id="form-title">Thêm loại</h2></div>
+          <form id="cat-form" style="display: block; padding: 8px 12px">
+            <input type="hidden" id="id" />
+            <label>Mã loại</label>
+            <input id="code" type="text" required placeholder="LOAI001" />
+            <label>Tên loại</label>
+            <input id="name" type="text" required placeholder="Sáp vuốt tóc" />
+            <label>Mô tả</label>
+            <input id="desc" type="text" placeholder="Mô tả ngắn..." />
+            <label>Trạng thái</label>
+            <select id="active">
+              <option value="true">Đang dùng</option>
+              <option value="false">Ẩn</option>
+            </select>
+            <div style="display: flex; gap: 8px; margin-top: 10px">
+              <button class="btn" type="submit">Lưu</button>
+              <button
+                class="btn"
+                id="btn-cancel"
+                type="button"
+                style="background: #374151"
+              >
+                Hủy
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="./assets/js/main.js"></script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script src="./assets/js/categories.js"></script>
+    <script>
+      document
+        .getElementById("btn-logout-side")
+        ?.addEventListener("click", (e) => {
+          e.preventDefault();
+          sessionStorage.removeItem("session.user");
+          location.href = "./login.html";
+        });
+    </script>
+  </body>
+</html>

@@ -1,18 +1,14 @@
-<!-- /admin/login.html -->
 <!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Đăng nhập quản trị</title>
-    <!-- Không phụ thuộc asset ngoài, để tránh lỗi đường dẫn khi chấm -->
     <style>
       :root {
         --bg: #0f172a;
         --card: #111827;
-        --muted: #9ca3af;
         --text: #e5e7eb;
-        --accent: #22c55e;
         --err: #ef4444;
       }
       * {
@@ -33,7 +29,7 @@
       }
       .card {
         width: min(420px, 92vw);
-        background: linear-gradient(#00000077, #00000033), var(--card);
+        background: linear-gradient(#0007, #0003), var(--card);
         border: 1px solid #1f2937;
         border-radius: 20px;
         padding: 28px;
@@ -43,11 +39,10 @@
       h1 {
         margin: 0 0 4px;
         font-size: 24px;
-        letter-spacing: 0.3px;
       }
       p.sub {
         margin: 0 0 18px;
-        color: var(--muted);
+        color: #9ca3af;
       }
       label {
         display: block;
@@ -55,8 +50,7 @@
         color: #cbd5e1;
         font-weight: 600;
       }
-      input[type="text"],
-      input[type="password"] {
+      input {
         width: 100%;
         padding: 12px 14px;
         border-radius: 12px;
@@ -64,7 +58,6 @@
         background: #0b1220;
         color: #f8fafc;
         outline: none;
-        transition: border 0.15s, box-shadow 0.15s;
       }
       input:focus {
         border-color: #334155;
@@ -91,31 +84,11 @@
       .btn:hover {
         filter: brightness(1.02);
       }
-      .hint {
-        color: var(--muted);
-        font-size: 12px;
-        margin-top: 10px;
-      }
       .err {
         color: var(--err);
         font-weight: 600;
         min-height: 1.25em;
         margin-top: 8px;
-      }
-      .footer {
-        margin-top: 18px;
-        font-size: 12px;
-        color: #94a3b8;
-        text-align: center;
-      }
-      .demo {
-        margin-top: 12px;
-        font-size: 12px;
-        color: #a3e635;
-        background: #052e16;
-        border: 1px solid #14532d;
-        padding: 10px;
-        border-radius: 10px;
       }
       .brand {
         display: flex;
@@ -154,6 +127,7 @@
           autocomplete="username"
           required
           placeholder="quanly1"
+          value="quanly1"
         />
 
         <label for="password">Mật khẩu</label>
@@ -164,44 +138,41 @@
           autocomplete="current-password"
           required
           placeholder="••••••••"
+          value="abcd1234"
         />
 
         <div class="row">
           <button class="btn" type="submit">Đăng nhập</button>
         </div>
         <div id="err" class="err"></div>
-
-        <div class="demo">
-          Tài khoản kiểm tra (theo yêu cầu): <strong>quanly1</strong> /
-          <strong>abcd1234</strong>
-        </div>
-
-        <p class="hint">
-          Lưu ý: Trang này không dùng chung với khu vực khách hàng.
-        </p>
-        <p class="footer">© 2025 Admin Console</p>
       </form>
     </main>
 
     <script>
-      // Chỉ GIẢ LẬP tài khoản cố định cho quản trị như đề yêu cầu
+      // Tài khoản quản trị cố định (đúng yêu cầu)
       const ADMIN_USER = {
         username: "quanly1",
         password: "abcd1234",
         role: "admin",
       };
 
-      // Nếu đã đăng nhập admin rồi thì vào thẳng dashboard
-      (function bootstrapGuard() {
+      // Nếu đã đăng nhập admin thì vào thẳng dashboard
+      (function () {
         try {
           const u = JSON.parse(
             sessionStorage.getItem("session.user") || "null"
           );
-          if (u && u.role === "admin") {
-            location.replace("./index.html"); // đường dẫn tương đối
-          }
+          if (u && u.role === "admin") location.replace("./index.html");
         } catch {}
       })();
+
+      // Ép điền sẵn mỗi lần mở trang (phòng trường hợp browser xóa autofill)
+      document.addEventListener("DOMContentLoaded", () => {
+        const u = document.getElementById("username");
+        const p = document.getElementById("password");
+        if (u && !u.value) u.value = ADMIN_USER.username;
+        if (p && !p.value) p.value = ADMIN_USER.password;
+      });
 
       const form = document.getElementById("adminLoginForm");
       const errEl = document.getElementById("err");
@@ -215,7 +186,6 @@
         ).trim();
         const password = document.getElementById("password").value || "";
 
-        // Chặn dùng nhầm tài khoản khách
         if (
           username !== ADMIN_USER.username ||
           password !== ADMIN_USER.password
@@ -223,22 +193,23 @@
           errEl.textContent = "Sai tài khoản hoặc mật khẩu quản trị.";
           return;
         }
-
-        // Xoá mọi phiên người dùng (không dùng chung giao diện)
+        // Clear session cũ (nếu có)
         try {
           sessionStorage.removeItem("session.user");
         } catch {}
 
-        // Lưu phiên ADMIN vào sessionStorage
-        const session = {
-          username: ADMIN_USER.username,
-          role: ADMIN_USER.role,
-          loginAt: new Date().toISOString(),
-        };
-        sessionStorage.setItem("session.user", JSON.stringify(session));
+        // Lưu phiên admin
+        sessionStorage.setItem(
+          "session.user",
+          JSON.stringify({
+            username: ADMIN_USER.username,
+            role: ADMIN_USER.role,
+            loginAt: new Date().toISOString(),
+          })
+        );
 
-        // Chuyển tới dashboard admin
-        location.href = "./index.html"; // luôn dùng đường dẫn tương đối
+        // Vào dashboard
+        location.href = "./index.html";
       });
     </script>
   </body>
