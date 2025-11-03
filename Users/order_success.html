@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <header class="header">
@@ -230,6 +231,47 @@
   document.getElementById('oid').textContent = usp.get('id') || '—';
   window.SVUI?.updateCartCount?.();
 </script>
+<script>
+(function(){
+  function isMobile(){ return window.matchMedia("(max-width: 767.98px)").matches; }
+
+  function setInitialState(){
+    document.querySelectorAll(".site-footer .widget-ft").forEach((box, i) => {
+      // Mặc định: đóng hết, riêng cột cuối "Liên hệ" mở sẵn (tuỳ bạn)
+      if (isMobile()){
+        if (box.querySelector(".title-menu")?.textContent.trim().toLowerCase().includes("liên hệ")){
+          box.classList.add("is-open");
+        } else {
+          box.classList.remove("is-open");
+        }
+      } else {
+        box.classList.add("is-open"); // PC luôn mở
+      }
+    });
+  }
+
+  // Toggle khi bấm tiêu đề (chỉ mobile)
+  function bindClick(){
+    document.querySelectorAll(".site-footer .widget-ft .title-menu").forEach(title => {
+      title.addEventListener("click", () => {
+        if (!isMobile()) return; // PC không toggle
+        const box = title.closest(".widget-ft");
+        if (!box) return;
+        box.classList.toggle("is-open");
+      });
+    });
+  }
+
+  // Khởi tạo
+  document.addEventListener("DOMContentLoaded", () => {
+    setInitialState();
+    bindClick();
+  });
+  // Đổi trạng thái khi resize giữa mobile/PC
+  window.addEventListener("resize", setInitialState);
+})();
+</script>
+
 </body>
 </html>
 <script src="/assets/js/auth.js"></script>

@@ -7,19 +7,21 @@ window.SV_PRODUCT_SEED = [
     category: "hair_spray",
     price: 550000,
     original_price: 690000,
-    image: "/assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp",
+    image:
+      "/assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp",
     images: [
-      "/assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp"
+      "/assets/images/product/Hair_spray/Davines_Extra_Strong_Hairspray/gom-xit-toc-davines-extra-strong-hairspray-400ml.webp",
     ],
     badge: "sale",
     featured: false,
     short_desc: "Giữ nếp cực mạnh, ít bết dính, khô nhanh.",
-    long_desc: "Davines Extra Strong Hairspray cho độ giữ nếp rất mạnh nhưng không tạo cảm giác khô cứng. Phù hợp tạo kiểu cần form ổn định lâu trong ngày. Dễ chải lại, ít để lại cặn.",
+    long_desc:
+      "Davines Extra Strong Hairspray cho độ giữ nếp rất mạnh nhưng không tạo cảm giác khô cứng. Phù hợp tạo kiểu cần form ổn định lâu trong ngày. Dễ chải lại, ít để lại cặn.",
     specs: {
       "Dung tích": "400ml",
       "Độ giữ nếp": "Rất mạnh",
       "Hoàn thiện": "Tự nhiên",
-      "Xuất xứ": "Italy"
+      "Xuất xứ": "Italy",
     },
     unit: "chai",
     quantity: 1,
@@ -31,51 +33,54 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Phun tơi, không để lại mảng trắng",
       "Cố định form cả ngày, dễ chải lại",
-      "Phù hợp tóc trung bình đến dày"
+      "Phù hợp tóc trung bình đến dày",
     ],
     usage: [
       "Lắc đều chai trước khi dùng 3–5 giây.",
       "Giữ khoảng cách 20–30cm, xịt đều lên tóc đã tạo kiểu.",
-      "Muốn giữ nếp mạnh hơn: xịt thêm từng lớp mỏng."
-    ]
+      "Muốn giữ nếp mạnh hơn: xịt thêm từng lớp mỏng.",
+    ],
   },
   {
-    id: "spray-2vee",
-    name: "Gôm xịt tóc 2Vee",
-    brand: "2Vee",
+    id: "spray-davines-strong",
+    name: "Gôm xịt tóc Davines Strong Hairspray",
+    brand: "Davines",
     category: "hair_spray",
-    price: 270000,
-    image: "/assets/images/product/Hair_spray/2Vee/1552806056-gom-xit-2vee-01.webp",
+    price: 550000,
+    image:
+      "/assets/images/product/Hair_spray/Davines_Strong_Hairspray/gom-xit-toc-davines-strong-hairspray-400ml.webp",
     images: [
-      "/assets/images/product/Hair_spray/2Vee/1552806056-gom-xit-2vee-01.webp"
+      "/assets/images/product/Hair_spray/Davines_Strong_Hairspray/gom-xit-toc-davines-strong-hairspray-400ml.webp",
     ],
     badge: "",
     featured: false,
-    short_desc: "Giữ nếp vừa, mùi hương dễ chịu.",
-    long_desc: "2Vee thích hợp tóc mỏng đến trung bình, cần độ giữ nếp vừa phải và độ bóng thấp.",
+    short_desc: "Giữ nếp mạnh, không nặng tóc, dễ chải lại.",
+    long_desc:
+      "Davines Strong Hairspray cho độ giữ nếp mạnh mẽ, khô nhanh, hạn chế bết dính và giữ kiểu lâu trong ngày. Phù hợp tạo kiểu cần độ cố định cao nhưng vẫn giữ bề mặt tóc tự nhiên.",
     specs: {
-      "Dung tích": "300ml",
-      "Độ giữ nếp": "Vừa",
-      "Hoàn thiện": "Mờ nhẹ"
+      "Dung tích": "342g",
+      "Độ giữ nếp": "Mạnh",
+      "Hoàn thiện": "Tự nhiên",
     },
     unit: "chai",
     quantity: 1,
     min_qty: 1,
     max_qty: 20,
-    stock: 50,
+    stock: 30,
 
-    tags: ["phổ thông", "dễ dùng"],
+    tags: ["giữ nếp mạnh", "chuyên nghiệp"],
     details: [
-      "Mùi hương dịu, không gắt",
-      "Không gây bết, dễ gội sạch",
-      "Phù hợp đi học/đi làm hằng ngày"
+      "Cố định kiểu lâu, kháng ẩm tốt",
+      "Phun sương mịn, không để lại cặn trắng",
+      "Dễ chải lại và gội sạch",
     ],
     usage: [
-      "Tạo kiểu xong rồi mới xịt cố định.",
-      "Xịt theo lớp mỏng để tránh nặng tóc.",
-      "Có thể xịt vào lược rồi chải để phân bố đều."
-    ]
+      "Lắc đều, giữ chai cách tóc 20–30cm rồi xịt theo lớp mỏng.",
+      "Xịt thêm ở những vùng cần cố định mạnh.",
+      "Có thể xịt lên lược/đầu ngón tay để định hình chi tiết.",
+    ],
   },
+
   {
     id: "spray-tigi-bed-head",
     name: "Gôm xịt tóc Tigi Bed Head",
@@ -83,18 +88,20 @@ window.SV_PRODUCT_SEED = [
     category: "hair_spray",
     price: 300000,
     original_price: 550000,
-    image: "/assets/images/product/Hair_spray/Bed_head/gom-tigi-bead-head-2-700.webp",
+    image:
+      "/assets/images/product/Hair_spray/Bed_head/gom-tigi-bead-head-2-700.webp",
     images: [
-      "/assets/images/product/Hair_spray/Bed_head/gom-tigi-bead-head-2-700.webp"
+      "/assets/images/product/Hair_spray/Bed_head/gom-tigi-bead-head-2-700.webp",
     ],
     badge: "sale",
     featured: false,
     short_desc: "Giữ nếp khá mạnh, mùi thơm đặc trưng.",
-    long_desc: "Dòng Bed Head quen thuộc của TIGI cho khả năng khóa nếp tốt, phù hợp nhiều kiểu tóc phổ biến.",
+    long_desc:
+      "Dòng Bed Head quen thuộc của TIGI cho khả năng khóa nếp tốt, phù hợp nhiều kiểu tóc phổ biến.",
     specs: {
       "Dung tích": "400ml",
       "Độ giữ nếp": "Mạnh",
-      "Hoàn thiện": "Tự nhiên"
+      "Hoàn thiện": "Tự nhiên",
     },
     unit: "chai",
     quantity: 1,
@@ -106,13 +113,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Khả năng khóa ẩm, giữ nếp bền",
       "Phun sương mịn, ít để lại cặn",
-      "Phù hợp tóc trung bình–dày"
+      "Phù hợp tóc trung bình–dày",
     ],
     usage: [
       "Lắc đều, xịt cách tóc 25–30cm.",
       "Tập trung vùng cần cố định như mái/đỉnh.",
-      "Muốn tăng hold: xịt nhiều lớp mỏng."
-    ]
+      "Muốn tăng hold: xịt nhiều lớp mỏng.",
+    ],
   },
   {
     id: "spray-kevin-murphy-session",
@@ -120,18 +127,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Kevin Murphy",
     category: "hair_spray",
     price: 690000,
-    image: "/assets/images/product/Hair_spray/Kevin Murphy Session Spray/1468319756-session-spray-1.webp",
+    image:
+      "/assets/images/product/Hair_spray/Kevin Murphy Session Spray/1468319756-session-spray-1.webp",
     images: [
-      "/assets/images/product/Hair_spray/Kevin Murphy Session Spray/1468319756-session-spray-1.webp"
+      "/assets/images/product/Hair_spray/Kevin Murphy Session Spray/1468319756-session-spray-1.webp",
     ],
     badge: "",
     featured: true,
     short_desc: "Giữ nếp tự nhiên, không khô cứng.",
-    long_desc: "Session Spray cho độ giữ nếp linh hoạt, tóc vẫn mềm mại, thích hợp tạo kiểu layer và texture.",
+    long_desc:
+      "Session Spray cho độ giữ nếp linh hoạt, tóc vẫn mềm mại, thích hợp tạo kiểu layer và texture.",
     specs: {
       "Dung tích": "400ml",
       "Độ giữ nếp": "Vừa",
-      "Hoàn thiện": "Tự nhiên"
+      "Hoàn thiện": "Tự nhiên",
     },
     unit: "chai",
     quantity: 1,
@@ -143,13 +152,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Không chứa sulfate/paraben",
       "Giữ nếp linh hoạt, tóc vẫn mềm",
-      "Phù hợp tóc mảnh đến trung bình"
+      "Phù hợp tóc mảnh đến trung bình",
     ],
     usage: [
       "Xịt lớp mỏng để giữ tự nhiên.",
       "Muốn định hình mạnh hơn: xịt thêm vào phần chân tóc.",
-      "Có thể chải lại sau khi xịt mà không vón cục."
-    ]
+      "Có thể chải lại sau khi xịt mà không vón cục.",
+    ],
   },
   {
     id: "spray-butterfly-shadow-600ml",
@@ -158,19 +167,21 @@ window.SV_PRODUCT_SEED = [
     category: "hair_spray",
     price: 1100000,
     original_price: 1290000,
-    image: "/assets/images/product/Hair_spray/Butterfly_shadow_600ml/1426968buter-fly.webp",
+    image:
+      "/assets/images/product/Hair_spray/Butterfly_shadow_600ml/1426968buter-fly.webp",
     images: [
-      "/assets/images/product/Hair_spray/Butterfly_shadow_600ml/1426968buter-fly.webp"
+      "/assets/images/product/Hair_spray/Butterfly_shadow_600ml/1426968buter-fly.webp",
     ],
     badge: "new",
     featured: true,
     short_desc: "Giữ nếp vừa–mạnh, khô nhanh, ít bết.",
-    long_desc: "Butterfly Shadow 600ml cho độ giữ nếp ổn định, phun tơi mịn, khô nhanh, phù hợp set form cả ngày.",
+    long_desc:
+      "Butterfly Shadow 600ml cho độ giữ nếp ổn định, phun tơi mịn, khô nhanh, phù hợp set form cả ngày.",
     specs: {
       "Dung tích": "600ml",
       "Độ giữ nếp": "Mạnh",
       "Hoàn thiện": "Tự nhiên",
-      "Xuất xứ": "Trung Quốc"
+      "Xuất xứ": "Trung Quốc",
     },
     unit: "chai",
     quantity: 1,
@@ -182,13 +193,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Dung tích lớn, dùng tiết kiệm",
       "Phun sương đều, không dính tóc",
-      "Phù hợp salon/nhu cầu dùng nhiều"
+      "Phù hợp salon/nhu cầu dùng nhiều",
     ],
     usage: [
       "Lắc đều, xịt cách 25–30cm.",
       "Xịt theo lớp mỏng để không nặng tóc.",
-      "Che mắt/da mặt khi xịt để tránh kích ứng."
-    ]
+      "Che mắt/da mặt khi xịt để tránh kích ứng.",
+    ],
   },
   {
     id: "spray-luxurious-hold-10",
@@ -197,19 +208,21 @@ window.SV_PRODUCT_SEED = [
     category: "hair_spray",
     price: 390000,
     original_price: 480000,
-    image: "/assets/images/product/Hair_spray/Luxurious/gom-luxurious-10-c4ce5ee0-3663-4526-befa-79e4952930a0.webp",
+    image:
+      "/assets/images/product/Hair_spray/Luxurious/gom-luxurious-10-c4ce5ee0-3663-4526-befa-79e4952930a0.webp",
     images: [
-      "/assets/images/product/Hair_spray/Luxurious/gom-luxurious-10-c4ce5ee0-3663-4526-befa-79e4952930a0.webp"
+      "/assets/images/product/Hair_spray/Luxurious/gom-luxurious-10-c4ce5ee0-3663-4526-befa-79e4952930a0.webp",
     ],
     badge: "new",
     featured: false,
     short_desc: "Giữ nếp rất mạnh (Hold 10), phun mịn, khô nhanh.",
-    long_desc: "Luxurious Hold 10 cho khả năng khóa nếp mạnh mẽ, kiểm soát tóc tốt, phù hợp tạo kiểu cần form chắc.",
+    long_desc:
+      "Luxurious Hold 10 cho khả năng khóa nếp mạnh mẽ, kiểm soát tóc tốt, phù hợp tạo kiểu cần form chắc.",
     specs: {
       "Dung tích": "600ml",
       "Độ giữ nếp": "Rất mạnh (10)",
       "Hoàn thiện": "Tự nhiên/khô",
-      "Xuất xứ": "—"
+      "Xuất xứ": "—",
     },
     unit: "chai",
     quantity: 1,
@@ -221,13 +234,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Độ hold cao, kiểm soát tóc rối tốt",
       "Phù hợp tóc dày, kiểu dựng phồng",
-      "Ít để lại cặn, dễ gội"
+      "Ít để lại cặn, dễ gội",
     ],
     usage: [
       "Xịt lớp mỏng từ xa 25–30cm.",
       "Dùng tay vuốt/định hình ngay sau khi xịt.",
-      "Không xịt quá gần để tránh ướt tóc."
-    ]
+      "Không xịt quá gần để tránh ướt tóc.",
+    ],
   },
 
   // ===== Hair wax =====
@@ -238,18 +251,20 @@ window.SV_PRODUCT_SEED = [
     category: "hair_wax",
     price: 250000,
     original_price: 350000,
-    image: "/assets/images/product/Hair_wax/Apestomen_Nitro_Wax/apestomen-nitro-wax-compressed-1-600x600.webp",
+    image:
+      "/assets/images/product/Hair_wax/Apestomen_Nitro_Wax/apestomen-nitro-wax-compressed-1-600x600.webp",
     images: [
-      "/assets/images/product/Hair_wax/Apestomen_Nitro_Wax/apestomen-nitro-wax-compressed-1-600x600.webp"
+      "/assets/images/product/Hair_wax/Apestomen_Nitro_Wax/apestomen-nitro-wax-compressed-1-600x600.webp",
     ],
     badge: "sale",
     featured: true,
     short_desc: "Giữ nếp mạnh, thơm dịu, dễ gội.",
-    long_desc: "Nitro Wax cho độ giữ nếp mạnh và độ bóng mờ. Chất sáp mịn, dễ xoa đều, phù hợp kiểu tóc cần form chắc.",
+    long_desc:
+      "Nitro Wax cho độ giữ nếp mạnh và độ bóng mờ. Chất sáp mịn, dễ xoa đều, phù hợp kiểu tóc cần form chắc.",
     specs: {
       "Thể tích": "80g",
       "Độ giữ nếp": "Mạnh",
-      "Độ bóng": "Mờ"
+      "Độ bóng": "Mờ",
     },
     unit: "hũ",
     quantity: 1,
@@ -261,13 +276,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Kết cấu kem sáp mịn, dễ apply",
       "Không bết, không nặng tóc",
-      "Giữ nếp tốt trong khí hậu nóng ẩm"
+      "Giữ nếp tốt trong khí hậu nóng ẩm",
     ],
     usage: [
       "Lấy lượng bằng hạt đậu, xoa nóng trong lòng bàn tay.",
       "Vuốt từ chân đến ngọn, tập trung vùng cần giữ nếp.",
-      "Có thể thêm lớp mỏng nếu cần hold mạnh hơn."
-    ]
+      "Có thể thêm lớp mỏng nếu cần hold mạnh hơn.",
+    ],
   },
   {
     id: "wax-by-vilain-gold-digger",
@@ -276,19 +291,21 @@ window.SV_PRODUCT_SEED = [
     category: "hair_wax",
     price: 250000,
     original_price: 350000,
-    image: "/assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp",
+    image:
+      "/assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp",
     images: [
-      "/assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp"
+      "/assets/images/product/Hair_wax/By_Vilain_Gold_Digger/by-vilain-gold-digger-travel-open.webp",
     ],
     badge: "",
     featured: false,
     short_desc: "Strong hold, matte finish – dễ gội.",
-    long_desc: "Gold Digger nổi tiếng với độ giữ nếp mạnh nhưng không nặng tóc. Phù hợp nhiều chất tóc châu Á.",
+    long_desc:
+      "Gold Digger nổi tiếng với độ giữ nếp mạnh nhưng không nặng tóc. Phù hợp nhiều chất tóc châu Á.",
     specs: {
       "Thể tích": "70ml",
       "Độ giữ nếp": "Mạnh",
       "Độ bóng": "Mờ",
-      "Xuất xứ": "Đan Mạch"
+      "Xuất xứ": "Đan Mạch",
     },
     unit: "hũ",
     quantity: 1,
@@ -300,13 +317,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Độ mờ tự nhiên, texture đẹp",
       "Re-style tốt cả ngày",
-      "Hợp tóc trung bình đến dày"
+      "Hợp tóc trung bình đến dày",
     ],
     usage: [
       "Lấy lượng nhỏ, xoa đều tay.",
       "Vuốt vào tóc khô 80–100% để đạt hiệu ứng mờ.",
-      "Dùng lược/đầu ngón tay để tạo texture."
-    ]
+      "Dùng lược/đầu ngón tay để tạo texture.",
+    ],
   },
   {
     id: "wax-hanz-de-fuko-quicksand",
@@ -314,19 +331,21 @@ window.SV_PRODUCT_SEED = [
     brand: "Hanz de Fuko",
     category: "hair_wax",
     price: 500000,
-    image: "/assets/images/product/Hair_wax/Hanz_de_Fuko_Quicksand/untitled-1-425eb329-c3d1-4be6-b6f8-b687c916e2d2.webp",
+    image:
+      "/assets/images/product/Hair_wax/Hanz_de_Fuko_Quicksand/untitled-1-425eb329-c3d1-4be6-b6f8-b687c916e2d2.webp",
     images: [
-      "/assets/images/product/Hair_wax/Hanz_de_Fuko_Quicksand/untitled-1-425eb329-c3d1-4be6-b6f8-b687c916e2d2.webp"
+      "/assets/images/product/Hair_wax/Hanz_de_Fuko_Quicksand/untitled-1-425eb329-c3d1-4be6-b6f8-b687c916e2d2.webp",
     ],
     badge: "",
     featured: true,
     short_desc: "Tạo phồng tốt, hút dầu, finish mờ.",
-    long_desc: "Quicksand chứa diatomaceous earth giúp hút dầu, tạo texture và volume mạnh mẽ cho tóc mỏng.",
+    long_desc:
+      "Quicksand chứa diatomaceous earth giúp hút dầu, tạo texture và volume mạnh mẽ cho tóc mỏng.",
     specs: {
       "Thể tích": "56g",
       "Độ giữ nếp": "Mạnh",
       "Độ bóng": "Mờ",
-      "Tạo phồng": "Rất tốt"
+      "Tạo phồng": "Rất tốt",
     },
     unit: "hũ",
     quantity: 1,
@@ -337,13 +356,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Hút dầu thừa, cho tóc khô ráo",
       "Tăng volume rõ rệt",
-      "Giữ nếp không nặng tóc"
+      "Giữ nếp không nặng tóc",
     ],
     usage: [
       "Dùng trên tóc khô để tối đa tạo phồng.",
       "Tập trung vào chân tóc rồi vuốt ra ngọn.",
-      "Kết hợp máy sấy gió mát để tăng volume."
-    ]
+      "Kết hợp máy sấy gió mát để tăng volume.",
+    ],
   },
   {
     id: "wax-kevin-murphy-night-rider",
@@ -351,18 +370,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Kevin Murphy",
     category: "hair_wax",
     price: 650000,
-    image: "/assets/images/product/Hair_wax/Kevin_Murphy_Night_Rider/kevin-murphy-night-rider-2.jpg",
+    image:
+      "/assets/images/product/Hair_wax/Kevin_Murphy_Night_Rider/kevin-murphy-night-rider-2.jpg",
     images: [
-      "/assets/images/product/Hair_wax/Kevin_Murphy_Night_Rider/kevin-murphy-night-rider-2.jpg"
+      "/assets/images/product/Hair_wax/Kevin_Murphy_Night_Rider/kevin-murphy-night-rider-2.jpg",
     ],
     badge: "",
     featured: true,
     short_desc: "Giữ nếp mạnh, mờ hoàn toàn, mùi sạch.",
-    long_desc: "Night Rider cho độ giữ nếp rất chắc, hoàn thiện mờ sâu. Phù hợp tóc dày, cần form khoẻ.",
+    long_desc:
+      "Night Rider cho độ giữ nếp rất chắc, hoàn thiện mờ sâu. Phù hợp tóc dày, cần form khoẻ.",
     specs: {
       "Thể tích": "100g",
       "Độ giữ nếp": "Rất mạnh",
-      "Độ bóng": "Mờ hoàn toàn"
+      "Độ bóng": "Mờ hoàn toàn",
     },
     unit: "hũ",
     quantity: 1,
@@ -374,13 +395,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Kết dính tốt, shape chắc",
       "Không bóng, không nhờn",
-      "Bền nếp cả ngày"
+      "Bền nếp cả ngày",
     ],
     usage: [
       "Làm ấm sáp giữa hai lòng bàn tay.",
       "Vuốt tập trung vùng cần giữ nếp mạnh.",
-      "Dùng lược răng thưa để hoàn thiện kiểu."
-    ]
+      "Dùng lược răng thưa để hoàn thiện kiểu.",
+    ],
   },
   {
     id: "wax-patricks-m3",
@@ -388,18 +409,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Patricks",
     category: "hair_wax",
     price: 1200000,
-    image: "/assets/images/product/Hair_wax/Patricks_M3_Matte_Finish_Strong_Hold_Styling_Product/patricks-m3-matte-finish-1.webp",
+    image:
+      "/assets/images/product/Hair_wax/Patricks_M3_Matte_Finish_Strong_Hold_Styling_Product/patricks-m3-matte-finish-1.webp",
     images: [
-      "/assets/images/product/Hair_wax/Patricks_M3_Matte_Finish_Strong_Hold_Styling_Product/patricks-m3-matte-finish-1.webp"
+      "/assets/images/product/Hair_wax/Patricks_M3_Matte_Finish_Strong_Hold_Styling_Product/patricks-m3-matte-finish-1.webp",
     ],
     badge: "new",
     featured: true,
     short_desc: "Luxury wax – giữ nếp mạnh, mùi sang.",
-    long_desc: "Dòng cao cấp của Patricks với độ giữ nếp mạnh, texture đẹp, cảm giác dùng mịn và mùi hương cao cấp.",
+    long_desc:
+      "Dòng cao cấp của Patricks với độ giữ nếp mạnh, texture đẹp, cảm giác dùng mịn và mùi hương cao cấp.",
     specs: {
       "Thể tích": "75g",
       "Độ giữ nếp": "Mạnh",
-      "Độ bóng": "Mờ"
+      "Độ bóng": "Mờ",
     },
     unit: "hũ",
     quantity: 1,
@@ -411,13 +434,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Kết cấu cao cấp, ít cần lượng dùng",
       "Giữ nếp chuẩn salon",
-      "Mùi hương tinh tế"
+      "Mùi hương tinh tế",
     ],
     usage: [
       "Lấy lượng nhỏ, xoa đều.",
       "Vuốt trên tóc khô để đạt hiệu ứng mờ đẹp.",
-      "Thêm sáp từ từ để tránh dư."
-    ]
+      "Thêm sáp từ từ để tránh dư.",
+    ],
   },
 
   // ===== Conditioner / Oil =====
@@ -428,18 +451,20 @@ window.SV_PRODUCT_SEED = [
     category: "hair_conditioner",
     price: 550000,
     original_price: 689000,
-    image: "/assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp",
+    image:
+      "/assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp",
     images: [
-      "/assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp"
+      "/assets/images/product/Hair_conditioner/Blumaan_Hydrating_Hair_Oil/00-hydrating-hair-oil-2000.webp",
     ],
     badge: "sale",
     featured: true,
     short_desc: "Dưỡng ẩm, chống xơ rối, bóng nhẹ.",
-    long_desc: "Hydrating Hair Oil giúp phục hồi tóc khô xơ, giảm frizz và tăng độ mềm mượt mà không nặng tóc.",
+    long_desc:
+      "Hydrating Hair Oil giúp phục hồi tóc khô xơ, giảm frizz và tăng độ mềm mượt mà không nặng tóc.",
     specs: {
       "Dung tích": "50ml",
-      "Finish": "Bóng nhẹ",
-      "Phù hợp": "Tóc khô/xơ"
+      Finish: "Bóng nhẹ",
+      "Phù hợp": "Tóc khô/xơ",
     },
     unit: "chai",
     quantity: 1,
@@ -451,13 +476,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Giảm xơ rối tức thì",
       "Không làm nặng tóc",
-      "Bảo vệ tóc trước nhiệt"
+      "Bảo vệ tóc trước nhiệt",
     ],
     usage: [
       "Nhỏ 1–3 giọt vào lòng bàn tay.",
       "Xoa đều rồi vuốt lên tóc ẩm hoặc khô, tránh sát da đầu.",
-      "Dùng trước khi sấy để chống nhiệt."
-    ]
+      "Dùng trước khi sấy để chống nhiệt.",
+    ],
   },
   {
     id: "oil-moroccanoil-treatment",
@@ -465,18 +490,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Moroccanoil",
     category: "hair_conditioner",
     price: 300000,
-    image: "/assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp",
+    image:
+      "/assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp",
     images: [
-      "/assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp"
+      "/assets/images/product/Hair_conditioner/Moroccanoil_Treatment/tinh-dau-duong-toc-moroccanoil-25ml-1.webp",
     ],
     badge: "",
     featured: true,
     short_desc: "Dưỡng mềm, giảm xơ rối tức thì.",
-    long_desc: "Công thức Argan Oil nổi tiếng giúp tóc mềm mại, bóng khoẻ và dễ chải.",
+    long_desc:
+      "Công thức Argan Oil nổi tiếng giúp tóc mềm mại, bóng khoẻ và dễ chải.",
     specs: {
       "Dung tích": "25ml",
-      "Finish": "Bóng",
-      "Thành phần": "Argan Oil"
+      Finish: "Bóng",
+      "Thành phần": "Argan Oil",
     },
     unit: "chai",
     quantity: 1,
@@ -488,13 +515,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Nuôi dưỡng sâu, phục hồi hư tổn",
       "Giảm rối, tăng bóng khoẻ",
-      "Mùi hương đặc trưng dễ chịu"
+      "Mùi hương đặc trưng dễ chịu",
     ],
     usage: [
       "Dùng 1–2 giọt cho tóc ngắn, 3–4 giọt cho tóc dài.",
       "Thoa từ giữa thân đến ngọn tóc.",
-      "Dùng hằng ngày hoặc sau khi gội."
-    ]
+      "Dùng hằng ngày hoặc sau khi gội.",
+    ],
   },
 
   // ===== Volumizing powder =====
@@ -504,18 +531,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Reuzel",
     category: "volumizing_powder",
     price: 450000,
-    image: "/assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp",
+    image:
+      "/assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp",
     images: [
-      "/assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp"
+      "/assets/images/product/Volumizing_powder/Reuzel_Matte_Texture_Powder/reuzel-matte-texture-powder-4.webp",
     ],
     badge: "out_of_stock",
     featured: false,
     short_desc: "Bột siêu nhẹ, tăng volume tức thì.",
-    long_desc: "Cho độ phồng nhanh, giữ texture khô ráo. Dùng tốt cho tóc mỏng/đổ dầu.",
+    long_desc:
+      "Cho độ phồng nhanh, giữ texture khô ráo. Dùng tốt cho tóc mỏng/đổ dầu.",
     specs: {
       "Khối lượng": "15g",
       "Hoàn thiện": "Mờ",
-      "Phù hợp": "Tóc mỏng/dầu"
+      "Phù hợp": "Tóc mỏng/dầu",
     },
     unit: "chai",
     quantity: 1,
@@ -527,13 +556,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Hạt bột siêu mịn, không vón",
       "Tăng độ dày cảm nhận",
-      "Kiểm soát dầu tốt"
+      "Kiểm soát dầu tốt",
     ],
     usage: [
       "Rắc ít bột vào chân tóc khô.",
       "Dùng tay xoa nhẹ để bột tan đều.",
-      "Tạo kiểu theo ý, có thể kết hợp sáp."
-    ]
+      "Tạo kiểu theo ý, có thể kết hợp sáp.",
+    ],
   },
   {
     id: "powder-roug-textured",
@@ -541,9 +570,10 @@ window.SV_PRODUCT_SEED = [
     brand: "ROUG",
     category: "volumizing_powder",
     price: 200000,
-    image: "/assets/images/product/Volumizing_powder/Roug_Textured Power_60ml/roug-textured-hair-power-3.webp",
+    image:
+      "/assets/images/product/Volumizing_powder/Roug_Textured Power_60ml/roug-textured-hair-power-3.webp",
     images: [
-      "/assets/images/product/Volumizing_powder/Roug_Textured Power_60ml/roug-textured-hair-power-3.webp"
+      "/assets/images/product/Volumizing_powder/Roug_Textured Power_60ml/roug-textured-hair-power-3.webp",
     ],
     badge: "",
     featured: false,
@@ -551,8 +581,8 @@ window.SV_PRODUCT_SEED = [
     long_desc: "Giải pháp nhanh cho tóc mỏng cần volume. Bám tóc tốt, dễ gội.",
     specs: {
       "Khối lượng": "20g",
-      "Finish": "Mờ",
-      "Độ phồng": "Tốt"
+      Finish: "Mờ",
+      "Độ phồng": "Tốt",
     },
     unit: "chai",
     quantity: 1,
@@ -561,16 +591,12 @@ window.SV_PRODUCT_SEED = [
     stock: 70,
 
     tags: ["budget"],
-    details: [
-      "Giá hợp lý, hiệu quả rõ",
-      "Không nặng tóc",
-      "Dễ gội sạch"
-    ],
+    details: ["Giá hợp lý, hiệu quả rõ", "Không nặng tóc", "Dễ gội sạch"],
     usage: [
       "Rắc trực tiếp lên tóc khô.",
       "Dùng tay xoa đều tạo độ dày.",
-      "Thêm bột từ từ để tránh bết."
-    ]
+      "Thêm bột từ từ để tránh bết.",
+    ],
   },
   {
     id: "powder-volcanic-ash",
@@ -578,18 +604,20 @@ window.SV_PRODUCT_SEED = [
     brand: "Apestomen",
     category: "volumizing_powder",
     price: 250000,
-    image: "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
+    image:
+      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
     images: [
-      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp"
+      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
     ],
     badge: "",
     featured: false,
     short_desc: "Hạt mịn, hút dầu tốt, tăng texture.",
-    long_desc: "Tạo hiệu ứng phồng khô, sạch da đầu, giữ form tự nhiên cả ngày.",
+    long_desc:
+      "Tạo hiệu ứng phồng khô, sạch da đầu, giữ form tự nhiên cả ngày.",
     specs: {
       "Khối lượng": "25g",
       "Hoàn thiện": "Mờ",
-      "Phù hợp": "Tóc dầu"
+      "Phù hợp": "Tóc dầu",
     },
     unit: "chai",
     quantity: 1,
@@ -600,13 +628,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Hút dầu, cho cảm giác sạch",
       "Tăng texture rõ rệt",
-      "Không để lại vệt trắng"
+      "Không để lại vệt trắng",
     ],
     usage: [
       "Rắc ít vào chân tóc.",
       "Massage nhẹ cho bột tan.",
-      "Vuốt tạo kiểu theo ý."
-    ]
+      "Vuốt tạo kiểu theo ý.",
+    ],
   },
   {
     id: "powder-volcanic-ash-featured",
@@ -615,9 +643,10 @@ window.SV_PRODUCT_SEED = [
     category: "volumizing_powder",
     price: 450000,
     original_price: 750000,
-    image: "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
+    image:
+      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
     images: [
-      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp"
+      "/assets/images/product/Volumizing_powder/Volcanic_Ash_Styling_Powder/bot-tao-phong-apestomen-ash.webp",
     ],
     badge: "sale",
     featured: true,
@@ -625,7 +654,7 @@ window.SV_PRODUCT_SEED = [
     long_desc: "Tính năng như bản thường, ưu đãi giá cho chương trình nổi bật.",
     specs: {
       "Khối lượng": "25g",
-      "Hoàn thiện": "Mờ"
+      "Hoàn thiện": "Mờ",
     },
     unit: "chai",
     quantity: 1,
@@ -638,13 +667,13 @@ window.SV_PRODUCT_SEED = [
     details: [
       "Hiệu năng tương đương bản thường",
       "Ưu đãi theo chương trình",
-      "Phù hợp mua dự trữ"
+      "Phù hợp mua dự trữ",
     ],
     usage: [
       "Rắc một lượng nhỏ lên chân tóc.",
       "Xoa đều và tạo kiểu.",
-      "Có thể kết hợp sáp để tăng giữ nếp."
-    ]
+      "Có thể kết hợp sáp để tăng giữ nếp.",
+    ],
   },
   {
     id: "powder-dapper-dan-ultra-matte-dust",
@@ -653,18 +682,20 @@ window.SV_PRODUCT_SEED = [
     category: "volumizing_powder",
     price: 400000,
     original_price: 450000,
-    image: "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
+    image:
+      "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
     images: [
-      "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp"
+      "/assets/images/product/Volumizing_powder/Dapper_Dan_ULTRA_MATTE_TEXTURE_DUST/texture-dust-front-2048x.webp",
     ],
     badge: "sale",
     featured: true,
     short_desc: "Ultra matte – volume cao, sạch tóc.",
-    long_desc: "Hạt bột mịn siêu khô, tạo cảm giác tóc dày lên rõ rệt, không bết.",
+    long_desc:
+      "Hạt bột mịn siêu khô, tạo cảm giác tóc dày lên rõ rệt, không bết.",
     specs: {
       "Khối lượng": "20g",
-      "Finish": "Siêu mờ",
-      "Độ phồng": "Rất cao"
+      Finish: "Siêu mờ",
+      "Độ phồng": "Rất cao",
     },
     unit: "chai",
     quantity: 1,
@@ -673,15 +704,11 @@ window.SV_PRODUCT_SEED = [
     stock: 20,
     reviews_count: 33,
     tags: ["ultra-matte", "texture"],
-    details: [
-      "Siêu mờ, không bóng",
-      "Độ phồng tức thì",
-      "Giữ nếp khô thoáng"
-    ],
+    details: ["Siêu mờ, không bóng", "Độ phồng tức thì", "Giữ nếp khô thoáng"],
     usage: [
       "Rắc nhẹ nhàng vào chân tóc.",
       "Dùng đầu ngón tay xoa đều.",
-      "Tạo nếp bằng sáp/lược nếu cần."
-    ]
-  }
+      "Tạo nếp bằng sáp/lược nếu cần.",
+    ],
+  },
 ];

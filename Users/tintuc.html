@@ -644,6 +644,47 @@
   <link rel="preload" as="style" href="https://bizweb.dktcdn.net/100/004/366/themes/900241/assets/bpr-products-module.css">
   <link rel="stylesheet" href="https://bizweb.dktcdn.net/100/004/366/themes/900241/assets/bpr-products-module.css" />
   <div class="bizweb-product-reviews-module"></div>
+  <script>
+(function(){
+  function isMobile(){ return window.matchMedia("(max-width: 767.98px)").matches; }
+
+  function setInitialState(){
+    document.querySelectorAll(".site-footer .widget-ft").forEach((box, i) => {
+      // Mặc định: đóng hết, riêng cột cuối "Liên hệ" mở sẵn (tuỳ bạn)
+      if (isMobile()){
+        if (box.querySelector(".title-menu")?.textContent.trim().toLowerCase().includes("liên hệ")){
+          box.classList.add("is-open");
+        } else {
+          box.classList.remove("is-open");
+        }
+      } else {
+        box.classList.add("is-open"); // PC luôn mở
+      }
+    });
+  }
+
+  // Toggle khi bấm tiêu đề (chỉ mobile)
+  function bindClick(){
+    document.querySelectorAll(".site-footer .widget-ft .title-menu").forEach(title => {
+      title.addEventListener("click", () => {
+        if (!isMobile()) return; // PC không toggle
+        const box = title.closest(".widget-ft");
+        if (!box) return;
+        box.classList.toggle("is-open");
+      });
+    });
+  }
+
+  // Khởi tạo
+  document.addEventListener("DOMContentLoaded", () => {
+    setInitialState();
+    bindClick();
+  });
+  // Đổi trạng thái khi resize giữa mobile/PC
+  window.addEventListener("resize", setInitialState);
+})();
+</script>
+
 </body>
 </html><script src="/assets/js/auth.js"></script>
 
