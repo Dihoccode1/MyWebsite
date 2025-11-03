@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Bảng điều khiền dành cho quản trị viên</title>
   </head>
 
@@ -19,7 +19,8 @@
               <span class="title">Nobility 1800s</span>
             </a>
           </li>
-          <li>
+
+          <li class="hovered" id="nav-dashboard">
             <a href="#">
               <span class="icon">
                 <ion-icon name="home-outline"></ion-icon>
@@ -27,46 +28,49 @@
               <span class="title">Bảng điều khiển </span>
             </a>
           </li>
-          <li>
+
+          <li id="nav-customers">
             <a href="#">
               <span class="icon">
                 <ion-icon name="people-outline"></ion-icon>
               </span>
-              <span class="title">Khách hàng</span>
+              <span class="title"> Quản lý khách hàng</span>
             </a>
           </li>
-          <li>
+
+          <li id="nav-categories">
             <a href="#">
               <span class="icon">
-                <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                <ion-icon name="bookmarks-outline"></ion-icon>
               </span>
-              <span class="title">Thông báo</span>
+              <span class="title">Quản lý danh mục </span>
             </a>
           </li>
-          <li>
+          <li id="nav-products">
             <a href="#">
               <span class="icon">
-                <ion-icon name="help-outline"></ion-icon>
+                <ion-icon name="bag-remove-outline"></ion-icon>
               </span>
-              <span class="title">Trợ giúp</span>
+              <span class="title">Quản lý sản phẩm</span>
             </a>
           </li>
-          <li>
+          <li id="nav-inventory">
             <a href="#">
               <span class="icon">
-                <ion-icon name="settings-outline"></ion-icon>
+                <ion-icon name="file-tray-stacked-outline"></ion-icon>
               </span>
-              <span class="title">Cài đặt</span>
+              <span class="title">Quản lý hàng tồn kho</span>
             </a>
           </li>
-          <li>
+          <li id="nav-orders">
             <a href="#">
               <span class="icon">
-                <ion-icon name="lock-closed-outline"></ion-icon>
+                <ion-icon name="newspaper-outline"></ion-icon>
               </span>
-              <span class="title">Mật khẩu</span>
+              <span class="title">Quản lý đơn hàng</span>
             </a>
           </li>
+          <hr />
           <li>
             <a href="#">
               <span class="icon">
@@ -90,178 +94,208 @@
           </label>
         </div>
         <div class="user">
-          <img src="/assets/img/user1.png" alt="" />
+          <img src="./assets/img/user1.png" alt="" />
         </div>
       </div>
-      <div class="cardBox">
-        <div class="card">
-          <div>
-            <div class="numbers">1,504</div>
-            <div class="cardName">Lượt xem theo ngày</div>
+
+      <div id="dashboard-content">
+        <div class="cardBox">
+          <div class="card">
+            <div>
+              <div class="numbers">1,504</div>
+              <div class="cardName">Lượt xem theo ngày</div>
+            </div>
+            <div class="iconBx">
+              <ion-icon name="eye-outline"></ion-icon>
+            </div>
           </div>
-          <div class="iconBx">
-            <ion-icon name="eye-outline"></ion-icon>
+          <div class="card">
+            <div>
+              <div class="numbers">80</div>
+              <div class="cardName">Doanh số</div>
+            </div>
+            <div class="iconBx">
+              <ion-icon name="cart-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card">
+            <div>
+              <div class="numbers">284</div>
+              <div class="cardName">Bình luận</div>
+            </div>
+            <div class="iconBx">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+            </div>
+          </div>
+          <div class="card">
+            <div>
+              <div class="numbers">36.363.363đ</div>
+              <div class="cardName">Doanh thu</div>
+            </div>
+            <div class="iconBx">
+              <ion-icon name="cash-outline"></ion-icon>
+            </div>
           </div>
         </div>
-        <div class="card">
-          <div>
-            <div class="numbers">80</div>
-            <div class="cardName">Doanh số</div>
+        <div class="details">
+          <div class="recentOrders">
+            <div class="cardHeader">
+              <h2>Đơn hàng gần đây</h2>
+              <a href="#" class="btn">Xem tất cả</a>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <td>Tên</td>
+                  <td>Giá</td>
+                  <td>Thanh toán</td>
+                  <td>Trạng thái</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Sáp vuốt tóc Apestomen Nitro</td>
+                  <td>300.000đ</td>
+                  <td>Đã thanh toán</td>
+                  <td><span class="status delivered">Đã vận chuyển</span></td>
+                </tr>
+                <tr>
+                  <td>Sáp vuốt tóc By Vilain Gold Digger</td>
+                  <td>449.000đ</td>
+                  <td>Chưa thanh toán</td>
+                  <td><span class="status returned">Đã trả hàng</span></td>
+                </tr>
+                <tr>
+                  <td>Gôm xịt tóc Kevin Murphy Session</td>
+                  <td>467.000đ</td>
+                  <td>Đã thanh toán</td>
+                  <td><span class="status inPending">Đang chờ xử lý</span></td>
+                </tr>
+                <tr>
+                  <td>Bột tạo phồng Patricks HP1 Hair Powder</td>
+                  <td>1.000.000đ</td>
+                  <td>Đã thanh toán</td>
+                  <td><span class="status inProgress">Đang xử lý</span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="iconBx">
-            <ion-icon name="cart-outline"></ion-icon>
-          </div>
-        </div>
-        <div class="card">
-          <div>
-            <div class="numbers">284</div>
-            <div class="cardName">Bình luận</div>
-          </div>
-          <div class="iconBx">
-            <ion-icon name="chatbubbles-outline"></ion-icon>
-          </div>
-        </div>
-        <div class="card">
-          <div>
-            <div class="numbers">36.363.363đ</div>
-            <div class="cardName">Doanh thu</div>
-          </div>
-          <div class="iconBx">
-            <ion-icon name="cash-outline"></ion-icon>
+
+          <div class="recentCustomers">
+            <div class="cardHeader">
+              <h2>Khách hàng gần đây</h2>
+            </div>
+            <table>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="./assets/img/customer/John.jpg" alt="" />
+                  </div>
+                </td>
+                <td>
+                  <h4>John Doe <br /><span>Vương quốc Anh</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="./assets/img/customer/David.jpg" alt="" />
+                  </div>
+                </td>
+                <td>
+                  <h4>David <br /><span>Ý</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="./assets/img/customer/David.jpg" alt="" />
+                  </div>
+                </td>
+                <td>
+                  <h4>David <br /><span>Ý</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="./assets/img/customer/David.jpg" alt="" />
+                  </div>
+                </td>
+                <td>
+                  <h4>David <br /><span>Ý</span></h4>
+                </td>
+              </tr>
+              <tr>
+                <td width="60px">
+                  <div class="imgBx">
+                    <img src="./assets/img/customer/Emily.jpg" alt="" />
+                  </div>
+                </td>
+                <td>
+                  <h4>Emily <br /><span>Pháp</span></h4>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>
-      <div class="details">
-        <div class="recentOrders">
-          <div class="cardHeader">
-            <h2>Đơn hàng gần đây</h2>
-            <a href="#" class="btn">Xem tất cả</a>
+
+      <div id="customers-content" style="display: none">
+        <div class="details customer-list">
+          <div class="recentOrders">
+            <div class="cardHeader">
+              <h2>Danh sách Khách hàng</h2>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <td>Tên</td>
+                  <td>Email</td>
+                  <td>Số điện thoại</td>
+                  <td>Trạng thái</td>
+                  <td>Hành động</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td>
+                  <td>john.doe@email.com</td>
+                  <td>0901234567</td>
+                  <td><span class="status delivered">Hoạt động</span></td>
+                  <td>
+                    <a href="#" class="btn btn-action btn-reset">Reset MK</a>
+                    <a href="#" class="btn btn-action btn-lock">Khóa</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>David</td>
+                  <td>david.ita@email.com</td>
+                  <td>0907654321</td>
+                  <td><span class="status returned">Đã khóa</span></td>
+                  <td>
+                    <a href="#" class="btn btn-action btn-reset">Reset MK</a>
+                    <a href="#" class="btn btn-action btn-unlock">Mở khóa</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Emily</td>
+                  <td>emily.fr@email.com</td>
+                  <td>0988888888</td>
+                  <td><span class="status delivered">Hoạt động</span></td>
+                  <td>
+                    <a href="#" class="btn btn-action btn-reset">Reset MK</a>
+                    <a href="#" class="btn btn-action btn-lock">Khóa</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <td>Tên</td>
-                <td>Giá</td>
-                <td>Thanh toán</td>
-                <td>Trạng thái</td>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>Sáp vuốt tóc Apestomen Nitro</td>
-                <td>300.000đ</td>
-                <td>Đã thanh toán</td>
-                <td>
-                  <span class="status delivered">Đã vận chuyển</span>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Sáp vuốt tóc By Vilain Gold Digger</td>
-                <td>449.000đ</td>
-                <td>Chưa thanh toán</td>
-                <td>
-                  <span class="status returned">Đã trả hàng</span>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Gôm xịt tóc Kevin Murphy Session</td>
-                <td>467.000đ</td>
-                <td>Đã thanh toán</td>
-                <td>
-                  <span class="status inPending">Đang chờ xử lý</span>
-                </td>
-              </tr>
-
-              <tr>
-                <td>Bột tạo phồng Patricks HP1 Hair Powder</td>
-                <td>1.000.000đ</td>
-                <td>Đã thanh toán</td>
-                <td>
-                  <span class="status inProgress">Đang xử lý</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="recentCustomers">
-          <div class="cardHeader">
-            <h2>Khách hàng gần đây</h2>
-          </div>
-          <table>
-            <tr>
-              <td width="60px">
-                <div class="imgBx">
-                  <img src="/assets/img/customer/John.jpg" alt="" />
-                </div>
-              </td>
-              <td>
-                <h4>
-                  John Doe <br />
-                  <span>Vương quốc Anh</span>
-                </h4>
-              </td>
-            </tr>
-            <tr>
-              <td width="60px">
-                <div class="imgBx">
-                  <img src="/assets/img/customer/David.jpg" alt="" />
-                </div>
-              </td>
-              <td>
-                <h4>
-                  David <br />
-                  <span>Ý</span>
-                </h4>
-              </td>
-            </tr>
-            <tr>
-              <td width="60px">
-                <div class="imgBx">
-                  <img src="/assets/img/customer/David.jpg" alt="" />
-                </div>
-              </td>
-              <td>
-                <h4>
-                  David <br />
-                  <span>Ý</span>
-                </h4>
-              </td>
-            </tr>
-            <tr>
-              <td width="60px">
-                <div class="imgBx">
-                  <img src="/assets/img/customer/David.jpg" alt="" />
-                </div>
-              </td>
-              <td>
-                <h4>
-                  David <br />
-                  <span>Ý</span>
-                </h4>
-              </td>
-            </tr>
-            <tr>
-              <td width="60px">
-                <div class="imgBx">
-                  <img src="/assets/img/customer/Emily.jpg" alt="" />
-                </div>
-              </td>
-              <td>
-                <h4>
-                  Emily <br />
-                  <span>Pháp</span>
-                </h4>
-              </td>
-            </tr>
-          </table>
         </div>
       </div>
     </div>
-    <script src=" /assets/js/main.js"></script>
+
+    <script src="/assets/js/main.js"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
