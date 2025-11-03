@@ -1135,62 +1135,62 @@
     <script src="/assets/js/store.js"></script>
     <script src="/assets/js/ui.js"></script>
     <script src="/assets/js/auth.frontend.js"></script>
-<!-- ===== JS ===== -->
-<script>
-  // ===== Products + Load More =====
-  (function (w, d) {
-    const ROOT = d.getElementById("product-grid");
-    if (!ROOT) return;
-    const BTN = d.getElementById("loadMore");
+    <!-- ===== JS ===== -->
+    <script>
+      // ===== Products + Load More =====
+      (function (w, d) {
+        const ROOT = d.getElementById("product-grid");
+        if (!ROOT) return;
+        const BTN = d.getElementById("loadMore");
 
-    const PRODUCT_DETAIL_URL = "/sanpham/pages/product_detail.php";
-    const all = w.SVStore?.getAllProducts?.() || w.SV_PRODUCT_SEED || [];
-    const onlyFeatured = ROOT.getAttribute("data-featured") === "true";
-    const products = onlyFeatured ? all.filter((p) => p.featured) : all;
+        const PRODUCT_DETAIL_URL = "/sanpham/pages/product_detail.html";
+        const all = w.SVStore?.getAllProducts?.() || w.SV_PRODUCT_SEED || [];
+        const onlyFeatured = ROOT.getAttribute("data-featured") === "true";
+        const products = onlyFeatured ? all.filter((p) => p.featured) : all;
 
-    // cấu hình
-    const PER_FIRST = 8; // số lượng lần đầu
-    const PER_NEXT = 8; // mỗi lần "Xem thêm"
-    let shown = 0;
+        // cấu hình
+        const PER_FIRST = 8; // số lượng lần đầu
+        const PER_NEXT = 8; // mỗi lần "Xem thêm"
+        let shown = 0;
 
-    // utils
-    const fmt = (n) => (Number(n) || 0).toLocaleString("vi-VN") + "₫";
-    const esc = (s) =>
-      String(s || "").replace(
-        /[&<>"']/g,
-        (m) =>
-          ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-          }[m])
-      );
-    const badgeLabel = (b) => {
-      const x = String(b || "").toLowerCase();
-      if (x === "sale") return "Sale";
-      if (x === "new") return "New";
-      if (x === "out_of_stock" || x === "oos") return "Hết hàng";
-      return "";
-    };
+        // utils
+        const fmt = (n) => (Number(n) || 0).toLocaleString("vi-VN") + "₫";
+        const esc = (s) =>
+          String(s || "").replace(
+            /[&<>"']/g,
+            (m) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              }[m])
+          );
+        const badgeLabel = (b) => {
+          const x = String(b || "").toLowerCase();
+          if (x === "sale") return "Sale";
+          if (x === "new") return "New";
+          if (x === "out_of_stock" || x === "oos") return "Hết hàng";
+          return "";
+        };
 
-    function renderCard(p) {
-      const badge = badgeLabel(p.badge);
-      const old =
-        p.original_price && Number(p.original_price) > Number(p.price)
-          ? `<span class="price product-price-old">${fmt(
-              p.original_price
-            )}</span>`
-          : "";
-      const img = p.image || "https://placehold.co/600x600/png";
-      return `
+        function renderCard(p) {
+          const badge = badgeLabel(p.badge);
+          const old =
+            p.original_price && Number(p.original_price) > Number(p.price)
+              ? `<span class="price product-price-old">${fmt(
+                  p.original_price
+                )}</span>`
+              : "";
+          const img = p.image || "https://placehold.co/600x600/png";
+          return `
         <div class="col col-3">
           <div class="product-box">
             <div class="product-thumbnail">
               <a class="image_link" href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
-        p.id
-      )}">
+            p.id
+          )}">
                 <img src="${esc(img)}" alt="${esc(p.name)}"/>
               </a>
               ${
@@ -1210,8 +1210,8 @@
             <div class="product-info a-left">
               <h3 class="product-name">
                 <a href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
-        p.id
-      )}">${esc(p.name)}</a>
+            p.id
+          )}">${esc(p.name)}</a>
               </h3>
               <div class="price-box">
                 <span class="price product-price">${fmt(p.price)}</span>
@@ -1220,158 +1220,157 @@
             </div>
           </div>
         </div>`;
-    }
+        }
 
-    function appendSlice(count) {
-      const slice = products.slice(shown, shown + count);
-      if (!slice.length) return false;
-      const html = slice.map(renderCard).join("");
-      const wrap = d.createElement("div");
-      wrap.innerHTML = html;
-      // append node-by-node để giữ event bubbling gọn
-      while (wrap.firstChild) ROOT.appendChild(wrap.firstChild);
-      shown += slice.length;
-      return slice.length > 0;
-    }
+        function appendSlice(count) {
+          const slice = products.slice(shown, shown + count);
+          if (!slice.length) return false;
+          const html = slice.map(renderCard).join("");
+          const wrap = d.createElement("div");
+          wrap.innerHTML = html;
+          // append node-by-node để giữ event bubbling gọn
+          while (wrap.firstChild) ROOT.appendChild(wrap.firstChild);
+          shown += slice.length;
+          return slice.length > 0;
+        }
 
-    function updateButton() {
-      if (shown >= products.length) {
-        BTN.classList.add("is-done");
-        BTN.innerHTML = `<span class="lm-text">Hết sản phẩm</span><span class="lm-sub">Đã hiển thị toàn bộ</span>`;
-      }
-    }
+        function updateButton() {
+          if (shown >= products.length) {
+            BTN.classList.add("is-done");
+            BTN.innerHTML = `<span class="lm-text">Hết sản phẩm</span><span class="lm-sub">Đã hiển thị toàn bộ</span>`;
+          }
+        }
 
-    // init
-    appendSlice(PER_FIRST);
-    updateButton();
-
-    BTN?.addEventListener("click", function () {
-      if (shown >= products.length) return;
-      // hiệu ứng bấm
-      const old = BTN.innerHTML;
-      BTN.innerHTML = `<span class="lm-text">Đang tải...</span><span class="lm-sub">Vui lòng chờ</span>`;
-      BTN.disabled = true;
-
-      // mô phỏng tải nhanh (nếu muốn delay cảm giác) -> có thể bỏ setTimeout
-      setTimeout(() => {
-        appendSlice(PER_NEXT);
-        BTN.disabled = false;
-        BTN.innerHTML = old;
+        // init
+        appendSlice(PER_FIRST);
         updateButton();
-      }, 150);
-    });
 
-    // Add to cart delegation (giữ nguyên logic hiện tại)
-    d.addEventListener("click", (e) => {
-      const btn = e.target.closest(".btn-add-cart");
-      if (!btn) return;
-      const id = btn.getAttribute("data-id");
-      if (!id) return;
+        BTN?.addEventListener("click", function () {
+          if (shown >= products.length) return;
+          // hiệu ứng bấm
+          const old = BTN.innerHTML;
+          BTN.innerHTML = `<span class="lm-text">Đang tải...</span><span class="lm-sub">Vui lòng chờ</span>`;
+          BTN.disabled = true;
 
-      // Nếu dùng bắt buộc đăng nhập, bạn có thể check AUTH ở đây (giống file dưới)
-      w.SVStore?.addToCart?.(id, 1);
-      w.SVUI?.updateCartCount?.();
+          // mô phỏng tải nhanh (nếu muốn delay cảm giác) -> có thể bỏ setTimeout
+          setTimeout(() => {
+            appendSlice(PER_NEXT);
+            BTN.disabled = false;
+            BTN.innerHTML = old;
+            updateButton();
+          }, 150);
+        });
 
-      const prev = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = prev;
-      }, 900);
-    });
-  })(window, document);
-</script>
-<script>
-  /* ===== CHỐT CHẶN: Hover overlay đã có bằng CSS; click "Giỏ hàng" => bắt buộc đăng nhập ===== */
-  (function () {
-    const LOGIN_URL = "/account/login.html";
+        // Add to cart delegation (giữ nguyên logic hiện tại)
+        d.addEventListener("click", (e) => {
+          const btn = e.target.closest(".btn-add-cart");
+          if (!btn) return;
+          const id = btn.getAttribute("data-id");
+          if (!id) return;
 
-    function redirectToLogin() {
-      const back = location.pathname + location.search + location.hash;
-      location.href = LOGIN_URL + "?redirect=" + encodeURIComponent(back);
-    }
+          // Nếu dùng bắt buộc đăng nhập, bạn có thể check AUTH ở đây (giống file dưới)
+          w.SVStore?.addToCart?.(id, 1);
+          w.SVUI?.updateCartCount?.();
 
-    // 1) Vá mọi anchor "quick-add" cũ trong overlay (nếu có) thành button
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".product-action-grid a").forEach((a) => {
-        a.setAttribute("href", "#");
-        a.setAttribute("role", "button");
-      });
-    });
+          const prev = btn.innerHTML;
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = prev;
+          }, 900);
+        });
+      })(window, document);
+    </script>
+    <script>
+      /* ===== CHỐT CHẶN: Hover overlay đã có bằng CSS; click "Giỏ hàng" => bắt buộc đăng nhập ===== */
+      (function () {
+        const LOGIN_URL = "/account/login.html";
 
-    // 2) Bắt mọi click vào các nút thêm giỏ trong overlay/card (trang chủ & toàn site)
-    document.addEventListener(
-      "click",
-      function (e) {
-        const btn = e.target.closest(
-          ".btn-add-cart, .btn-cart, [data-add-to-cart], .js-add-to-cart, a.quick-add"
+        function redirectToLogin() {
+          const back = location.pathname + location.search + location.hash;
+          location.href = LOGIN_URL + "?redirect=" + encodeURIComponent(back);
+        }
+
+        // 1) Vá mọi anchor "quick-add" cũ trong overlay (nếu có) thành button
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelectorAll(".product-action-grid a").forEach((a) => {
+            a.setAttribute("href", "#");
+            a.setAttribute("role", "button");
+          });
+        });
+
+        // 2) Bắt mọi click vào các nút thêm giỏ trong overlay/card (trang chủ & toàn site)
+        document.addEventListener(
+          "click",
+          function (e) {
+            const btn = e.target.closest(
+              ".btn-add-cart, .btn-cart, [data-add-to-cart], .js-add-to-cart, a.quick-add"
+            );
+            if (!btn) return;
+
+            e.preventDefault();
+            if (typeof e.stopImmediatePropagation === "function")
+              e.stopImmediatePropagation();
+
+            // Chưa đăng nhập -> ép đăng nhập
+            if (!window.AUTH?.loggedIn) {
+              alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+              redirectToLogin();
+              return;
+            }
+
+            // Đã đăng nhập -> thêm vào giỏ
+            const id =
+              btn.dataset.id ||
+              btn.getAttribute("data-id") ||
+              ((btn.href || "").includes("id=")
+                ? new URL(btn.href, location.origin).searchParams.get("id")
+                : "");
+
+            if (!id) return;
+
+            window.SVStore?.addToCart?.(id, 1);
+            window.dispatchEvent(new CustomEvent("cart:changed"));
+            window.SVUI?.updateCartCount?.();
+
+            // Phản hồi nhanh trên nút
+            const prev = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
+            setTimeout(() => {
+              btn.disabled = false;
+              btn.innerHTML = prev;
+            }, 900);
+          },
+          true
         );
-        if (!btn) return;
 
-        e.preventDefault();
-        if (typeof e.stopImmediatePropagation === "function")
-          e.stopImmediatePropagation();
+        // 3) Chặn form mua nhanh (nếu có) khi chưa đăng nhập
+        document.addEventListener(
+          "submit",
+          function (e) {
+            const form = e.target.closest("#buyForm, .js-buy-form");
+            if (!form) return;
+            if (!window.AUTH?.loggedIn) {
+              e.preventDefault();
+              if (typeof e.stopImmediatePropagation === "function")
+                e.stopImmediatePropagation();
+              redirectToLogin();
+            }
+          },
+          true
+        );
 
-        // Chưa đăng nhập -> ép đăng nhập
-        if (!window.AUTH?.loggedIn) {
-          alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
-          redirectToLogin();
-          return;
+        // 4) Đồng bộ badge giỏ khi tab khác thay đổi
+        function updateBadge() {
+          window.SVUI?.updateCartCount?.();
         }
-
-        // Đã đăng nhập -> thêm vào giỏ
-        const id =
-          btn.dataset.id ||
-          btn.getAttribute("data-id") ||
-          ((btn.href || "").includes("id=")
-            ? new URL(btn.href, location.origin).searchParams.get("id")
-            : "");
-
-        if (!id) return;
-
-        window.SVStore?.addToCart?.(id, 1);
-        window.dispatchEvent(new CustomEvent("cart:changed"));
-        window.SVUI?.updateCartCount?.();
-
-        // Phản hồi nhanh trên nút
-        const prev = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa fa-check"></i> Đã thêm';
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerHTML = prev;
-        }, 900);
-      },
-      true
-    );
-
-    // 3) Chặn form mua nhanh (nếu có) khi chưa đăng nhập
-    document.addEventListener(
-      "submit",
-      function (e) {
-        const form = e.target.closest("#buyForm, .js-buy-form");
-        if (!form) return;
-        if (!window.AUTH?.loggedIn) {
-          e.preventDefault();
-          if (typeof e.stopImmediatePropagation === "function")
-            e.stopImmediatePropagation();
-          redirectToLogin();
-        }
-      },
-      true
-    );
-
-    // 4) Đồng bộ badge giỏ khi tab khác thay đổi
-    function updateBadge() {
-      window.SVUI?.updateCartCount?.();
-    }
-    window.addEventListener("storage", (e) => {
-      if (e.key && e.key.startsWith("sv_cart_user_")) updateBadge();
-    });
-    window.addEventListener("cart:changed", updateBadge);
-  })();
-</script>
-
+        window.addEventListener("storage", (e) => {
+          if (e.key && e.key.startsWith("sv_cart_user_")) updateBadge();
+        });
+        window.addEventListener("cart:changed", updateBadge);
+      })();
+    </script>
   </body>
 </html>
