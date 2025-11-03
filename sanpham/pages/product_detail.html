@@ -764,5 +764,34 @@ body { background: #f9fafb; font-family: "Segoe UI", Roboto, sans-serif; }
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script>
+(function(){
+let tm = null;
+function scheduleRefresh(){
+if (tm) return; // chống spam
+tm = setTimeout(() => {
+tm = null;
+try {
+// 1) Trang listing dùng SVUI.renderProducts
+if (window.SVUI && typeof SVUI.renderProducts === 'function') { SVUI.renderProducts(); return; }
+// 2) Một số trang của bạn dùng window.render()
+if (typeof window.render === 'function') { window.render(); return; }
+// 3) Trang chi tiết nếu có module riêng
+if (window.SVProductDetail && typeof SVProductDetail.render === 'function') { SVProductDetail.render(); return; }
+} catch(e) { console.warn('refresh error:', e); }
+// 4) Fallback an toàn nếu không có hàm render nào
+try { location.reload(); } catch {}
+}, 100);
+}
+
+
+window.addEventListener('storage', (e) => {
+if (!e || !e.key) return;
+if (e.key === 'SV_PRODUCTS' || e.key === 'sv_products_v1' || e.key === 'SV_PRODUCTS_UPDATED_AT') {
+scheduleRefresh();
+}
+});
+})();
+</script>
 </body>
 </html>
