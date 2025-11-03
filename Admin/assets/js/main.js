@@ -7,7 +7,7 @@ navItems.forEach((li) => {
   });
 });
 
-// --- Menu toggle ---
+// --- Menu toggle (null-safe, 1 bản duy nhất) ---
 const toggleBtn = document.querySelector(".toggle");
 const nav = document.querySelector(".navagation");
 const main = document.querySelector(".main");
@@ -19,4 +19,4 @@ if (toggleBtn && nav && main) {
   });
 }
 
-// KHÔNG đụng tới .topbar .search nữa
+// Không xử lý .topbar .search ở file này nữa
