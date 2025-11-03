@@ -78,6 +78,8 @@
       </div>
       <h1 class="title">Đăng nhập</h1>
       <div class="sub">Chào mừng quay lại Nobility 1800s</div>
+      <div id="loginNotice" style="display:none;margin:10px 0;padding:10px 12px;border:1px solid #fecaca;border-radius:12px;background:#fef2f2;color:#991b1b;font-weight:600"></div>
+
 
       <div id="alert" class="alert"></div>
 
@@ -116,46 +118,81 @@
 
   <!-- Auth JS (localStorage) -->
   <script src="/assets/js/auth.js"></script>
+  
+
+  <script src="/assets/js/auth.security.enforcer.js"></script>
+
+  <script src="/assets/js/auth.localstorage.bridge.js"></script>
+
+  <script src="/assets/js/auth.reactive.guard.v2.js"></script>
+
   <script>
   (function(){
+    // Read ?reason= to show banner (locked / pass changed)
+    (function(){
+      var reason = new URLSearchParams(location.search).get('reason');
+      if (reason){
+        var box = document.getElementById('loginNotice');
+        if (box){ box.textContent = decodeURIComponent(reason); box.style.display = 'block'; }
+      }
+    })();
+
     const usp = new URLSearchParams(location.search);
     const redirect = usp.get('redirect') || document.referrer || '/';
 
     // Link Đăng ký kèm ?redirect=
-    const reg = document.getElementById('toRegister');
-    const u = new URL(reg.getAttribute('href') || '/account/register.html', location.origin);
-    if (!u.searchParams.has('redirect')) u.searchParams.set('redirect', redirect);
-    reg.href = u.pathname + (u.search ? u.search : '');
+    (function(){
+      var reg = document.getElementById('toRegister');
+      if (reg){
+        var u = new URL(reg.getAttribute('href') || '/account/register.html', location.origin);
+        if (!u.searchParams.has('redirect')) u.searchParams.set('redirect', redirect);
+        reg.href = u.pathname + (u.search ? u.search : '');
+      }
+    })();
 
     // Hiện/ẩn mật khẩu
-    const eye = document.getElementById('eye');
-    const pwd = document.getElementById('password');
-    eye.addEventListener('click', function(){
-      const show = pwd.type === 'password';
-      pwd.type = show ? 'text' : 'password';
-      eye.innerHTML = show ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
-    });
-
-    // Alert helpers
-    const alertBox = document.getElementById('alert');
-    function showErr(msg){ alertBox.textContent = msg || 'Đăng nhập thất bại.'; alertBox.style.display = 'block'; }
-    function hideErr(){ alertBox.style.display = 'none'; }
-
-    // Submit
-    document.getElementById('form-login').addEventListener('submit', function(e){
-      e.preventDefault();
-      hideErr();
-      try{
-        AUTH.login(document.getElementById('email').value, document.getElementById('password').value);
-        AUTH.check();
-        // về profile hoặc trang yêu cầu trước đó
-        const back = redirect || '/account/profile.html';
-        const next = back.includes('/login.html') ? '/account/profile.html' : back;
-        location.href = next;
-      }catch(err){
-        showErr(err?.message);
+    (function(){
+      var eye = document.getElementById('eye');
+      var pwd = document.getElementById('password');
+      if (eye && pwd){
+        eye.addEventListener('click', function(){
+          var show = pwd.type === 'password';
+          pwd.type = show ? 'text' : 'password';
+          eye.innerHTML = show ? '<i class="fa-regular fa-eye-slash"></i>' : '<i class="fa-regular fa-eye"></i>';
+        });
       }
-    });
+    })();
+
+    // Submit handler
+    (function(){
+      var form = document.getElementById('form-login');
+      var notice = document.getElementById('loginNotice');
+      function show(msg){
+        if (!notice) return alert(msg||'Đăng nhập thất bại.');
+        notice.textContent = msg || 'Đăng nhập thất bại.';
+        notice.style.display = 'block';
+      }
+      function clear(){ if (notice) notice.style.display = 'none'; }
+
+      if (form){
+        form.addEventListener('submit', function(e){
+          e.preventDefault();
+          clear();
+          var email = document.getElementById('email').value.trim();
+          var password = document.getElementById('password').value;
+          try{
+            AUTH.login(email, password); // enforcer throws 'Tài khoản ... bị khóa...' if locked
+            AUTH.check && AUTH.check();
+            // redirect back, but avoid looping to login again
+            var back = redirect || '/account/profile.html';
+            var next = (back.includes('/login.html')) ? '/account/profile.html' : back;
+            location.href = next;
+          }catch(err){
+            show((err && err.message) ? err.message : 'Đăng nhập thất bại.');
+          }
+        });
+      }
+    })();
   })();
   </script>
 </body>
