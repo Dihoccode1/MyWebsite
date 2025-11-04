@@ -400,6 +400,7 @@
       }
     </style>
   </head>
+
   <body>
     <!-- Top header -->
     <header class="header">
@@ -413,7 +414,7 @@
       <div class="container">
         <div class="header-main">
           <div class="header-left">
-            <!-- Search bar (đẩy query về trang sản phẩm) -->
+            <!-- search chuyển về trang sản phẩm -->
             <form
               action="/search"
               method="get"
@@ -516,9 +517,7 @@
             a.className = "welcome-link";
             while (target.firstChild) a.appendChild(target.firstChild);
             target.appendChild(a);
-          } else {
-            target.setAttribute("href", "/account/profile.html");
-          }
+          } else target.setAttribute("href", "/account/profile.html");
         }
         d.addEventListener("auth:ready", makeWelcomeClickable);
         if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
@@ -557,12 +556,9 @@
           </div>
           <div class="sv-field">
             <label class="sv-label">Phân loại</label>
+            <!-- Sẽ được ghi đè bằng script auto từ Admin -->
             <select id="category" aria-label="Phân loại">
               <option value="all">Tất cả</option>
-              <option value="hair_wax">Sáp vuốt tóc</option>
-              <option value="volumizing_powder">Bột tạo phồng</option>
-              <option value="hair_spray">Gôm xịt tóc</option>
-              <option value="hair_conditioner">Dưỡng tóc</option>
             </select>
           </div>
           <div class="sv-field">
@@ -617,7 +613,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer (rút gọn giữ nguyên nội dung site) -->
     <footer class="footer">
       <div class="site-footer">
         <div class="top-footer">
@@ -834,13 +830,122 @@
     <script src="/assets/js/ui.js"></script>
     <script src="/assets/js/auth.frontend.js"></script>
 
+    <!-- ⭐⭐ AUTO-FILL PHÂN LOẠI từ Admin (ghi đè option cũ) ⭐⭐ -->
+    <script>
+      (function (w, d) {
+        const sel = d.getElementById("category");
+        if (!sel) return;
+
+        function toSlug(s) {
+          return String(s || "")
+            .trim()
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+        }
+
+        function getAdminCategories() {
+          try {
+            const raw = JSON.parse(
+              localStorage.getItem("admin.categories") || "[]"
+            );
+            return raw
+              .filter((c) => c && (c.active ?? true))
+              .map((c) => ({
+                slug: toSlug(c.name),
+                name: String(c.name || "").trim(),
+              }))
+              .sort((a, b) => a.name.localeCompare(b.name, "vi"));
+          } catch {
+            return [];
+          }
+        }
+
+        function getSlugsFromCatalog() {
+          const out = new Set();
+          try {
+            const fromAdmin = JSON.parse(
+              localStorage.getItem("sv_products_v1") || "[]"
+            );
+            (fromAdmin || []).forEach((p) => {
+              const s = String(p?.category || "").trim();
+              if (s) out.add(s);
+            });
+          } catch {}
+          return [...out]
+            .sort()
+            .map((s) => ({
+              slug: s,
+              name: s
+                .replace(/[-_]+/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase()),
+            }));
+        }
+
+        function populateCategories(keepValue = true) {
+          const current = sel.value;
+          const list = (function () {
+            const a = getAdminCategories();
+            return a.length ? a : getSlugsFromCatalog();
+          })();
+
+          let html = '<option value="all">Tất cả</option>';
+          list.forEach(({ slug, name }) => {
+            html += `<option value="${slug}">${name}</option>`;
+          });
+          sel.innerHTML = html;
+
+          if (
+            keepValue &&
+            (current === "all" || list.some((x) => x.slug === current))
+          )
+            sel.value = current;
+          else sel.value = "all";
+        }
+
+        // init
+        populateCategories(true);
+
+        // update khi admin thay đổi
+        let tm = null;
+        function debouncedUpdate() {
+          if (tm) return;
+          tm = setTimeout(() => {
+            tm = null;
+            populateCategories(true);
+            try {
+              d.getElementById("searchForm")?.dispatchEvent(
+                new Event("submit", { cancelable: true })
+              );
+            } catch {}
+          }, 80);
+        }
+
+        w.addEventListener("storage", (e) => {
+          if (!e || !e.key) return;
+          if (
+            e.key === "admin.categories" ||
+            e.key === "catalog.bump" ||
+            e.key === "sv_products_v1"
+          )
+            debouncedUpdate();
+        });
+
+        d.getElementById("svReset")?.addEventListener("click", () =>
+          populateCategories(false)
+        );
+        w.addEventListener("catalog:updated", debouncedUpdate);
+      })(window, document);
+    </script>
+
     <!-- Listing logic -->
     <script>
       (function (w, d) {
         const ROOT = d.getElementById("product-grid");
         const PAGING = d.getElementById("pagination");
         const FORM = d.getElementById("searchForm");
-
         if (!ROOT) return;
 
         const qEl = d.getElementById("q");
@@ -849,10 +954,8 @@
         const maxEl = d.getElementById("priceMax");
         const sortEl = d.getElementById("sort");
 
-        // Đường dẫn chi tiết (nhất quán)
         const PRODUCT_DETAIL_URL = "/sanpham/pages/product_detail.html";
 
-        // 🔄 Luôn đọc catalog mới nhất (ưu tiên Admin export)
         function getAll() {
           try {
             const fromAdmin = JSON.parse(
@@ -899,43 +1002,40 @@
               : "";
           const img = p.image || "https://placehold.co/600x600/png";
           return `
-        <div class="col col-3">
-          <div class="product-box">
-            <div class="product-thumbnail">
-              <a class="image_link" href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
+          <div class="col col-3">
+            <div class="product-box">
+              <div class="product-thumbnail">
+                <a class="image_link" href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
             p.id
           )}">
-                <img src="${esc(img)}" alt="${esc(p.name)}"/>
-              </a>
-              ${
-                badge
-                  ? `<div class="product-label"><strong class="label">${esc(
-                      badge
-                    )}</strong></div>`
-                  : ""
-              }
-
-              <div class="product-action-grid">
-                <button class="btn-cart btn-add-cart" data-id="${esc(
-                  p.id
-                )}" aria-label="Thêm ${esc(p.name)} vào giỏ">
-                  <i class="fa fa-plus"></i> Giỏ hàng
-                </button>
+                  <img src="${esc(img)}" alt="${esc(p.name)}"/>
+                </a>
+                ${
+                  badge
+                    ? `<div class="product-label"><strong class="label">${esc(
+                        badge
+                      )}</strong></div>`
+                    : ""
+                }
+                <div class="product-action-grid">
+                  <button class="btn-cart btn-add-cart" data-id="${esc(
+                    p.id
+                  )}" aria-label="Thêm ${esc(
+            p.name
+          )} vào giỏ"><i class="fa fa-plus"></i> Giỏ hàng</button>
+                </div>
               </div>
-            </div>
-            <div class="product-info a-left">
-              <h3 class="product-name">
-                <a href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
+              <div class="product-info a-left">
+                <h3 class="product-name"><a href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
             p.id
-          )}">${esc(p.name)}</a>
-              </h3>
-              <div class="price-box">
-                <span class="price product-price">${fmt(p.price)}</span>
-                ${old}
+          )}">${esc(p.name)}</a></h3>
+                <div class="price-box">
+                  <span class="price product-price">${fmt(p.price)}</span>
+                  ${old}
+                </div>
               </div>
             </div>
-          </div>
-        </div>`;
+          </div>`;
         }
 
         const state = { view: [], page: 1, per: 8 };
@@ -943,7 +1043,7 @@
         function applyFilters(e) {
           if (e) e.preventDefault();
 
-          const all = getAll(); // đọc mới mỗi lần
+          const all = getAll();
           const q = (qEl.value || "").trim().toLowerCase();
           const cat = catEl.value || "all";
           const min = Number(minEl.value || 0);
@@ -978,7 +1078,6 @@
               String(b.name).localeCompare(String(a.name), "vi")
             );
 
-          // Cập nhật URL (nice UX)
           const u = new URL(location.href);
           q ? u.searchParams.set("q", q) : u.searchParams.delete("q");
           cat && cat !== "all"
@@ -1045,7 +1144,6 @@
             html += li(pages, String(pages), cur === pages);
           }
           html += li(cur + 1, "›", false, cur === pages);
-
           PAGING.innerHTML = html;
         }
 
@@ -1062,7 +1160,7 @@
           state.page = cur;
         }
 
-        // Pagination click
+        // paging click
         d.addEventListener("click", (e) => {
           const a = e.target.closest("#pagination .page-link");
           if (!a) return;
@@ -1074,7 +1172,7 @@
           }
         });
 
-        // Reset filters
+        // reset
         d.getElementById("svReset")?.addEventListener("click", () => {
           qEl.value = "";
           catEl.value = "all";
@@ -1084,7 +1182,7 @@
           FORM.dispatchEvent(new Event("submit", { cancelable: true }));
         });
 
-        // Prefill from URL & init
+        // init from URL
         (function initFromURL() {
           const u = new URL(location.href);
           qEl.value = u.searchParams.get("q") || "";
@@ -1097,15 +1195,15 @@
           applyFilters();
         })();
 
-        // ➜ Tự cập nhật khi Admin export (không reload)
-        window.addEventListener("storage", (e) => {
+        // nghe admin push catalog
+        w.addEventListener("storage", (e) => {
           if (!e || !e.key) return;
           if (
             e.key === "sv_products_v1" ||
             e.key === "SV_PRODUCTS_UPDATED_AT" ||
             e.key === "catalog.bump"
           ) {
-            applyFilters(); // đọc lại & render
+            applyFilters();
           }
         });
       })(window, document);
@@ -1114,14 +1212,13 @@
     <!-- Thêm giỏ + footer accordion -->
     <script>
       (function () {
-        // Chuẩn hoá click "Add to cart"
         const LOGIN_URL = "/account/login.html";
         function redirectToLogin() {
           const back = location.pathname + location.search + location.hash;
           location.href = LOGIN_URL + "?redirect=" + encodeURIComponent(back);
         }
 
-        // Vá anchor cũ nếu có
+        // vá anchor cũ
         document.addEventListener("DOMContentLoaded", () => {
           document.querySelectorAll(".product-action-grid a").forEach((a) => {
             a.setAttribute("href", "#");
@@ -1129,24 +1226,22 @@
           });
         });
 
-        // Bắt click thêm giỏ
+        // add to cart
         document.addEventListener(
           "click",
           function (e) {
             const btn = e.target.closest(
-              ".btn-add-cart, .btn-cart, [data-add-to-cart], .js-add-to-cart, a.quick-add"
+              ".btn-add-cart,.btn-cart,[data-add-to-cart],.js-add-to-cart,a.quick-add"
             );
             if (!btn) return;
             e.preventDefault();
             if (typeof e.stopImmediatePropagation === "function")
               e.stopImmediatePropagation();
-
             if (!window.AUTH?.loggedIn) {
               alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
               redirectToLogin();
               return;
             }
-
             const id =
               btn.dataset.id ||
               btn.getAttribute("data-id") ||
@@ -1170,7 +1265,7 @@
           true
         );
 
-        // Footer accordion mobile
+        // footer accordion
         function isMobile() {
           return window.matchMedia("(max-width: 767.98px)").matches;
         }
@@ -1185,14 +1280,10 @@
                     ?.textContent.trim()
                     .toLowerCase()
                     .includes("liên hệ")
-                ) {
+                )
                   box.classList.add("is-open");
-                } else {
-                  box.classList.remove("is-open");
-                }
-              } else {
-                box.classList.add("is-open");
-              }
+                else box.classList.remove("is-open");
+              } else box.classList.add("is-open");
             });
         }
         function bindClick() {
@@ -1213,7 +1304,6 @@
         });
         window.addEventListener("resize", setInitialState);
 
-        // Đồng bộ badge giỏ
         function updateBadge() {
           window.SVUI?.updateCartCount?.();
         }

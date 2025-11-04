@@ -1,6 +1,6 @@
 // /Admin/assets/js/categories.js
 const CAT_KEY = "admin.categories";
-const PROD_KEY = "admin.products"; // để kiểm tra khi xoá danh mục
+const PROD_KEY = "admin.products"; // kiểm tra khi xoá danh mục
 
 /* =====================
    Seed dữ liệu ban đầu
@@ -18,15 +18,22 @@ const PROD_KEY = "admin.products"; // để kiểm tra khi xoá danh mục
     {
       id: 2,
       code: "LOAI002",
-      name: "Gôm xịt",
-      desc: "Hairspray",
+      name: "Bột tạo phồng",
+      desc: "Volumizing powder",
       active: true,
     },
     {
       id: 3,
       code: "LOAI003",
-      name: "Bột tạo phồng",
-      desc: "Hair powder",
+      name: "Gôm xịt tóc",
+      desc: "Hairspray",
+      active: true,
+    },
+    {
+      id: 4,
+      code: "LOAI004",
+      name: "Dưỡng tóc",
+      desc: "Hair Conditioner",
       active: true,
     },
   ];
@@ -43,7 +50,13 @@ const loadCats = () => {
     return [];
   }
 };
-const saveCats = (a) => localStorage.setItem(CAT_KEY, JSON.stringify(a));
+const saveCats = (a) => {
+  localStorage.setItem(CAT_KEY, JSON.stringify(a));
+  // ping cho các tab User để tự refresh bộ lọc danh mục
+  try {
+    localStorage.setItem("catalog.bump", String(Date.now()));
+  } catch {}
+};
 const loadProds = () => {
   try {
     return JSON.parse(localStorage.getItem(PROD_KEY) || "[]");
@@ -53,6 +66,44 @@ const loadProds = () => {
 };
 const nextId = (a) => a.reduce((m, x) => Math.max(m, x.id || 0), 0) + 1;
 const pad3 = (n) => String(n).padStart(3, "0");
+
+/* ==========================
+   Migration tên danh mục cũ
+   ========================== */
+(function migrateCategoryNamesOnce() {
+  const FLAG = "admin.categories.migrated.2025-11-04";
+  if (localStorage.getItem(FLAG)) return;
+
+  const rename = new Map([
+    // cũ -> mới
+    ["Sáp  vuốt tóc", "Sáp vuốt tóc"], // thừa khoảng trắng
+    ["Sáp vuốt tóc ", "Sáp vuốt tóc"],
+    ["Gôm xịt", "Gôm xịt tóc"],
+    ["Hair Conditioner", "Dưỡng tóc"],
+    ["Hair conditioner", "Dưỡng tóc"],
+    ["Hair Conditioner ", "Dưỡng tóc"],
+  ]);
+
+  const cats = loadCats();
+  if (!cats.length) {
+    localStorage.setItem(FLAG, "1");
+    return;
+  }
+
+  let changed = false;
+  const normalized = cats.map((c) => {
+    const trimmed = (c.name || "").trim();
+    const newName = rename.get(trimmed) || trimmed;
+    if (newName !== c.name) {
+      changed = true;
+      c = { ...c, name: newName };
+    }
+    return c;
+  });
+
+  if (changed) saveCats(normalized);
+  localStorage.setItem(FLAG, "1");
+})();
 
 /* =========
    Rendering
@@ -68,7 +119,6 @@ function render(list) {
   const tbody = document.getElementById("cat-body");
   if (!tbody) return;
 
-  document.getElementById("cat-count")?.replaceChildren?.();
   const countEl = document.getElementById("cat-count");
   if (countEl) countEl.textContent = `${cats.length} danh mục`;
 
@@ -79,26 +129,26 @@ function render(list) {
         ? '<span class="badge on">Đang dùng</span>'
         : '<span class="badge off">Đang ẩn</span>';
       return `
-        <tr>
-          <td>
-            <div style="display:flex; align-items:center; gap:8px;">
-              <strong>${c.name}</strong> ${statusBadge}
-            </div>
-          </td>
-          <td>${c.desc || ""}</td>
-          <td>
-            <a href="#" class="btn btn-action" data-act="edit" data-id="${
-              c.id
-            }">Sửa</a>
-            <a href="#" class="btn btn-action" data-act="toggle" data-id="${
-              c.id
-            }">${toggleLabel}</a>
-            <a href="#" class="btn btn-action" data-act="remove" data-id="${
-              c.id
-            }" style="background:#ef4444;">Xóa</a>
-          </td>
-        </tr>
-      `;
+      <tr>
+        <td>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <strong>${c.name}</strong> ${statusBadge}
+          </div>
+        </td>
+        <td>${c.desc || ""}</td>
+        <td>
+          <a href="#" class="btn btn-action" data-act="edit" data-id="${
+            c.id
+          }">Sửa</a>
+          <a href="#" class="btn btn-action" data-act="toggle" data-id="${
+            c.id
+          }">${toggleLabel}</a>
+          <a href="#" class="btn btn-action" data-act="remove" data-id="${
+            c.id
+          }" style="background:#ef4444;">Xóa</a>
+        </td>
+      </tr>
+    `;
     })
     .join("");
 }
@@ -134,20 +184,20 @@ document
 document.getElementById("cat-form")?.addEventListener("submit", (e) => {
   e.preventDefault();
   const cats = loadCats();
+
   const id = Number(document.getElementById("id").value || 0);
-  const name = document.getElementById("name").value.trim();
+  const name = document
+    .getElementById("name")
+    .value.trim()
+    .replace(/\s{2,}/g, " "); // chuẩn hoá space
   const desc = document.getElementById("desc").value.trim();
 
-  if (!name) {
-    alert("Nhập tên danh mục");
-    return;
-  }
+  if (!name) return alert("Nhập tên danh mục");
 
   if (id) {
     // update
     const i = cats.findIndex((x) => x.id === id);
     if (i >= 0) {
-      // Không cho trùng tên với danh mục khác
       const dup = cats.some(
         (x) => x.id !== id && x.name.toLowerCase() === name.toLowerCase()
       );
@@ -184,6 +234,7 @@ document.getElementById("cat-body")?.addEventListener("click", (e) => {
 
   const id = Number(a.dataset.id);
   const act = a.dataset.act;
+
   const cats = loadCats();
   const i = cats.findIndex((x) => x.id === id);
   if (i < 0) return;
@@ -202,7 +253,7 @@ document.getElementById("cat-body")?.addEventListener("click", (e) => {
   }
 
   if (act === "remove") {
-    // kiểm tra sản phẩm đang dùng danh mục này
+    // kiểm tra sản phẩm đang gắn danh mục này
     const prods = loadProds();
     const used = prods.filter((p) => Number(p.categoryId) === id);
     if (used.length) {
@@ -211,7 +262,6 @@ document.getElementById("cat-body")?.addEventListener("click", (e) => {
           `Chọn OK để XOÁ danh mục và gỡ danh mục khỏi các sản phẩm đó (categoryId = null).`
       );
       if (!ok) return;
-      // gỡ category cho sản phẩm
       used.forEach((p) => (p.categoryId = null));
       localStorage.setItem(PROD_KEY, JSON.stringify(prods));
     }
