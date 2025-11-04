@@ -20,9 +20,7 @@
 
     <title>Quản lý sản phẩm | Nobility 1800s Admin</title>
     <link rel="stylesheet" href="./assets/css/style.css" />
-
     <style>
-      /* ---- Trang & toolbar đồng bộ với Users ---- */
       .page {
         padding: 14px 16px;
       }
@@ -71,7 +69,6 @@
         align-items: center;
         margin: 12px 0;
       }
-
       table {
         width: 100%;
         border-collapse: collapse;
@@ -93,7 +90,6 @@
       tr:hover {
         background: #fafafa;
       }
-
       .status-chip {
         display: inline-block;
         padding: 4px 8px;
@@ -123,8 +119,13 @@
         object-fit: cover;
         border: 1px solid #e5e7eb;
       }
+      .btn-action {
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-weight: 700;
+      }
 
-      /* ---- Drawer (form trượt) ---- */
+      /* Drawer */
       .drawer-backdrop {
         position: fixed;
         inset: 0;
@@ -173,7 +174,6 @@
         cursor: pointer;
         font-weight: 700;
       }
-
       .form-col label.small {
         font-size: 12px;
         color: #6b7280;
@@ -190,7 +190,6 @@
 
   <body>
     <div class="container">
-      <!-- SIDEBAR -->
       <div class="navagation">
         <ul>
           <li>
@@ -201,75 +200,60 @@
           </li>
 
           <li id="nav-dashboard">
-            <a href="./index.html">
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
-              <span class="title">Bảng điều khiển</span>
-            </a>
+            <a href="./index.html"
+              ><span class="icon"
+                ><ion-icon name="home-outline"></ion-icon></span
+              ><span class="title">Bảng điều khiển</span></a
+            >
           </li>
-
           <li id="nav-customers">
-            <a href="./users.html">
-              <span class="icon"
-                ><ion-icon name="people-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý khách hàng</span>
-            </a>
+            <a href="./users.html"
+              ><span class="icon"
+                ><ion-icon name="people-outline"></ion-icon></span
+              ><span class="title">Quản lý khách hàng</span></a
+            >
           </li>
-
           <li id="nav-categories">
-            <a href="./categories.html">
-              <span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý danh mục</span>
-            </a>
+            <a href="./categories.html"
+              ><span class="icon"
+                ><ion-icon name="bookmarks-outline"></ion-icon></span
+              ><span class="title">Quản lý danh mục</span></a
+            >
           </li>
-
           <li class="hovered" id="nav-products">
-            <a href="./products.html">
-              <span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý sản phẩm</span>
-            </a>
+            <a href="./products.html"
+              ><span class="icon"
+                ><ion-icon name="bag-remove-outline"></ion-icon></span
+              ><span class="title">Quản lý sản phẩm</span></a
+            >
           </li>
-
           <li id="nav-imports">
-            <a href="./imports.html">
-              <span class="icon"
-                ><ion-icon name="download-outline"></ion-icon
-              ></span>
-              <span class="title">Phiếu nhập hàng</span>
-            </a>
+            <a href="./imports.html"
+              ><span class="icon"
+                ><ion-icon name="download-outline"></ion-icon></span
+              ><span class="title">Phiếu nhập hàng</span></a
+            >
           </li>
-
           <li id="nav-pricing">
-            <a href="./pricing.html">
-              <span class="icon"
-                ><ion-icon name="pricetag-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý giá bán</span>
-            </a>
+            <a href="./pricing.html"
+              ><span class="icon"
+                ><ion-icon name="pricetag-outline"></ion-icon></span
+              ><span class="title">Quản lý giá bán</span></a
+            >
           </li>
-
           <li id="nav-inventory">
-            <a href="./inventory.html">
-              <span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý hàng tồn kho</span>
-            </a>
+            <a href="./inventory.html"
+              ><span class="icon"
+                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
+              ><span class="title">Quản lý hàng tồn kho</span></a
+            >
           </li>
-
           <li id="nav-orders">
-            <a href="./orders.html">
-              <span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý đơn hàng</span>
-            </a>
+            <a href="./orders.html"
+              ><span class="icon"
+                ><ion-icon name="newspaper-outline"></ion-icon></span
+              ><span class="title">Quản lý đơn hàng</span></a
+            >
           </li>
 
           <hr />
@@ -294,12 +278,11 @@
           </li>
 
           <li>
-            <a href="#" id="btn-logout-side">
-              <span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon
-              ></span>
-              <span class="title">Đăng xuất</span>
-            </a>
+            <a href="#" id="btn-logout-side"
+              ><span class="icon"
+                ><ion-icon name="log-in-outline"></ion-icon></span
+              ><span class="title">Đăng xuất</span></a
+            >
           </li>
         </ul>
       </div>
@@ -314,7 +297,7 @@
           </div>
         </div>
 
-        <!-- Toolbar: tìm kiếm & lọc -->
+        <!-- Toolbar -->
         <div class="toolbar">
           <input
             id="q"
@@ -334,7 +317,6 @@
         </div>
 
         <div class="details">
-          <!-- Bảng danh sách -->
           <div class="recentOrders" style="flex: 2">
             <div class="cardHeader"><h2>Danh sách sản phẩm</h2></div>
             <table>
@@ -370,7 +352,7 @@
         </div>
       </div>
 
-      <!-- Drawer: Form sản phẩm (ẩn mặc định, mở khi bấm + hoặc Sửa) -->
+      <!-- Drawer -->
       <div id="drawer-backdrop" class="drawer-backdrop"></div>
       <aside id="prod-drawer" class="drawer" aria-hidden="true">
         <div class="cardHeader">
@@ -472,12 +454,14 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
-    <!-- Logic sản phẩm -->
+
+    <!-- Seed sản phẩm của User (phải load TRƯỚC products.js) -->
+    <script src="/assets/js/products.seed.js"></script>
+    <!-- Logic quản lý Admin -->
     <script src="./assets/js/products.js"></script>
 
-    <!-- Drawer handlers + Logout -->
     <script>
-      // logout sidebar
+      // logout
       document
         .getElementById("btn-logout-side")
         ?.addEventListener("click", (e) => {
@@ -486,7 +470,7 @@
           location.href = "./login.html";
         });
 
-      // Drawer show/hide (không đụng tới logic trong products.js)
+      // Drawer show/hide
       const drawer = document.getElementById("prod-drawer");
       const backdrop = document.getElementById("drawer-backdrop");
       const openBtn = document.getElementById("btn-new");

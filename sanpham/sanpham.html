@@ -9,9 +9,10 @@
     <title>Sản phẩm – Nobility 1800s</title>
     <meta
       name="description"
-      content="Danh mục sản phẩm sáp – tìm kiếm, lọc theo phân loại/giá, sắp xếp và phân trang."
+      content="Danh mục sản phẩm – tìm kiếm, lọc theo phân loại/giá, sắp xếp và phân trang. Hỗ trợ cập nhật trực tiếp khi Admin thay đổi."
     />
 
+    <!-- Vendor CSS -->
     <link
       rel="stylesheet"
       href="/bootstrap-4.6.2-dist/css/bootstrap.css"
@@ -34,6 +35,7 @@
       rel="stylesheet"
     />
 
+    <!-- Site CSS -->
     <link rel="stylesheet" href="/assets/css/base.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
 
@@ -122,7 +124,7 @@
         padding: 0 12px;
         font-size: 14px;
         background: #fff;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: border-color 0.2s, box-shadow 0.2s;
       }
       .sv-field input:focus,
       .sv-field select:focus {
@@ -172,7 +174,7 @@
         border-color: #111;
       }
       .sv-btn-primary:hover {
-        box-shadow: 0 6px 16px rgba(17, 24, 39, 0.12);
+        box-shadow: var(--shadow-sm);
       }
       .sv-btn-ghost {
         background: #fff;
@@ -236,8 +238,7 @@
         border-radius: var(--radius);
         overflow: hidden;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease),
-          border-color 0.35s;
+        transition: 0.35s var(--ease);
         position: relative;
         display: flex;
         flex-direction: column;
@@ -281,7 +282,7 @@
         opacity: 0;
         transform: translateY(100%);
         pointer-events: none;
-        transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+        transition: 0.25s var(--ease);
       }
       .product-thumbnail > .product-action-grid .btn-cart {
         display: block;
@@ -297,6 +298,13 @@
         opacity: 1;
         transform: translateY(0);
         pointer-events: auto;
+      }
+      @media (hover: none) and (pointer: coarse) {
+        .product-thumbnail > .product-action-grid {
+          opacity: 1;
+          transform: none;
+          pointer-events: auto;
+        }
       }
 
       /* Badge */
@@ -390,31 +398,22 @@
       .page-item:not(.active) .page-link:hover {
         text-decoration: underline;
       }
-
-      /* Mobile hoverless */
-      @media (hover: none) and (pointer: coarse) {
-        .product-thumbnail > .product-action-grid {
-          opacity: 1;
-          transform: none;
-          pointer-events: auto;
-        }
-      }
     </style>
   </head>
   <body>
+    <!-- Top header -->
     <header class="header">
       <div class="topbar">
-        <div class="container">
-          <div class="topbar-right"></div>
-        </div>
+        <div class="container"><div class="topbar-right"></div></div>
       </div>
     </header>
 
+    <!-- Mid header -->
     <header class="mid-header">
       <div class="container">
         <div class="header-main">
           <div class="header-left">
-            <!-- Chặn autofill & gõ dấu ok -->
+            <!-- Search bar (đẩy query về trang sản phẩm) -->
             <form
               action="/search"
               method="get"
@@ -436,23 +435,24 @@
               </button>
             </form>
           </div>
-
           <div class="header-center">
-            <a href="/trangchu.html" class="logo">
-              <img src="/assets/images/logo.jpg" alt="GENTLEMAN" />
-            </a>
+            <a href="/trangchu.html" class="logo"
+              ><img src="/assets/images/logo.jpg" alt="GENTLEMAN"
+            /></a>
           </div>
-
           <div class="header-right">
-            <a href="/giohang.html" class="cart-link">
-              <i class="fa-solid fa-cart-shopping"></i>
-              GIỎ HÀNG (<span class="cart-count">0</span>)
-            </a>
+            <a href="/giohang.html" class="cart-link"
+              ><i class="fa-solid fa-cart-shopping"></i> GIỎ HÀNG (<span
+                class="cart-count"
+                >0</span
+              >)</a
+            >
           </div>
         </div>
       </div>
     </header>
 
+    <!-- Main nav -->
     <nav class="main-nav">
       <ul>
         <li><a href="/trangchu.html">TRANG CHỦ</a></li>
@@ -465,9 +465,9 @@
       </ul>
     </nav>
 
+    <!-- Search bar behavior -->
     <script>
       (function (w, d) {
-        // Lấy URL trang sản phẩm từ menu (ưu tiên .js-products-url)
         function getProductsURL() {
           var a =
             d.querySelector("nav.main-nav a.js-products-url") ||
@@ -476,71 +476,56 @@
             ? a.getAttribute("href")
             : "/sanpham/sanpham.html";
         }
-
         var form = d.querySelector(".search-bar");
         if (!form) return;
-
         form.addEventListener(
           "submit",
           function (e) {
             e.preventDefault();
-
             var input = form.querySelector(
               'input[name="query"], input[name="q"]'
             );
             var q = ((input && input.value) || "").trim().replace(/\s+/g, " ");
             var raw = getProductsURL();
-
-            // Dùng URL để không bị nhân đôi ?q= và giữ các param khác nếu có
             var url = new URL(raw, w.location.origin);
             if (q) url.searchParams.set("q", q);
             else url.searchParams.delete("q");
-
-            // Điều hướng sang trang sản phẩm với ?q=
             w.location.href = url.pathname + (url.search ? url.search : "");
           },
           { passive: false }
         );
       })(window, document);
     </script>
+
+    <!-- Welcome name link fixer -->
     <script>
       (function (w, d) {
-        // gọi sau khi auth sẵn sàng
         function makeWelcomeClickable() {
-          // ưu tiên phần tử của header mới
           var el = d.querySelector(".welcome-user");
           if (el) {
-            // đã là <a>, đảm bảo đúng href
             el.setAttribute("href", "/account/profile.html");
             return;
           }
-
-          // các trường hợp site cũ: #welcomeName, [data-welcome-name], .js-welcome-name
           var target = d.querySelector(
             "#welcomeName, [data-welcome-name], .js-welcome-name"
           );
           if (!target) return;
-
-          // nếu chưa phải <a>, bọc lại thành <a>
           if (target.tagName !== "A") {
             var a = d.createElement("a");
             a.href = "/account/profile.html";
             a.className = "welcome-link";
-            // chuyển toàn bộ nội dung vào <a>
             while (target.firstChild) a.appendChild(target.firstChild);
             target.appendChild(a);
           } else {
-            // đã là <a> thì gán href đúng
             target.setAttribute("href", "/account/profile.html");
           }
         }
-
-        // chạy khi auth ready, và dự phòng nếu auth đã sẵn sàng
         d.addEventListener("auth:ready", makeWelcomeClickable);
         if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
-      })();
+      })(window, document);
     </script>
 
+    <!-- Breadcrumb -->
     <section class="bread-crumb">
       <div class="container">
         <ul class="breadcrumb">
@@ -555,8 +540,10 @@
       </div>
     </section>
 
+    <!-- Page content -->
     <div class="page-main">
       <div class="container">
+        <!-- Filters -->
         <form id="searchForm" class="sv-search" autocomplete="off">
           <div class="sv-field sv-icon">
             <label class="sv-label">Tìm kiếm</label>
@@ -568,7 +555,6 @@
               aria-label="Từ khoá tìm kiếm"
             />
           </div>
-
           <div class="sv-field">
             <label class="sv-label">Phân loại</label>
             <select id="category" aria-label="Phân loại">
@@ -579,7 +565,6 @@
               <option value="hair_conditioner">Dưỡng tóc</option>
             </select>
           </div>
-
           <div class="sv-field">
             <label class="sv-label">Giá từ</label>
             <input
@@ -591,7 +576,6 @@
               aria-label="Giá tối thiểu"
             />
           </div>
-
           <div class="sv-field">
             <label class="sv-label">Đến</label>
             <input
@@ -603,7 +587,6 @@
               aria-label="Giá tối đa"
             />
           </div>
-
           <div class="sv-field">
             <label class="sv-label">Sắp xếp</label>
             <select id="sort" aria-label="Sắp xếp">
@@ -614,7 +597,6 @@
               <option value="name-desc">Tên Z→A</option>
             </select>
           </div>
-
           <div class="sv-actions">
             <button type="submit" class="sv-btn sv-btn-primary">
               <i class="fa-solid fa-sliders"></i> Lọc
@@ -635,6 +617,7 @@
       </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
       <div class="site-footer">
         <div class="top-footer">
@@ -713,20 +696,21 @@
                         ><i
                           class="fa-solid fa-location-dot"
                           aria-hidden="true"
-                        ></i
-                      ></span>
-                      140B-Tổ 3, Ấp Xóm Chùa,Tỉnh Tây Ninh</span
+                        ></i></span
+                      >140B-Tổ 3, Ấp Xóm Chùa, Tỉnh Tây Ninh</span
                     >
                   </li>
                   <li class="sdt">
                     <span
-                      ><i class="fa-solid fa-phone" aria-hidden="true"></i
-                    ></span>
-                    <a href="tel:0338286525">0338286525</a>
+                      ><i
+                        class="fa-solid fa-phone"
+                        aria-hidden="true"
+                      ></i></span
+                    ><a href="tel:0338286525">0338286525</a>
                   </li>
                   <li class="sdt">
-                    <span><i class="fa-solid fa-envelope"></i></span>
-                    <a href="mailto:thanhloc29052006@gmail.com"
+                    <span><i class="fa-solid fa-envelope"></i></span
+                    ><a href="mailto:thanhloc29052006@gmail.com"
                       >thanhloc29052006@gmail.com</a
                     >
                   </li>
@@ -735,7 +719,6 @@
             </div>
           </div>
         </div>
-
         <div class="mid-footer">
           <div class="container">
             <div class="row">
@@ -816,20 +799,16 @@
                   </li>
                 </ul>
               </div>
-              <a
-                href="#"
-                id="back-to-top"
-                class="backtop"
-                title="Lên đầu trang"
-              >
-                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
-              </a>
+              <a href="#" id="back-to-top" class="backtop" title="Lên đầu trang"
+                ><i class="fa-solid fa-angle-up" aria-hidden="true"></i
+              ></a>
             </div>
           </div>
         </div>
       </div>
     </footer>
 
+    <!-- Auth + Data + Store (đúng thứ tự) -->
     <script src="/assets/js/auth.js"></script>
     <script src="/assets/js/auth.security.enforcer.js"></script>
     <script src="/assets/js/auth.localstorage.bridge.js"></script>
@@ -837,16 +816,32 @@
     <script src="/assets/js/auth.modal.bridge.js"></script>
 
     <script src="/assets/js/products.seed.js"></script>
+    <!-- Ưu tiên catalog từ Admin nếu có -->
+    <script>
+      (function () {
+        try {
+          const fromAdmin = JSON.parse(
+            localStorage.getItem("sv_products_v1") || "[]"
+          );
+          if (Array.isArray(fromAdmin) && fromAdmin.length) {
+            window.SV_PRODUCT_SEED = fromAdmin; // thay seed mặc định
+          }
+        } catch {}
+      })();
+    </script>
     <script src="/assets/js/store.js"></script>
     <script src="/assets/js/catalog.bridge.js"></script>
     <script src="/assets/js/ui.js"></script>
     <script src="/assets/js/auth.frontend.js"></script>
 
+    <!-- Listing logic -->
     <script>
       (function (w, d) {
         const ROOT = d.getElementById("product-grid");
         const PAGING = d.getElementById("pagination");
         const FORM = d.getElementById("searchForm");
+
+        if (!ROOT) return;
 
         const qEl = d.getElementById("q");
         const catEl = d.getElementById("category");
@@ -854,15 +849,24 @@
         const maxEl = d.getElementById("priceMax");
         const sortEl = d.getElementById("sort");
 
-        if (!ROOT) return;
-
-        // Cập nhật đường dẫn chi tiết sản phẩm trong JS
+        // Đường dẫn chi tiết (nhất quán)
         const PRODUCT_DETAIL_URL = "/sanpham/pages/product_detail.html";
-        const all = (
-          w.SVStore?.getAllProducts?.() ||
-          w.SV_PRODUCT_SEED ||
-          []
-        ).slice();
+
+        // 🔄 Luôn đọc catalog mới nhất (ưu tiên Admin export)
+        function getAll() {
+          try {
+            const fromAdmin = JSON.parse(
+              localStorage.getItem("sv_products_v1") || "[]"
+            );
+            if (Array.isArray(fromAdmin) && fromAdmin.length)
+              return fromAdmin.slice();
+          } catch {}
+          return (
+            w.SVStore?.getAllProducts?.() ||
+            w.SV_PRODUCT_SEED ||
+            []
+          ).slice();
+        }
 
         const fmt = (n) => (Number(n) || 0).toLocaleString("vi-VN") + "₫";
         const esc = (s) =>
@@ -895,50 +899,51 @@
               : "";
           const img = p.image || "https://placehold.co/600x600/png";
           return `
-      <div class="col col-3">
-        <div class="product-box">
-          <div class="product-thumbnail">
-            <a class="image_link" href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
+        <div class="col col-3">
+          <div class="product-box">
+            <div class="product-thumbnail">
+              <a class="image_link" href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
             p.id
           )}">
-              <img src="${esc(img)}" alt="${esc(p.name)}"/>
-            </a>
-            ${
-              badge
-                ? `<div class="product-label"><strong class="label">${esc(
-                    badge
-                  )}</strong></div>`
-                : ""
-            }
+                <img src="${esc(img)}" alt="${esc(p.name)}"/>
+              </a>
+              ${
+                badge
+                  ? `<div class="product-label"><strong class="label">${esc(
+                      badge
+                    )}</strong></div>`
+                  : ""
+              }
 
-            <div class="product-action-grid">
-              <button class="btn-cart btn-add-cart" data-id="${esc(
-                p.id
-              )}" aria-label="Thêm ${esc(p.name)} vào giỏ">
-                <i class="fa fa-plus"></i> Giỏ hàng
-              </button>
+              <div class="product-action-grid">
+                <button class="btn-cart btn-add-cart" data-id="${esc(
+                  p.id
+                )}" aria-label="Thêm ${esc(p.name)} vào giỏ">
+                  <i class="fa fa-plus"></i> Giỏ hàng
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="product-info a-left">
-            <h3 class="product-name">
-              <a href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
+            <div class="product-info a-left">
+              <h3 class="product-name">
+                <a href="${PRODUCT_DETAIL_URL}?id=${encodeURIComponent(
             p.id
           )}">${esc(p.name)}</a>
-            </h3>
-            <div class="price-box">
-              <span class="price product-price">${fmt(p.price)}</span>
-              ${old}
+              </h3>
+              <div class="price-box">
+                <span class="price product-price">${fmt(p.price)}</span>
+                ${old}
+              </div>
             </div>
           </div>
-        </div>
-      </div>`;
+        </div>`;
         }
 
-        const state = { view: all.slice(), page: 1, per: 8 };
+        const state = { view: [], page: 1, per: 8 };
 
         function applyFilters(e) {
           if (e) e.preventDefault();
 
+          const all = getAll(); // đọc mới mỗi lần
           const q = (qEl.value || "").trim().toLowerCase();
           const cat = catEl.value || "all";
           const min = Number(minEl.value || 0);
@@ -973,7 +978,7 @@
               String(b.name).localeCompare(String(a.name), "vi")
             );
 
-          // Update URL
+          // Cập nhật URL (nice UX)
           const u = new URL(location.href);
           q ? u.searchParams.set("q", q) : u.searchParams.delete("q");
           cat && cat !== "all"
@@ -1050,10 +1055,8 @@
           const cur = Math.min(Math.max(1, page), pages);
           const start = (cur - 1) * per;
           const slice = view.slice(start, start + per);
-
           ROOT.innerHTML = slice.map(renderCard).join("");
           renderPagination(view.length, cur, per);
-
           const top = d.querySelector(".page-main")?.offsetTop || 0;
           w.scrollTo({ top, behavior: "smooth" });
           state.page = cur;
@@ -1071,7 +1074,7 @@
           }
         });
 
-        // Reset
+        // Reset filters
         d.getElementById("svReset")?.addEventListener("click", () => {
           qEl.value = "";
           catEl.value = "all";
@@ -1082,24 +1085,36 @@
         });
 
         // Prefill from URL & init
-        (function restoreFromURL() {
+        (function initFromURL() {
           const u = new URL(location.href);
           qEl.value = u.searchParams.get("q") || "";
           catEl.value = u.searchParams.get("category") || "all";
           minEl.value = u.searchParams.get("priceMin") || "";
           maxEl.value = u.searchParams.get("priceMax") || "";
           sortEl.value = u.searchParams.get("sort") || "";
-
           FORM.addEventListener("submit", applyFilters);
           sortEl.addEventListener("change", applyFilters);
           applyFilters();
         })();
+
+        // ➜ Tự cập nhật khi Admin export (không reload)
+        window.addEventListener("storage", (e) => {
+          if (!e || !e.key) return;
+          if (
+            e.key === "sv_products_v1" ||
+            e.key === "SV_PRODUCTS_UPDATED_AT" ||
+            e.key === "catalog.bump"
+          ) {
+            applyFilters(); // đọc lại & render
+          }
+        });
       })(window, document);
     </script>
 
+    <!-- Thêm giỏ + footer accordion -->
     <script>
       (function () {
-        // Cập nhật đường dẫn login trong JS
+        // Chuẩn hoá click "Add to cart"
         const LOGIN_URL = "/account/login.html";
         function redirectToLogin() {
           const back = location.pathname + location.search + location.hash;
@@ -1114,7 +1129,7 @@
           });
         });
 
-        // Bắt mọi click thêm giỏ
+        // Bắt click thêm giỏ
         document.addEventListener(
           "click",
           function (e) {
@@ -1155,43 +1170,14 @@
           true
         );
 
-        // Chặn form mua nhanh nếu có
-        document.addEventListener(
-          "submit",
-          function (e) {
-            const form = e.target.closest("#buyForm, .js-buy-form");
-            if (!form) return;
-            if (!window.AUTH?.loggedIn) {
-              e.preventDefault();
-              if (typeof e.stopImmediatePropagation === "function")
-                e.stopImmediatePropagation();
-              redirectToLogin();
-            }
-          },
-          true
-        );
-
-        // Đồng bộ badge giỏ khi tab khác đổi
-        function updateBadge() {
-          window.SVUI?.updateCartCount?.();
-        }
-        window.addEventListener("storage", (e) => {
-          if (e.key && e.key.startsWith("sv_cart_user_")) updateBadge();
-        });
-        window.addEventListener("cart:changed", updateBadge);
-      })();
-    </script>
-    <script>
-      (function () {
+        // Footer accordion mobile
         function isMobile() {
           return window.matchMedia("(max-width: 767.98px)").matches;
         }
-
         function setInitialState() {
           document
             .querySelectorAll(".site-footer .widget-ft")
-            .forEach((box, i) => {
-              // Mặc định: đóng hết, riêng cột cuối "Liên hệ" mở sẵn (tuỳ bạn)
+            .forEach((box) => {
               if (isMobile()) {
                 if (
                   box
@@ -1205,35 +1191,40 @@
                   box.classList.remove("is-open");
                 }
               } else {
-                box.classList.add("is-open"); // PC luôn mở
+                box.classList.add("is-open");
               }
             });
         }
-
-        // Toggle khi bấm tiêu đề (chỉ mobile)
         function bindClick() {
           document
             .querySelectorAll(".site-footer .widget-ft .title-menu")
             .forEach((title) => {
               title.addEventListener("click", () => {
-                if (!isMobile()) return; // PC không toggle
+                if (!isMobile()) return;
                 const box = title.closest(".widget-ft");
                 if (!box) return;
                 box.classList.toggle("is-open");
               });
             });
         }
-
-        // Khởi tạo
         document.addEventListener("DOMContentLoaded", () => {
           setInitialState();
           bindClick();
         });
-        // Đổi trạng thái khi resize giữa mobile/PC
         window.addEventListener("resize", setInitialState);
+
+        // Đồng bộ badge giỏ
+        function updateBadge() {
+          window.SVUI?.updateCartCount?.();
+        }
+        window.addEventListener("storage", (e) => {
+          if (e.key && e.key.startsWith("sv_cart_user_")) updateBadge();
+        });
+        window.addEventListener("cart:changed", updateBadge);
       })();
     </script>
 
+    <!-- Vendor JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
       crossorigin="anonymous"
@@ -1242,53 +1233,5 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
       crossorigin="anonymous"
     ></script>
-    <script>
-      (function () {
-        let tm = null;
-        function scheduleRefresh() {
-          if (tm) return; // chống spam
-          tm = setTimeout(() => {
-            tm = null;
-            try {
-              // 1) Trang listing dùng SVUI.renderProducts
-              if (window.SVUI && typeof SVUI.renderProducts === "function") {
-                SVUI.renderProducts();
-                return;
-              }
-              // 2) Một số trang của bạn dùng window.render()
-              if (typeof window.render === "function") {
-                window.render();
-                return;
-              }
-              // 3) Trang chi tiết nếu có module riêng
-              if (
-                window.SVProductDetail &&
-                typeof SVProductDetail.render === "function"
-              ) {
-                SVProductDetail.render();
-                return;
-              }
-            } catch (e) {
-              console.warn("refresh error:", e);
-            }
-            // 4) Fallback an toàn nếu không có hàm render nào
-            try {
-              location.reload();
-            } catch {}
-          }, 100);
-        }
-
-        window.addEventListener("storage", (e) => {
-          if (!e || !e.key) return;
-          if (
-            e.key === "SV_PRODUCTS" ||
-            e.key === "sv_products_v1" ||
-            e.key === "SV_PRODUCTS_UPDATED_AT"
-          ) {
-            scheduleRefresh();
-          }
-        });
-      })();
-    </script>
   </body>
 </html>

@@ -1,10 +1,12 @@
-// /admin/assets/js/products.js
+// =====================
+// LocalStorage keys
+// =====================
 const CAT_KEY = "admin.categories";
 const PROD_KEY = "admin.products";
 
-// =====================
-// SEED dữ liệu ban đầu
-// =====================
+// ===================================
+// Seed Danh mục mặc định (1 lần)
+// ===================================
 (function seedCats() {
   if (!localStorage.getItem(CAT_KEY)) {
     localStorage.setItem(
@@ -36,49 +38,11 @@ const PROD_KEY = "admin.products";
   }
 })();
 
-(function seedProducts() {
-  if (localStorage.getItem(PROD_KEY)) return;
-  const now = Date.now();
-  const demo = [
-    {
-      id: 1,
-      code: "SP001",
-      name: "Apestomen Nitro",
-      categoryId: 1,
-      desc: "Sáp giữ nếp tốt",
-      uom: "hộp",
-      qty: 10,
-      cost: 200000,
-      margin: 50,
-      price: 300000,
-      supplier: "Apestomen",
-      status: "selling",
-      image: null,
-      createdAt: now,
-    },
-    {
-      id: 2,
-      code: "SP002",
-      name: "Kevin Murphy Session",
-      categoryId: 2,
-      desc: "Gôm xịt giữ lâu",
-      uom: "chai",
-      qty: 15,
-      cost: 280000,
-      margin: 30,
-      price: 364000,
-      supplier: "Kevin Murphy",
-      status: "selling",
-      image: null,
-      createdAt: now,
-    },
-  ];
-  localStorage.setItem(PROD_KEY, JSON.stringify(demo));
-})();
+// ❌ Không seed sản phẩm demo để nhường import từ User
 
-// ================
+// =====================
 // Helpers storage
-// ================
+// =====================
 const loadCats = () => {
   try {
     return JSON.parse(localStorage.getItem(CAT_KEY) || "[]");
@@ -96,12 +60,11 @@ const loadProds = () => {
 const nextId = (a) => a.reduce((m, x) => Math.max(m, x.id || 0), 0) + 1;
 
 // =====================================
-// BRIDGE -> Xuất sang trang User (store)
+// BRIDGE -> Xuất sang site User (store)
 // =====================================
-const PUBLIC_CATALOG_KEY = "sv_products_v1"; // user đọc key này
-const BUMP_KEY = "catalog.bump"; // đánh dấu thay đổi để storage event
+const PUBLIC_CATALOG_KEY = "sv_products_v1"; // site user đọc key này
+const BUMP_KEY = "catalog.bump"; // kích hoạt storage event để User tự refresh
 
-// map tên danh mục Admin -> slug ở site user
 const CAT_SLUG_MAP = {
   "Sáp vuốt tóc": "hair_wax",
   "Gôm xịt": "hair_spray",
@@ -117,16 +80,17 @@ function toSlug(s) {
     .replace(/(^-|-$)/g, "");
 }
 
-// Convert 1 sản phẩm admin -> schema public
+// ✅ ưu tiên id gốc từ seed user (seedId) để trang User mở đúng URL cũ
 function mapAdminProdToPublic(p, cats) {
   const catName = cats.find((c) => c.id === p.categoryId)?.name || "";
   const category = CAT_SLUG_MAP[catName] || toSlug(catName) || "other";
+  const publicId = p.seedId || `admin-${p.id}`;
 
   return {
-    id: `admin-${p.id}`,
+    id: publicId,
     name: p.name,
     brand: p.supplier || "",
-    category, // ví dụ: hair_wax / hair_spray / volumizing_powder
+    category,
     price: Number(p.price) || 0,
     original_price: undefined,
     image: p.image || "/assets/img/placeholder.png",
@@ -147,18 +111,16 @@ function mapAdminProdToPublic(p, cats) {
   };
 }
 
-// Export toàn bộ admin.products -> sv_products_v1
 function syncToStorefront(prods) {
   const cats = loadCats();
   const list = (prods || loadProds())
-    .filter((p) => (p.status || "selling") === "selling") // chỉ xuất hàng đang bán
+    .filter((p) => (p.status || "selling") === "selling")
     .map((p) => mapAdminProdToPublic(p, cats));
 
   localStorage.setItem(PUBLIC_CATALOG_KEY, JSON.stringify(list));
-  localStorage.setItem(BUMP_KEY, String(Date.now())); // kích hoạt storage event
+  localStorage.setItem(BUMP_KEY, String(Date.now())); // 🔔 báo cho phía User
 }
 
-// saveProds: luôn đồng bộ ra storefront
 const saveProds = (a) => {
   localStorage.setItem(PROD_KEY, JSON.stringify(a));
   syncToStorefront(a);
@@ -179,7 +141,7 @@ function fillCategories() {
   }
   if (filterCat) {
     filterCat.innerHTML =
-      `<option value="">-- tất cả loại --</option>` +
+      `<option value="">— Tất cả loại —</option>` +
       cats.map((c) => `<option value="${c.id}">${c.name}</option>`).join("");
   }
 }
@@ -234,6 +196,7 @@ function render(list) {
   const cat = document.getElementById("filter-cat")?.value || "";
   const st = document.getElementById("filter-status")?.value || "";
   const cats = loadCats();
+
   const data = (list || loadProds()).filter((p) => {
     if (q && !`${p.code} ${p.name} ${p.desc || ""}`.toLowerCase().includes(q))
       return false;
@@ -248,15 +211,16 @@ function render(list) {
   tbody.innerHTML = data
     .map((p, i) => {
       const catName = cats.find((c) => c.id === p.categoryId)?.name || "";
-      const img = p.image
-        ? `<img src="${p.image}" alt="" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #243040;">`
-        : "";
+      const img = p.image ? `<img src="${p.image}" alt="" class="thumb">` : "";
       const stBadge =
         p.status === "selling"
-          ? '<span class="status delivered">Đang bán</span>'
+          ? '<span class="status-chip selling">Đang bán</span>'
           : p.status === "stopped"
-          ? '<span class="status returned">Hết bán</span>'
-          : '<span class="status inPending">Ẩn</span>';
+          ? '<span class="status-chip stopped">Hết bán</span>'
+          : '<span class="status-chip hidden">Ẩn</span>';
+
+      const stopLabel = p.status === "selling" ? "Hết bán" : "Bán lại";
+      const hideLabel = p.status === "hidden" ? "Hiện" : "Ẩn";
 
       return `
       <tr>
@@ -273,30 +237,25 @@ function render(list) {
         <td>${p.supplier || ""}</td>
         <td>${stBadge}</td>
         <td>
-          <a href="#" class="btn btn-action" data-act="edit" data-id="${
+          <a href="#" class="btn btn-action" data-act="edit"   data-id="${
             p.id
           }">Sửa</a>
           <a href="#" class="btn btn-action" data-act="toggle" data-id="${
             p.id
-          }">
-            ${p.status === "selling" ? "Hết bán" : "Bán lại"}
-          </a>
-          <a href="#" class="btn btn-action" data-act="hide" data-id="${
+          }">${stopLabel}</a>
+          <a href="#" class="btn btn-action" data-act="hide"   data-id="${
             p.id
-          }">Ẩn</a>
+          }">${hideLabel}</a>
           <a href="#" class="btn btn-action" data-act="remove" data-id="${
             p.id
           }" style="background:#ef4444;">Xóa</a>
         </td>
-      </tr>
-    `;
+      </tr>`;
     })
     .join("");
 }
 render();
-
-// Đồng bộ lần đầu để trang User có dữ liệu ngay
-syncToStorefront();
+syncToStorefront(); // đồng bộ ngay lần đầu
 
 // ===================
 // Tìm kiếm & lọc
@@ -328,15 +287,18 @@ function setForm(p) {
   document.getElementById("price").value = p?.price ?? 0;
   document.getElementById("supplier").value = p?.supplier || "";
   document.getElementById("status").value = p?.status || "selling";
+
   currentImageData = p?.image || null;
   renderPreview();
+
   document.getElementById("form-title").textContent = p?.id
     ? "Sửa sản phẩm"
     : "Thêm sản phẩm";
 }
-document
-  .getElementById("btn-new")
-  ?.addEventListener("click", () => setForm(null));
+document.getElementById("btn-new")?.addEventListener("click", () => {
+  setForm(null);
+  window.AdminProductDrawer?.open?.();
+});
 document
   .getElementById("btn-cancel")
   ?.addEventListener("click", () => setForm(null));
@@ -361,6 +323,11 @@ document.getElementById("prod-form")?.addEventListener("submit", (e) => {
     supplier: document.getElementById("supplier").value.trim(),
     status: document.getElementById("status").value,
     image: currentImageData,
+    // giữ seedId nếu có (sửa không làm mất liên kết)
+    seedId:
+      prods.find(
+        (x) => x.id === Number(document.getElementById("id").value || 0)
+      )?.seedId || undefined,
   };
 
   if (!data.code || !data.name) {
@@ -372,7 +339,7 @@ document.getElementById("prod-form")?.addEventListener("submit", (e) => {
     const i = prods.findIndex((x) => x.id === data.id);
     if (i >= 0) {
       prods[i] = { ...prods[i], ...data };
-      saveProds(prods); // sẽ tự sync ra User
+      saveProds(prods);
       render(prods);
       setForm(null);
     }
@@ -384,7 +351,7 @@ document.getElementById("prod-form")?.addEventListener("submit", (e) => {
     data.id = nextId(prods);
     data.createdAt = Date.now();
     prods.push(data);
-    saveProds(prods); // sẽ tự sync ra User
+    saveProds(prods);
     render(prods);
     setForm(null);
   }
@@ -397,6 +364,7 @@ document.getElementById("prod-body")?.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-act]");
   if (!a) return;
   e.preventDefault();
+
   const id = Number(a.dataset.id);
   const act = a.dataset.act;
   const prods = loadProds();
@@ -405,7 +373,7 @@ document.getElementById("prod-body")?.addEventListener("click", (e) => {
 
   if (act === "edit") {
     setForm(prods[i]);
-    // nếu bạn dùng drawer: window.AdminProductDrawer?.open();
+    window.AdminProductDrawer?.open?.();
     return;
   }
   if (act === "toggle") {
@@ -415,7 +383,7 @@ document.getElementById("prod-body")?.addEventListener("click", (e) => {
     return;
   }
   if (act === "hide") {
-    prods[i].status = "hidden";
+    prods[i].status = prods[i].status === "hidden" ? "selling" : "hidden";
     saveProds(prods);
     render(prods);
     return;
@@ -429,3 +397,149 @@ document.getElementById("prod-body")?.addEventListener("click", (e) => {
     return;
   }
 });
+
+/* ===========================
+   IMPORT từ seed của site user
+   =========================== */
+const SLUG_TO_CATNAME = {
+  hair_wax: "Sáp vuốt tóc",
+  hair_spray: "Gôm xịt",
+  volumizing_powder: "Bột tạo phồng",
+};
+const pad3 = (n) => String(n).padStart(3, "0");
+
+function ensureCategoryBySlug(slug) {
+  const cats = loadCats();
+  const name =
+    SLUG_TO_CATNAME[slug] ||
+    String(slug || "other")
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  let found = cats.find((c) => c.name === name);
+  if (found) return found.id;
+
+  const newId = cats.reduce((m, c) => Math.max(m, c.id || 0), 0) + 1 || 1;
+  const newCat = {
+    id: newId,
+    code: "LOAI" + pad3(newId),
+    name,
+    desc: name,
+    active: true,
+  };
+  cats.push(newCat);
+  localStorage.setItem(CAT_KEY, JSON.stringify(cats));
+  fillCategories();
+  return newId;
+}
+
+function importUserSeedIntoAdmin({ force = false } = {}) {
+  const userSeed = Array.isArray(window.SV_PRODUCT_SEED)
+    ? window.SV_PRODUCT_SEED
+    : [];
+  const seedFromStore = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("sv_products_v1") || "[]");
+    } catch {
+      return [];
+    }
+  })();
+  const source = userSeed.length ? userSeed : seedFromStore;
+  if (!source.length) return;
+
+  const already = loadProds();
+  const importedFlag = localStorage.getItem("admin.userImported") === "1";
+  if (already.length && importedFlag && !force) return;
+
+  const prods = [];
+  let id = 0;
+
+  source.forEach((item) => {
+    const slug =
+      (item.category || item.category_slug || "").toString().trim() || "other";
+    const categoryId = ensureCategoryBySlug(slug);
+
+    const stoppedByStock = Number(item.stock || 0) <= 0;
+    const badge = (item.badge || "").toString().toLowerCase();
+    const status =
+      stoppedByStock || badge === "out_of_stock" || badge === "oos"
+        ? "stopped"
+        : "selling";
+
+    const price = Number(item.price) || 0;
+    const cost = Number.isFinite(Number(item.cost)) ? Number(item.cost) : price;
+    const margin = 0;
+
+    const code =
+      (item.specs && (item.specs.Mã || item.specs["Mã"])) ||
+      item.code ||
+      "SP" + pad3(++id);
+
+    prods.push({
+      id,
+      seedId: item.id, // ✅ giữ id gốc của User
+      code: String(code).toUpperCase(),
+      name: item.name || "",
+      categoryId,
+      desc: item.short_desc || item.long_desc || "",
+      uom: item.unit || "",
+      qty: Number(item.stock || 0),
+      cost,
+      margin,
+      price,
+      supplier: item.brand || "",
+      status,
+      image: item.image || null,
+      createdAt: Date.now(),
+    });
+  });
+
+  localStorage.setItem(PROD_KEY, JSON.stringify(prods));
+  localStorage.setItem("admin.userImported", "1");
+  syncToStorefront(prods);
+}
+
+// 🔁 Backfill seedId cho dữ liệu cũ (chạy 1 lần)
+function backfillSeedIdOnce() {
+  const flagKey = "admin.seedIdBackfilled";
+  if (localStorage.getItem(flagKey) === "1") return;
+
+  const prods = loadProds();
+  if (!prods.length) return;
+  const seed = Array.isArray(window.SV_PRODUCT_SEED)
+    ? window.SV_PRODUCT_SEED
+    : [];
+  if (!seed.length) return;
+
+  let changed = false;
+  prods.forEach((p) => {
+    if (p.seedId) return;
+    const found = seed.find(
+      (s) =>
+        ((s.specs && (s.specs.Mã || s.specs["Mã"])) || "")
+          .toString()
+          .toUpperCase() === (p.code || "").toUpperCase() ||
+        String(s.name || "")
+          .trim()
+          .toLowerCase() ===
+          String(p.name || "")
+            .trim()
+            .toLowerCase()
+    );
+    if (found) {
+      p.seedId = found.id;
+      changed = true;
+    }
+  });
+
+  if (changed) saveProds(prods);
+  localStorage.setItem(flagKey, "1");
+}
+
+// Chạy importer + backfill + render
+try {
+  importUserSeedIntoAdmin({ force: false });
+  backfillSeedIdOnce();
+  render();
+} catch (e) {
+  console.warn("import seed error:", e);
+}

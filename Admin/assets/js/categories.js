@@ -1,9 +1,13 @@
-// /admin/assets/js/categories.js
+// /Admin/assets/js/categories.js
 const CAT_KEY = "admin.categories";
+const PROD_KEY = "admin.products"; // để kiểm tra khi xoá danh mục
 
-(function seed() {
+/* =====================
+   Seed dữ liệu ban đầu
+   ===================== */
+(function seedCats() {
   if (localStorage.getItem(CAT_KEY)) return;
-  const def = [
+  const demo = [
     {
       id: 1,
       code: "LOAI001",
@@ -26,8 +30,12 @@ const CAT_KEY = "admin.categories";
       active: true,
     },
   ];
-  localStorage.setItem(CAT_KEY, JSON.stringify(def));
+  localStorage.setItem(CAT_KEY, JSON.stringify(demo));
 })();
+
+/* ==============
+   Helper storage
+   ============== */
 const loadCats = () => {
   try {
     return JSON.parse(localStorage.getItem(CAT_KEY) || "[]");
@@ -36,129 +44,180 @@ const loadCats = () => {
   }
 };
 const saveCats = (a) => localStorage.setItem(CAT_KEY, JSON.stringify(a));
+const loadProds = () => {
+  try {
+    return JSON.parse(localStorage.getItem(PROD_KEY) || "[]");
+  } catch {
+    return [];
+  }
+};
 const nextId = (a) => a.reduce((m, x) => Math.max(m, x.id || 0), 0) + 1;
+const pad3 = (n) => String(n).padStart(3, "0");
 
+/* =========
+   Rendering
+   ========= */
 function render(list) {
   const q = (document.getElementById("q")?.value || "").toLowerCase().trim();
-  const data = (list || loadCats()).filter((c) => {
-    if (!q) return true;
-    return `${c.code} ${c.name} ${c.desc || ""}`.toLowerCase().includes(q);
+  const cats = (list || loadCats()).filter((c) => {
+    if (q && !`${c.name} ${c.desc || ""}`.toLowerCase().includes(q))
+      return false;
+    return true;
   });
-  document.getElementById("cat-body").innerHTML = data
-    .map(
-      (c, i) => `
-    <tr>
-      <td>${i + 1}</td>
-      <td>${c.code}</td>
-      <td>${c.name}</td>
-      <td>${c.desc || ""}</td>
-      <td>${
-        c.active
-          ? '<span class="status delivered">Đang dùng</span>'
-          : '<span class="status returned">Ẩn</span>'
-      }</td>
-      <td>
-        <a href="#" data-act="edit" data-id="${
-          c.id
-        }" class="btn btn-action">Sửa</a>
-        <a href="#" data-act="${c.active ? "hide" : "show"}" data-id="${
-        c.id
-      }" class="btn btn-action">${c.active ? "Ẩn" : "Hiện"}</a>
-        <a href="#" data-act="remove" data-id="${
-          c.id
-        }" class="btn btn-action" style="background:#ef4444;">Xóa</a>
-      </td>
-    </tr>
-  `
-    )
+
+  const tbody = document.getElementById("cat-body");
+  if (!tbody) return;
+
+  document.getElementById("cat-count")?.replaceChildren?.();
+  const countEl = document.getElementById("cat-count");
+  if (countEl) countEl.textContent = `${cats.length} danh mục`;
+
+  tbody.innerHTML = cats
+    .map((c) => {
+      const toggleLabel = c.active ? "Ẩn" : "Hiện";
+      const statusBadge = c.active
+        ? '<span class="badge on">Đang dùng</span>'
+        : '<span class="badge off">Đang ẩn</span>';
+      return `
+        <tr>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong>${c.name}</strong> ${statusBadge}
+            </div>
+          </td>
+          <td>${c.desc || ""}</td>
+          <td>
+            <a href="#" class="btn btn-action" data-act="edit" data-id="${
+              c.id
+            }">Sửa</a>
+            <a href="#" class="btn btn-action" data-act="toggle" data-id="${
+              c.id
+            }">${toggleLabel}</a>
+            <a href="#" class="btn btn-action" data-act="remove" data-id="${
+              c.id
+            }" style="background:#ef4444;">Xóa</a>
+          </td>
+        </tr>
+      `;
+    })
     .join("");
 }
+render();
+
+/* ========
+   Search
+   ======== */
+document.getElementById("q")?.addEventListener("input", () => render());
+
+/* ==========
+   Form utils
+   ========== */
 function setForm(c) {
   document.getElementById("id").value = c?.id || "";
-  document.getElementById("code").value = c?.code || "";
   document.getElementById("name").value = c?.name || "";
   document.getElementById("desc").value = c?.desc || "";
-  document.getElementById("active").value = String(c?.active ?? true);
   document.getElementById("form-title").textContent = c?.id
-    ? "Sửa loại"
-    : "Thêm loại";
+    ? "Sửa danh mục"
+    : "Thêm danh mục";
 }
-render();
-document.getElementById("q")?.addEventListener("input", () => render());
-document
-  .getElementById("btn-new")
-  ?.addEventListener("click", () => setForm(null));
+document.getElementById("btn-new")?.addEventListener("click", () => {
+  setForm(null);
+  window.AdminCategoryDrawer?.open?.();
+});
 document
   .getElementById("btn-cancel")
   ?.addEventListener("click", () => setForm(null));
+
+/* ===========
+   Submit form
+   =========== */
 document.getElementById("cat-form")?.addEventListener("submit", (e) => {
   e.preventDefault();
-  const arr = loadCats();
-  const data = {
-    id: Number(document.getElementById("id").value || 0),
-    code: document.getElementById("code").value.trim(),
-    name: document.getElementById("name").value.trim(),
-    desc: document.getElementById("desc").value.trim(),
-    active: document.getElementById("active").value === "true",
-  };
-  if (!data.code || !data.name) {
-    alert("Nhập mã & tên loại");
+  const cats = loadCats();
+  const id = Number(document.getElementById("id").value || 0);
+  const name = document.getElementById("name").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+
+  if (!name) {
+    alert("Nhập tên danh mục");
     return;
   }
-  if (data.id) {
-    const i = arr.findIndex((x) => x.id === data.id);
+
+  if (id) {
+    // update
+    const i = cats.findIndex((x) => x.id === id);
     if (i >= 0) {
-      arr[i] = { ...arr[i], ...data };
-      saveCats(arr);
-      render(arr);
+      // Không cho trùng tên với danh mục khác
+      const dup = cats.some(
+        (x) => x.id !== id && x.name.toLowerCase() === name.toLowerCase()
+      );
+      if (dup) return alert("Tên danh mục đã tồn tại");
+      cats[i] = { ...cats[i], name, desc };
+      saveCats(cats);
+      render(cats);
       setForm(null);
+      window.AdminCategoryDrawer?.close?.();
     }
   } else {
-    if (arr.some((x) => x.code.toLowerCase() === data.code.toLowerCase())) {
-      alert("Mã loại đã tồn tại");
+    // create
+    if (cats.some((x) => x.name.toLowerCase() === name.toLowerCase())) {
+      alert("Tên danh mục đã tồn tại");
       return;
     }
-    data.id = nextId(arr);
-    arr.push(data);
-    saveCats(arr);
-    render(arr);
+    const newId = nextId(cats);
+    const code = "LOAI" + pad3(newId);
+    cats.push({ id: newId, code, name, desc, active: true });
+    saveCats(cats);
+    render(cats);
     setForm(null);
+    window.AdminCategoryDrawer?.close?.();
   }
 });
+
+/* ============
+   Table action
+   ============ */
 document.getElementById("cat-body")?.addEventListener("click", (e) => {
   const a = e.target.closest("a[data-act]");
   if (!a) return;
   e.preventDefault();
+
   const id = Number(a.dataset.id);
   const act = a.dataset.act;
-  const arr = loadCats();
-  const i = arr.findIndex((x) => x.id === id);
+  const cats = loadCats();
+  const i = cats.findIndex((x) => x.id === id);
   if (i < 0) return;
+
   if (act === "edit") {
-    setForm(arr[i]);
+    setForm(cats[i]);
+    window.AdminCategoryDrawer?.open?.();
     return;
   }
-  if (act === "hide") {
-    arr[i].active = false;
-    saveCats(arr);
-    render(arr);
+
+  if (act === "toggle") {
+    cats[i].active = !cats[i].active;
+    saveCats(cats);
+    render(cats);
     return;
   }
-  if (act === "show") {
-    arr[i].active = true;
-    saveCats(arr);
-    render(arr);
-    return;
-  }
+
   if (act === "remove") {
-    if (
-      confirm(
-        "Xóa loại này? Lưu ý: sản phẩm đang dùng loại này sẽ cần sửa lại."
-      )
-    ) {
-      arr.splice(i, 1);
-      saveCats(arr);
-      render(arr);
+    // kiểm tra sản phẩm đang dùng danh mục này
+    const prods = loadProds();
+    const used = prods.filter((p) => Number(p.categoryId) === id);
+    if (used.length) {
+      const ok = confirm(
+        `Có ${used.length} sản phẩm đang gắn danh mục này.\n` +
+          `Chọn OK để XOÁ danh mục và gỡ danh mục khỏi các sản phẩm đó (categoryId = null).`
+      );
+      if (!ok) return;
+      // gỡ category cho sản phẩm
+      used.forEach((p) => (p.categoryId = null));
+      localStorage.setItem(PROD_KEY, JSON.stringify(prods));
     }
+    cats.splice(i, 1);
+    saveCats(cats);
+    render(cats);
+    return;
   }
 });
