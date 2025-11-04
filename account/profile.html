@@ -1,252 +1,438 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Đăng ký</title>
-
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --brand:#111;
-      --radius:16px;
-      --shadow-sm:0 6px 18px rgba(17,24,39,.08);
-      --shadow-md:0 20px 50px rgba(17,24,39,.12);
-      --ring: 0 0 0 4px rgba(17,17,17,.08);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 15% -10%, #e9eef6 0%, transparent 55%),
-        radial-gradient(1000px 500px at 90% 110%, #edf1f8 0%, transparent 55%),
-        var(--bg);
-      display:flex; align-items:center; justify-content:center;
-      padding:28px;
-    }
-    .back{
-      position:fixed; top:18px; left:18px;
-      display:inline-flex; align-items:center; gap:8px;
-      font-size:14px; font-weight:600; color:#1a73e8; text-decoration:none;
-      padding:8px 10px; border-radius:999px; background:#fff; border:1px solid var(--line);
-      box-shadow: var(--shadow-sm);
-      transition: filter .15s ease, transform .05s ease;
-    }
-    .back:hover{ filter:brightness(.98) }
-    .back:active{ transform: translateY(1px) }
-    .wrap{ width:100%; max-width:720px }
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:24px;
-      box-shadow:var(--shadow-md);
-      padding:28px 24px;
-    }
-    .brand{ display:grid; place-items:center; margin-bottom:14px; }
-    .brand img{ display:block;margin:0 auto 16px;max-width:300px;height:auto;border-radius:12px;object-fit:contain }
-    .title{ text-align:center; margin:6px 0 4px; font-size:26px; font-weight:800; letter-spacing:.2px }
-    .sub{ text-align:center; color:var(--muted); font-size:14px; margin-bottom:16px }
-    .alert{
-      display:none; margin:0 0 12px; padding:10px 12px;
-      border-radius:12px; font-size:14px;
-      background:#fdecea; color:#b71c1c; border:1px solid #f5c3c3;
-    }
-    form.form{ display:grid; gap:12px; }
-    .grid-2{ display:grid; gap:12px; grid-template-columns:1fr; }
-    @media(min-width:640px){ .grid-2{ grid-template-columns:1fr 1fr; } }
-    .field{
-      position:relative; height:54px;
-      border:1px solid var(--line); border-radius:12px; background:#fff;
-      display:flex; align-items:center; padding:0 12px;
-      transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .field:focus-within{ border-color:#cbd5e1; box-shadow: var(--ring); background:#fff; }
-    .field i{ color:#9ca3af; margin-right:10px; font-size:14px }
-    .input{ flex:1; border:0; outline:0; background:transparent; font-size:15px; color:var(--text); }
-    .input::placeholder{ color:#9aa3ad }
-    .check{ display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--muted); margin-top:2px }
-    .check input{ margin-top:3px }
-    .btn{
-      height:52px; border:0; border-radius:12px;
-      font-weight:800; font-size:15px; cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center;
-      transition:transform .05s ease, filter .15s ease, box-shadow .15s ease, opacity .15s ease;
-    }
-    .btn:active{ transform: translateY(1px) }
-    .btn-primary{ width:100%; color:#fff; background:var(--brand); box-shadow: 0 8px 20px rgba(17,17,17,.15); }
-    .btn-primary:hover{ filter:brightness(.96) }
-    .btn[disabled]{ opacity:.6; cursor:not-allowed }
-    .bottom{ text-align:center; color:#6b7280; font-size:14px; margin-top:4px; }
-    .bottom a{ color:#1a73e8; font-weight:700; text-decoration:none }
-    .bottom a:hover{ text-decoration:underline }
-  </style>
-</head>
-<body>
-  <!-- Đổi sang .html -->
-  <a href="/trangchu.html" class="back"><i class="fa-solid fa-chevron-left"></i> Quay lại</a>
-
-  <div class="wrap">
-    <div class="card">
-      <div class="brand">
-        <img src="/assets/images/logo.jpg" alt="logo">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Thông tin tài khoản</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/bootstrap-4.6.2-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="topbar">
+        <div class="container">
+          <div class="topbar-right"></div>
+        </div>
       </div>
-      <h1 class="title">Tạo tài khoản</h1>
-      <div class="sub">Đăng ký để mua hàng nhanh hơn và nhận ưu đãi thành viên</div>
+    </header>
 
-      <div id="alert" class="alert"></div>
+    <header class="mid-header">
+      <div class="container">
+        <div class="header-main">
+          <div class="header-left">
+            <!-- Chặn autofill & gõ dấu ok -->
+            <form
+              action="/search"
+              method="get"
+              class="search-bar"
+              autocomplete="off"
+            >
+              <input
+                type="text"
+                name="query"
+                placeholder="Tìm kiếm"
+                autocomplete="off"
+                autocapitalize="off"
+                autocorrect="off"
+                spellcheck="false"
+                inputmode="search"
+              />
+              <button type="submit" aria-label="Tìm kiếm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </form>
+          </div>
 
-      <!-- giữ logic chặn autofill (readonly) + đọc theo id -->
-      <form id="registerForm" class="form" autocomplete="off" novalidate>
-        <label class="field">
-          <i class="fa-regular fa-id-card"></i>
-          <input class="input" type="text" id="fullname" name="r_fullname"
-                 placeholder="Họ tên của bạn"
-                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                 inputmode="text" readonly required />
-        </label>
+          <div class="header-center">
+            <a href="/trangchu.html" class="logo">
+              <img src="/assets/images/logo.jpg" alt="GENTLEMAN" />
+            </a>
+          </div>
 
-        <div class="grid-2">
-          <label class="field">
-            <i class="fa-regular fa-envelope"></i>
-            <input class="input" type="email" id="email" name="r_email"
-                   placeholder="Email của bạn"
-                   autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                   inputmode="email" readonly required />
-          </label>
-
-          <label class="field">
-            <i class="fa-solid fa-phone"></i>
-            <input class="input" type="tel" id="phone" name="r_phone"
-                   placeholder="Số điện thoại của bạn"
-                   autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                   inputmode="tel" readonly />
-          </label>
+          <div class="header-right">
+            <a href="/giohang.html" class="cart-link">
+              <i class="fa-solid fa-cart-shopping"></i>
+              GIỎ HÀNG (<span class="cart-count">0</span>)
+            </a>
+          </div>
         </div>
+      </div>
+    </header>
 
-        <label class="field">
-          <i class="fa-solid fa-location-dot"></i>
-          <input class="input" type="text" id="address" name="r_address"
-                 placeholder="Địa chỉ nhận hàng"
-                 autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
-                 inputmode="text" readonly />
-        </label>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/trangchu.html">TRANG CHỦ</a></li>
+        <li><a href="/gioithieu.html">GIỚI THIỆU</a></li>
+        <li>
+          <a href="/sanpham/sanpham.html" class="js-products-url">SẢN PHẨM</a>
+        </li>
+        <li><a href="/tintuc.html">TIN TỨC</a></li>
+        <li><a href="/lienhe.html">LIÊN HỆ</a></li>
+      </ul>
+    </nav>
 
-        <label class="field">
-          <i class="fa-solid fa-key"></i>
-          <input class="input" type="password" id="password" name="r_password"
-                 placeholder="Mật khẩu"
-                 autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false"
-                 inputmode="text" readonly required />
-        </label>
+    <script>
+      (function (w, d) {
+        // Lấy URL trang sản phẩm từ menu (ưu tiên .js-products-url)
+        function getProductsURL() {
+          var a =
+            d.querySelector("nav.main-nav a.js-products-url") ||
+            d.querySelector('nav.main-nav a[href*="/sanpham"]');
+          return a && a.getAttribute("href")
+            ? a.getAttribute("href")
+            : "/sanpham/sanpham.html";
+        }
 
-        <label class="check">
-          <input type="checkbox" id="agree">
-          <span>Tôi đã đọc, đồng ý với <a href="#" target="_blank">Chính sách bảo vệ dữ liệu cá nhân</a> &amp; <a href="#" target="_blank">Quy định sử dụng</a>.</span>
-        </label>
+        var form = d.querySelector(".search-bar");
+        if (!form) return;
 
-        <button type="submit" class="btn btn-primary" id="submitBtn" disabled>Đăng ký</button>
+        form.addEventListener(
+          "submit",
+          function (e) {
+            e.preventDefault();
 
-        <div class="bottom">
-          Đã có tài khoản?
-          <!-- Đổi sang .html -->
-          <a id="toLogin" href="/account/login.html">Đăng nhập</a>
+            var input = form.querySelector(
+              'input[name="query"], input[name="q"]'
+            );
+            var q = ((input && input.value) || "").trim().replace(/\s+/g, " ");
+            var raw = getProductsURL();
+
+            // Dùng URL để không bị nhân đôi ?q= và giữ các param khác nếu có
+            var url = new URL(raw, w.location.origin);
+            if (q) url.searchParams.set("q", q);
+            else url.searchParams.delete("q");
+
+            // Điều hướng sang trang sản phẩm với ?q=
+            w.location.href = url.pathname + (url.search ? url.search : "");
+          },
+          { passive: false }
+        );
+      })(window, document);
+    </script>
+
+    <script>
+      (function (w, d) {
+        // gọi sau khi auth sẵn sàng
+        function makeWelcomeClickable() {
+          // ưu tiên phần tử của header mới
+          var el = d.querySelector(".welcome-user");
+          if (el) {
+            // đã là <a>, đảm bảo đúng href
+            el.setAttribute("href", "/account/profile.html");
+            return;
+          }
+
+          // các trường hợp site cũ: #welcomeName, [data-welcome-name], .js-welcome-name
+          var target = d.querySelector(
+            "#welcomeName, [data-welcome-name], .js-welcome-name"
+          );
+          if (!target) return;
+
+          // nếu chưa phải <a>, bọc lại thành <a>
+          if (target.tagName !== "A") {
+            var a = d.createElement("a");
+            a.href = "/account/profile.html";
+            a.className = "welcome-link";
+            while (target.firstChild) a.appendChild(target.firstChild);
+            target.appendChild(a);
+          } else {
+            target.setAttribute("href", "/account/profile.html");
+          }
+        }
+
+        d.addEventListener("auth:ready", makeWelcomeClickable);
+        if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
+      })(window, document);
+    </script>
+
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title mb-4">Thông tin tài khoản</h3>
+              <div id="profileInfo">
+                <p>Đang tải...</p>
+              </div>
+              <hr />
+              <a href="/giohang.html" class="btn btn-primary"
+                >Giỏ hàng của tôi</a
+              >
+              <a href="/account/orders.html" class="btn btn-outline-info"
+                >Lịch sử mua hàng</a
+              >
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
-    <script src="/assets/js/auth.js"></script>  
-    <script src="/assets/js/auth.security.enforcer.js"></script>
-<script src="/assets/js/auth.localstorage.bridge.js"></script>
-<script src="/assets/js/auth.reactive.guard.v2.js"></script>
-<!-- rồi mới đến store.js, ui.js, products.* ... -->
 
-  <script>
-  (function(){
-    const $ = s => document.querySelector(s);
-    const alertBox = $('#alert');
-    const agree = $('#agree');
-    const btn = $('#submitBtn');
+    <footer class="footer">
+      <div class="site-footer">
+        <div class="top-footer">
+          <div class="container">
+            <div class="row">
+              <section class="widget-ft">
+                <h4 class="title-menu">Thông tin</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
 
-    // Bỏ readonly khi người dùng tương tác (tránh autofill trình duyệt)
-    document.querySelectorAll('#registerForm .input[readonly]').forEach(function (el) {
-      function unlock(){
-        el.removeAttribute('readonly');
-        el.removeEventListener('focus', unlock);
-        el.removeEventListener('mousedown', unlock);
-        el.removeEventListener('touchstart', unlock);
+              <section class="widget-ft">
+                <h4 class="title-menu">Hỗ trợ</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="widget-ft">
+                <h4 class="title-menu">Hướng dẫn</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="widget-ft">
+                <h4 class="title-menu">Chính sách</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="wg-logo">
+                <h4 class="title-menu">Liên hệ</h4>
+                <ul class="contact">
+                  <li>
+                    <span class="txt_content_child">
+                      <span
+                        ><i
+                          class="fa-solid fa-location-dot"
+                          aria-hidden="true"
+                        ></i
+                      ></span>
+                      140B-Tổ 3, Ấp Xóm Chùa,Tỉnh Tây Ninh
+                    </span>
+                  </li>
+                  <li class="sdt">
+                    <span
+                      ><i class="fa-solid fa-phone" aria-hidden="true"></i
+                    ></span>
+                    <a href="tel:0338286525">0338286525</a>
+                  </li>
+                  <li class="sdt">
+                    <span><i class="fa-solid fa-envelope"></i></span>
+                    <a href="mailto:thanhloc29052006@gmail.com"
+                      >thanhloc29052006@gmail.com</a
+                    >
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="mid-footer">
+          <div class="container">
+            <div class="row">
+              <div class="fot_copyright">
+                <span class="wsp"
+                  ><span
+                    >Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span
+                  ></span
+                >
+              </div>
+              <nav class="fot_menu_copyright">
+                <ul class="ul_menu_fot">
+                  <li>
+                    <a href="/trangchu.html" title="Trang chủ">Trang chủ</a>
+                  </li>
+                  <li>
+                    <a href="/gioithieu.html" title="Giới thiệu">Giới thiệu</a>
+                  </li>
+                  <li>
+                    <a href="/sanpham/sanpham.html" title="Sản phẩm"
+                      >Sản phẩm</a
+                    >
+                  </li>
+                  <li><a href="/tin-tuc.html" title="Tin tức">Tin tức</a></li>
+                  <li><a href="/lienhe.html" title="Liên hệ">Liên hệ</a></li>
+                </ul>
+              </nav>
+              <div class="pay_footer">
+                <ul class="follow_option">
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                </ul>
+              </div>
+              <a
+                href="#"
+                id="back-to-top"
+                class="backtop"
+                title="Lên đầu trang"
+              >
+                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Auth + Data + Store -->
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/auth.modal.bridge.js"></script>
+    <script src="/assets/js/products.seed.js"></script>
+    <script src="/assets/js/store.js"></script>
+    <script src="/assets/js/ui.js"></script>
+
+    <script>
+      // ====== Lấy thông tin phụ (SĐT, địa chỉ) từ localStorage ======
+      function getExtraProfile(email) {
+        if (!email) return {};
+        try {
+          const KEY = "sv_profiles_v1";
+          const allProfiles = JSON.parse(localStorage.getItem(KEY) || "{}");
+          return allProfiles[(email || "").toLowerCase()] || {};
+        } catch (e) {
+          console.error("Lỗi khi đọc dữ liệu hồ sơ:", e);
+          return {};
+        }
       }
-      el.addEventListener('focus', unlock, { once:true });
-      el.addEventListener('mousedown', unlock, { once:true });
-      el.addEventListener('touchstart', unlock, { once:true });
-    });
 
-    // Bật/tắt nút theo agree
-    function toggleBtn(){ btn.disabled = !agree.checked; }
-    agree.addEventListener('change', toggleBtn); toggleBtn();
+      // ====== Render thông tin tài khoản ======
+      function renderProfile() {
+        const info = document.getElementById("profileInfo");
 
-    // Link Đăng nhập: giữ path gốc + thêm ?redirect=
-    const usp = new URLSearchParams(location.search);
-    const redirect = usp.get('redirect') || document.referrer || '/';
+        if (window.AUTH?.loggedIn && window.AUTH.user) {
+          const u = window.AUTH.user;
+          const extraInfo = getExtraProfile(u.email);
 
-    (function fixLoginLink(){
-      const a = document.getElementById('toLogin');
-      const base = a.getAttribute('href') || '/account/login.html';   // đổi default sang .html
-      const u = new URL(base, location.origin);
-      if (!u.searchParams.has('redirect')) u.searchParams.set('redirect', redirect);
-      a.href = u.pathname + (u.search ? u.search : '');
-    })();
+          info.innerHTML = `
+      <dl class="row">
+        <dt class="col-sm-4">Họ tên:</dt>
+        <dd class="col-sm-8"><strong>${u.name || "—"}</strong></dd>
 
-    function showErr(msg){ alertBox.textContent = msg || 'Đăng ký thất bại.'; alertBox.style.display = 'block'; }
-    function hideErr(){ alertBox.style.display = 'none'; }
+        <dt class="col-sm-4">Email:</dt>
+        <dd class="col-sm-8">${u.email || "—"}</dd>
 
-    // Lưu profile phụ (demo)
-    function saveProfile(email, profile){
-      try{
-        const KEY = 'sv_profiles_v1';
-        const data = JSON.parse(localStorage.getItem(KEY) || '{}');
-        data[email] = Object.assign({}, data[email] || {}, profile);
-        localStorage.setItem(KEY, JSON.stringify(data));
-      }catch(e){}
-    }
+        <dt class="col-sm-4">Số điện thoại:</dt>
+        <dd class="col-sm-8">${extraInfo.phone || "Chưa cập nhật"}</dd>
 
-    // Submit form
-    $('#registerForm').addEventListener('submit', function(e){
-      e.preventDefault(); hideErr();
-      const name = $('#fullname').value.trim();
-      const email = $('#email').value.trim().toLowerCase();
-      const phone = $('#phone').value.trim();
-      const address = $('#address').value.trim();
-      const pass = $('#password').value;
-
-      if (!name || !email || !pass) return showErr('Vui lòng nhập đủ Họ tên, Email và Mật khẩu.');
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('Email không hợp lệ.');
-      if (!agree.checked) return showErr('Vui lòng đồng ý điều khoản.');
-
-      try{
-        // Đăng ký + đăng nhập (localStorage – từ /assets/js/auth.js)
-        AUTH.register(name, email, pass);
-        saveProfile(email, { phone, address, fullname: name, createdAt: new Date().toISOString() });
-        AUTH.check();
-
-        // CHUYỂN VỀ TRANG CHỦ VỚI POPUP WELCOME (đổi .php → .html)
-        const nameForWelcome = encodeURIComponent(name || 'bạn');
-        location.href = '/trangchu.html?welcome=' + nameForWelcome;
-
-      }catch(err){
-        showErr(err?.message);
+        <dt class="col-sm-4">Địa chỉ:</dt>
+        <dd class="col-sm-8">${extraInfo.address || "Chưa cập nhật"}</dd>
+      </dl>
+    `;
+        } else {
+          info.innerHTML =
+            '<p class="text-danger">Bạn chưa đăng nhập. <a href="/account/login.html">Đăng nhập ngay</a></p>';
+        }
       }
-    });
-  })();
-  </script>
-</body>
+
+      document.addEventListener("auth:ready", renderProfile);
+      if (window.AUTH && window.AUTH.ready) renderProfile();
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
