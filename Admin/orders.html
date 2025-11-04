@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quản lý đơn hàng | Nobility 1800s Admin</title>
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <style>
+    .page{padding:14px 16px}
+    .page-header{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}
+    .page-header h1{font-size:20px;margin:0}
+    .toolbar{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
+    .input{border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;background:#fff;color:#111;outline:none}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden}
+    thead td{background:#f8fafc;font-weight:800;color:#111;border-bottom:1px solid #e5e7eb}
+    td{padding:12px;border-bottom:1px solid #f0f2f5;vertical-align:top}
+    tr:hover{background:#fafafa}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid #e5e7eb;border-radius:10px;padding:8px 10px;background:#fff;cursor:pointer;font-weight:700}
+    .btn.primary{background:#1f235a;color:#fff;border-color:#1f235a}
+    .status-chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid #e5e7eb}
+    .st-new{background:#eff6ff;border-color:#bfdbfe;color:#1e3a8a}
+    .st-confirmed{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+    .st-delivered{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
+    .st-canceled{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+    .small{font-size:12px;color:#6b7280}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;z-index:998}
+    .modal.show{display:block}
+    .modal .panel{position:absolute;inset:40px 0 0;max-width:920px;margin:0 auto;background:#fff;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.1);display:flex;flex-direction:column}
+    .panel .hd{padding:14px 16px;border-bottom:1px solid #eef2f7;display:flex;justify-content:space-between;align-items:center}
+    .panel .bd{padding:12px 16px;overflow:auto}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .kv{display:flex;gap:8px}
+    .kv .k{width:120px;color:#6b7280}
+    .line{height:1px;background:#eef2f7;margin:10px 0}
+  </style>
+
+  <script>
+    (function(){
+      try{
+        const u = JSON.parse(sessionStorage.getItem('session.user')||'null');
+        if(!u || u.role!=="admin") location.replace('./login.html');
+      }catch{ location.replace('./login.html'); }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="navagation">
+      <ul>
+        <li><a href="./index.html"><span class="icon"><ion-icon name="logo-apple"></ion-icon></span><span class="title">Nobility 1800s</span></a></li>
+        <li id="nav-dashboard"><a href="./index.html"><span class="icon"><ion-icon name="home-outline"></ion-icon></span><span class="title">Bảng điều khiển</span></a></li>
+        <li id="nav-customers"><a href="./users.html"><span class="icon"><ion-icon name="people-outline"></ion-icon></span><span class="title">Quản lý khách hàng</span></a></li>
+        <li id="nav-categories"><a href="./categories.html"><span class="icon"><ion-icon name="bookmarks-outline"></ion-icon></span><span class="title">Quản lý danh mục</span></a></li>
+        <li id="nav-products"><a href="./products.html"><span class="icon"><ion-icon name="bag-remove-outline"></ion-icon></span><span class="title">Quản lý sản phẩm</span></a></li>
+        <li id="nav-imports"><a href="./imports.html"><span class="icon"><ion-icon name="download-outline"></ion-icon></span><span class="title">Phiếu nhập hàng</span></a></li>
+        <li id="nav-pricing"><a href="./pricing.html"><span class="icon"><ion-icon name="pricetag-outline"></ion-icon></span><span class="title">Quản lý giá bán</span></a></li>
+        <li class="hovered" id="nav-orders"><a href="./orders.html"><span class="icon"><ion-icon name="newspaper-outline"></ion-icon></span><span class="title">Quản lý đơn hàng</span></a></li>
+        <hr/>
+        <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #2a2f8a;border-radius:12px;background:#fff;color:#1f235a;font-weight:700">
+            <ion-icon name="person-circle-outline"></ion-icon><span>Chào mừng, Admin</span>
+          </div>
+        </li>
+        <li><a href="#" id="btn-logout-side"><span class="icon"><ion-icon name="log-in-outline"></ion-icon></span><span class="title">Đăng xuất</span></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="page">
+      <div class="page-header">
+        <h1>Quản lý đơn hàng</h1>
+        <div class="actions"></div>
+      </div>
+
+      <div class="toolbar">
+        <input id="q" class="input" type="text" placeholder="Tìm mã đơn / tên / sđt / địa chỉ..." />
+        <input id="from" class="input" type="date" />
+        <input id="to" class="input" type="date" />
+        <select id="status" class="input" style="min-width:180px">
+          <option value="">— Tất cả trạng thái —</option>
+          <option value="new">Chưa xử lý</option>
+          <option value="confirmed">Đã xác nhận</option>
+          <option value="delivered">Đã giao</option>
+          <option value="canceled">Đã huỷ</option>
+        </select>
+        <select id="sortWard" class="input" style="min-width:200px">
+          <option value="">— Sắp xếp theo phường/xã —</option>
+          <option value="asc">Phường/Xã (A → Z)</option>
+          <option value="desc">Phường/Xã (Z → A)</option>
+        </select>
+        <button id="btnFilter" class="btn">Lọc</button>
+      </div>
+
+      <div class="details">
+        <div class="recentOrders" style="flex:2">
+          <div class="cardHeader"><h2>Danh sách đơn hàng</h2></div>
+          <table>
+            <thead>
+              <tr>
+                <td>Mã đơn</td>
+                <td>Ngày</td>
+                <td>Khách hàng</td>
+                <td>Địa chỉ</td>
+                <td style="text-align:right">SL</td>
+                <td style="text-align:right">Tổng tiền</td>
+                <td>Trạng thái</td>
+                <td>Hành động</td>
+              </tr>
+            </thead>
+            <tbody id="od-body">
+              <tr><td colspan="8" style="text-align:center;color:#9aa3ad;padding:20px">Đang tải…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="od-modal" class="modal" aria-hidden="true">
+    <div class="panel">
+      <div class="hd">
+        <h3 id="od-title" style="margin:0">Chi tiết đơn</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="od-status" class="input">
+            <option value="new">Chưa xử lý</option>
+            <option value="confirmed">Đã xác nhận</option>
+            <option value="delivered">Đã giao</option>
+            <option value="canceled">Đã huỷ</option>
+          </select>
+          <button class="btn primary" id="btnUpdateStatus">Cập nhật</button>
+          <button class="btn" id="btnClose">Đóng</button>
+        </div>
+      </div>
+      <div class="bd">
+        <div class="grid">
+          <div>
+            <div class="kv"><div class="k">Mã đơn</div><div id="vCode">—</div></div>
+            <div class="kv"><div class="k">Ngày</div><div id="vDate">—</div></div>
+            <div class="kv"><div class="k">Trạng thái</div><div id="vStatus">—</div></div>
+            <div class="kv"><div class="k">Ghi chú</div><div id="vNote">—</div></div>
+          </div>
+          <div>
+            <div class="kv"><div class="k">Khách hàng</div><div id="vCus">—</div></div>
+            <div class="kv"><div class="k">SĐT</div><div id="vPhone">—</div></div>
+            <div class="kv"><div class="k">Địa chỉ</div><div id="vAddr">—</div></div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <h4 style="margin:8px 0">Sản phẩm</h4>
+        <table style="width:100%">
+          <thead>
+            <tr>
+              <td style="min-width:120px">Mã SP</td>
+              <td style="min-width:220px">Tên SP</td>
+              <td style="text-align:right">Giá</td>
+              <td style="text-align:right">SL</td>
+              <td style="text-align:right">Thành tiền</td>
+            </tr>
+          </thead>
+          <tbody id="vItems"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" style="text-align:right;font-weight:700">Tổng cộng</td>
+              <td id="vTotal" style="text-align:right;font-weight:700">0</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="./assets/js/main.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script src="./assets/js/order.js"></script>
+  <script>
+    // Xử lý nút Đăng xuất
+    document.getElementById('btn-logout-side')?.addEventListener('click', (e)=>{
+      e.preventDefault(); sessionStorage.removeItem('session.user'); location.href='./login.html';
+    });
+  </script>
+</body>
+</html>

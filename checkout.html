@@ -589,94 +589,131 @@
   }
 
   /* Đặt hàng */
-  els.btnPlace.addEventListener('click', ()=>{
-    if (!window.AUTH?.loggedIn) {
-      alert('Vui lòng đăng nhập để đặt hàng!');
-      const back = location.pathname + location.search + location.hash;
-      location.href = '/account/login.html?redirect=' + encodeURIComponent(back);
+  /* Đặt hàng – LƯU USER + PHÁT TÍN HIỆU CHO ADMIN */
+els.btnPlace.addEventListener('click', ()=>{
+  if (!window.AUTH?.loggedIn) {
+    alert('Vui lòng đăng nhập để đặt hàng!');
+    const back = location.pathname + location.search + location.hash;
+    location.href = '/account/login.html?redirect=' + encodeURIComponent(back);
+    return;
+  }
+
+  // === 1) Lấy địa chỉ giao hàng ===
+  let shipping = {};
+  if (els.addrSaved.checked) {
+    const email = (window.AUTH.user.email || '').toLowerCase();
+    const profiles = JSON.parse(localStorage.getItem('sv_profiles_v1') || '{}');
+    const p = profiles[email] || {};
+    shipping = {
+      fullname: p.fullname || window.AUTH.user.name || '',
+      phone:    p.phone || '',
+      address:  p.address || '',
+      district: p.district || '',
+      ward:     p.ward || '',
+      city:     p.city || ''
+    };
+    if (!shipping.fullname || !shipping.phone || !shipping.address || !shipping.city) {
+      els.addrNew.checked   = true;
+      els.addrSaved.checked = false;
+      els.formNewAddr.style.display = 'block';
+      const f = els.formNewAddr;
+      f.querySelector('[name="fullname"]').value = shipping.fullname || '';
+      f.querySelector('[name="phone"]').value    = shipping.phone || '';
+      f.querySelector('[name="address"]').value  = shipping.address || '';
+      if (shipping.city)     { els.citySel.value = shipping.city; fillDistricts(); }
+      if (shipping.district) { els.distSel.value = shipping.district; fillWards(); }
+      if (shipping.ward)     { els.wardSel.value = shipping.ward; }
+      alert('Địa chỉ tài khoản thiếu thông tin. Vui lòng bổ sung và bấm "Đặt hàng" lại.');
       return;
     }
-
-    let shipping = {};
-    if (els.addrSaved.checked) {
-      const email = (window.AUTH.user.email || '').toLowerCase();
-      const profiles = JSON.parse(localStorage.getItem('sv_profiles_v1') || '{}');
-      const p = profiles[email] || {};
-      shipping = {
-        fullname: p.fullname || window.AUTH.user.name || '',
-        phone:    p.phone || '',
-        address:  p.address || '',
-        district: p.district || '',
-        ward:     p.ward || '',
-        city:     p.city || ''
-      };
-
-      if (!shipping.fullname || !shipping.phone || !shipping.address || !shipping.city) {
-        els.addrNew.checked   = true;
-        els.addrSaved.checked = false;
-        els.formNewAddr.style.display = 'block';
-        const f = els.formNewAddr;
-        f.querySelector('[name="fullname"]').value = shipping.fullname || '';
-        f.querySelector('[name="phone"]').value    = shipping.phone || '';
-        f.querySelector('[name="address"]').value  = shipping.address || '';
-        if (shipping.city)     { els.citySel.value = shipping.city; fillDistricts(); }
-        if (shipping.district) { els.distSel.value = shipping.district; fillWards(); }
-        if (shipping.ward)     { els.wardSel.value = shipping.ward; }
-        alert('Địa chỉ tài khoản thiếu thông tin. Vui lòng bổ sung và bấm "Đặt hàng" lại.');
-        return;
-      }
-    } else {
-      const form = els.formNewAddr;
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated');
-        alert('Vui lòng nhập đủ thông tin giao hàng.');
-        return;
-      }
-      const fd = new FormData(form);
-      const need = ['fullname','phone','address','district','city'];
-      for (const k of need){
-        if (!fd.get(k)) { alert('Vui lòng nhập đầy đủ địa chỉ.'); return; }
-      }
-      shipping = Object.fromEntries(fd.entries());
+  } else {
+    const form = els.formNewAddr;
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated');
+      alert('Vui lòng nhập đủ thông tin giao hàng.');
+      return;
     }
+    const fd = new FormData(form);
+    const need = ['fullname','phone','address','district','city'];
+    for (const k of need){
+      if (!fd.get(k)) { alert('Vui lòng nhập đầy đủ địa chỉ.'); return; }
+    }
+    shipping = Object.fromEntries(fd.entries());
+  }
 
-    let payMethod = 'COD';
-    if (els.pmBank.checked)   payMethod = 'BANK';
-    if (els.pmOnline.checked) payMethod = 'ONLINE';
+  // === 2) Chuẩn bị dữ liệu đơn hàng ===
+  let payMethod = 'COD';
+  if (els.pmBank.checked)   payMethod = 'BANK';
+  if (els.pmOnline.checked) payMethod = 'ONLINE';
 
-    const products = window.SVStore?.getAllProducts?.() || [];
-    const pmap = new Map(products.map(p=>[String(p.id),p]));
-    const cart = window.SVStore?.getCart?.() || [];
-    if(!cart.length) return alert('Giỏ hàng trống.');
+  const products = window.SVStore?.getAllProducts?.() || [];
+  const pmap = new Map(products.map(p=>[String(p.id),p]));
+  const cart = window.SVStore?.getCart?.() || [];
+  if(!cart.length) return alert('Giỏ hàng trống.');
 
-    const items = cart.map(x=>{
-      const p = pmap.get(String(x.id)) || {};
-      return { id:x.id, name:p.name||'', price:Number(p.price)||0, qty:x.qty||1, image:p.image||'' };
-    });
-    const subtotal = (typeof window.SVStore?.total === 'function') ? window.SVStore.total(products)
-                     : items.reduce((s,it)=> s + it.price*it.qty, 0);
-    const grand = subtotal + 30000;
-
-    maybeSaveDefaultAddress(shipping);
-
-    const orderId = 'SV' + Date.now();
-    const order = {
-      id: orderId,
-      email: window.AUTH.user.email,
-      created_at: new Date().toISOString(),
-      items, subtotal, ship: 30000, total: grand,
-      shipping, payMethod, status: 'new'
-    };
-    const KEY = 'sv_orders_v1';
-    const db = JSON.parse(localStorage.getItem(KEY) || '{}');
-    const list = Array.isArray(db[order.email]) ? db[order.email] : [];
-    list.unshift(order);
-    db[order.email] = list;
-    localStorage.setItem(KEY, JSON.stringify(db));
-
-    window.SVStore?.clearCart?.();
-    window.location.href = '/order_success.html?id=' + encodeURIComponent(orderId);
+  const items = cart.map(x=>{
+    const p = pmap.get(String(x.id)) || {};
+    return { id:x.id, name:p.name||'', price:Number(p.price)||0, qty:x.qty||1, image:p.image||'' };
   });
+  const subtotal = (typeof window.SVStore?.total === 'function') ? window.SVStore.total(products)
+                   : items.reduce((s,it)=> s + it.price*it.qty, 0);
+  const grand = subtotal + 30000;
+
+  maybeSaveDefaultAddress(shipping);
+
+  const orderId = 'SV' + Date.now();
+  const order = {
+    id: orderId,
+    email: (window.AUTH.user.email||'').toLowerCase(),
+    created_at: new Date().toISOString(),
+    items, subtotal, ship: 30000, total: grand,
+    shipping, payMethod, status: 'new'
+  };
+
+  // === 3) LƯU USER – sv_orders_v1 (dạng theo email) ===
+  const KEY_V1 = 'sv_orders_v1';
+  const db = JSON.parse(localStorage.getItem(KEY_V1) || '{}');
+  const list = Array.isArray(db[order.email]) ? db[order.email] : [];
+  list.unshift(order);
+  db[order.email] = list;
+  localStorage.setItem(KEY_V1, JSON.stringify(db));
+
+  // === 4) LƯU USER – sv_orders_flat (dạng phẳng cho Admin import) ===
+  const FLAT_KEY = 'sv_orders_flat';
+  const flat = JSON.parse(localStorage.getItem(FLAT_KEY) || '[]');
+  flat.unshift({
+    id: order.id,
+    code: order.id,                         // hoặc tạo mã khác nếu bạn muốn
+    date: order.created_at.slice(0,10),
+    status: order.status,
+    total: order.total,
+    customer: {
+      name:  order.shipping.fullname,
+      phone: order.shipping.phone,
+      address: order.shipping.address,
+      ward: order.shipping.ward || '',
+      district: order.shipping.district || '',
+      city: order.shipping.city || ''
+    },
+    items: order.items.map(it=>({
+      id: it.id,
+      name: it.name,
+      price: it.price,
+      quantity: it.qty
+    }))
+  });
+  localStorage.setItem(FLAT_KEY, JSON.stringify(flat));
+
+  // === 5) BẮN “CHUÔNG” CHO TRANG ADMIN (tab khác) ===
+  try {
+    localStorage.setItem('orders.bump', String(Date.now()));
+  } catch(_) {}
+
+  // === 6) Dọn giỏ + chuyển trang success ===
+  window.SVStore?.clearCart?.();
+  window.location.href = '/order_success.html?id=' + encodeURIComponent(orderId);
+});
+
 
   /* Init */
   function init(){

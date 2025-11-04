@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="/bootstrap-4.6.2-dist/css/bootstrap.css">
   <link rel="stylesheet" href="/assets/css/base.css">
   <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 <header class="header">
@@ -102,8 +100,9 @@
   }
   d.addEventListener('auth:ready', makeWelcomeClickable);
   if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
-})();
+})(window, document);
 </script>
+
 <div class="container py-4">
   <h3 class="mb-3">Lịch sử mua hàng</h3>
 
@@ -224,8 +223,8 @@
 </footer>
 
 <!-- Auth + Data + Store -->
-    <script src="/assets/js/auth.js"></script>  
-    <script src="/assets/js/auth.security.enforcer.js"></script>
+<script src="/assets/js/auth.js"></script>
+<script src="/assets/js/auth.security.enforcer.js"></script>
 <script src="/assets/js/auth.localstorage.bridge.js"></script>
 <script src="/assets/js/auth.reactive.guard.v2.js"></script>
 <script src="/assets/js/auth.modal.bridge.js"></script>
@@ -235,21 +234,7 @@
 
 <script>
 /* Lịch sử đơn hàng – localStorage demo
-   - Dữ liệu đọc từ localStorage['sv_orders_v1']
-   - Cấu trúc:
-     {
-       "email@domain.com": [
-         {
-           id: "DH001",
-           created_at: "2025-10-31T12:00:00.000Z",
-           status: "paid",
-           payMethod: "COD | VNPAY | Momo",
-           shipping: { fullname:"...", phone:"...", address:"...", district:"...", city:"..." },
-           items: [{ id:"...", name:"...", qty:2, price:150000 }],
-           subtotal: 300000, ship: 30000, total: 330000
-         }
-       ]
-     }
+   Đọc từ localStorage['sv_orders_v1'] = { email: [order,…] }
 */
 (function(){
   const KEY = 'sv_orders_v1';
@@ -257,6 +242,27 @@
   const ordersWrap = $('#ordersWrap');
   const accEmail   = $('#accEmail');
   const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
+
+  /* ===== Map tiếng Việt cho status & payment (chỉ HIỂN THỊ) ===== */
+  const STATUS_TEXT = {
+    new:        'Mới',
+    confirmed:  'Đã xác nhận',
+    shipping:   'Đang giao',
+    delivered:  'Đã giao',
+    cancelled:  'Đã hủy'
+  };
+  const STATUS_BADGE = {
+    new:        'badge-secondary',
+    confirmed:  'badge-info',
+    shipping:   'badge-warning',
+    delivered:  'badge-success',
+    cancelled:  'badge-danger'
+  };
+  const PAY_TEXT = {
+    COD:    'Tiền mặt khi nhận (COD)',
+    BANK:   'Chuyển khoản',
+    ONLINE: 'Thanh toán trực tuyến'
+  };
 
   // Tự điền email từ hệ auth nếu có
   document.addEventListener('auth:ready', fillEmailFromAuth);
@@ -280,8 +286,13 @@
   function renderCard(o){
     const date = new Date(o.created_at);
     const when = isNaN(date) ? (o.created_at||'') : date.toLocaleString('vi-VN');
-    const ship = [o.shipping?.address, o.shipping?.district, o.shipping?.city]
-                  .filter(Boolean).join(', ');
+    const ship = [o.shipping?.address, o.shipping?.district, o.shipping?.city].filter(Boolean).join(', ');
+
+    const stKey    = String(o.status||'new').toLowerCase();
+    const stLabel  = STATUS_TEXT[stKey] || 'Mới';
+    const stBadge  = STATUS_BADGE[stKey] || 'badge-secondary';
+    const payLabel = PAY_TEXT[String(o.payMethod||'').toUpperCase()] || '';
+
     const items = (o.items||[]).map(it => `
       <li class="list-group-item d-flex justify-content-between">
         <div>${escapeHtml(it.name)} <span class="text-muted">x${Number(it.qty)||0}</span></div>
@@ -294,9 +305,9 @@
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Đơn ${escapeHtml(o.id||'—')}</h5>
-            <span class="badge badge-info text-uppercase">${escapeHtml(o.status||'new')}</span>
+            <span class="badge ${stBadge}">${escapeHtml(stLabel)}</span>
           </div>
-          <div class="text-muted mb-2">${escapeHtml(when)} • ${escapeHtml(o.payMethod||'')}</div>
+          <div class="text-muted mb-2">${escapeHtml(when)}${payLabel ? ' • ' + escapeHtml(payLabel) : ''}</div>
           <div class="mb-2">
             <strong>Giao đến:</strong>
             ${escapeHtml(o.shipping?.fullname||'')} • ${escapeHtml(o.shipping?.phone||'')}<br>
@@ -323,7 +334,43 @@
 
   // nút tải
   document.getElementById('btnLoad').addEventListener('click', load);
+  window.UserOrdersReload = load; 
 })();
+</script>
+
+<script>
+/* Bridge: {email:[orders]} -> flat array cho Admin + bump */
+(function(){
+  const SRC = 'sv_orders_v1';
+  const DST = 'sv_orders_flat';
+  const BUMP = 'orders.bump';
+
+  function flatten(){
+    try{
+      const raw = JSON.parse(localStorage.getItem(SRC) || '{}');
+      const list = Array.isArray(raw) ? raw : Object.values(raw||{}).flat();
+      localStorage.setItem(DST, JSON.stringify(list || []));
+      localStorage.setItem(BUMP, String(Date.now())); // 🔔 báo cho Admin
+    }catch(e){ console.warn('Bridge flatten error:', e); }
+  }
+
+  // chạy lúc vào trang & khi dữ liệu nguồn đổi
+  flatten();
+  window.addEventListener('storage', (e)=>{ if(e.key === SRC) flatten(); });
+
+  // cho phép gọi thủ công ngay sau khi tạo đơn (cùng tab)
+  window.BridgeOrders = { flattenNow: flatten };
+})();
+window.BridgeOrders?.flattenNow();
+</script>
+
+<script>
+  // Khi Admin đổi trạng thái: nghe chuông và render lại
+  window.addEventListener('storage', function(e){
+    if (e.key === 'orders.bump' || e.key === 'sv_orders_v1' || e.key === 'sv_orders_flat') {
+      window.UserOrdersReload?.();
+    }
+  });
 </script>
 
 <!-- Bootstrap JS -->
