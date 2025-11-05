@@ -249,19 +249,24 @@
     confirmed:  'Đã xác nhận',
     shipping:   'Đang giao',
     delivered:  'Đã giao',
-    cancelled:  'Đã hủy'
+    cancelled:  'Đã hủy',   // giữ lại dạng cũ
+    canceled:   'Đã hủy'    // alias khớp với Admin (1 chữ "l")
   };
   const STATUS_BADGE = {
     new:        'badge-secondary',
     confirmed:  'badge-info',
     shipping:   'badge-warning',
     delivered:  'badge-success',
-    cancelled:  'badge-danger'
+    cancelled:  'badge-danger',
+    canceled:   'badge-danger'
   };
-  const PAY_TEXT = {
-    COD:    'Tiền mặt khi nhận (COD)',
-    BANK:   'Chuyển khoản',
-    ONLINE: 'Thanh toán trực tuyến'
+
+  // Quy tắc: user được huỷ khi đơn còn 'new' hoặc 'confirmed'
+  const canUserCancel = s => (s === 'new' || s === 'confirmed');
+
+  const LS = {
+    get(k, def){ try{ return JSON.parse(localStorage.getItem(k)) ?? def }catch{ return def } },
+    set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
   };
 
   // Tự điền email từ hệ auth nếu có
@@ -278,7 +283,7 @@
   function load(){
     const email = (accEmail.value||'').trim().toLowerCase();
     if (!email) { alert('Nhập email tài khoản'); return; }
-    const db = JSON.parse(localStorage.getItem(KEY)||'{}');
+    const db = LS.get(KEY, {});
     const list = Array.isArray(db[email]) ? db[email] : [];
     ordersWrap.innerHTML = list.length ? list.map(renderCard).join('') : '<div class="text-muted">Chưa có đơn hàng.</div>';
   }
@@ -291,7 +296,7 @@
     const stKey    = String(o.status||'new').toLowerCase();
     const stLabel  = STATUS_TEXT[stKey] || 'Mới';
     const stBadge  = STATUS_BADGE[stKey] || 'badge-secondary';
-    const payLabel = PAY_TEXT[String(o.payMethod||'').toUpperCase()] || '';
+    const payLabel = ({COD:'Tiền mặt khi nhận (COD)',BANK:'Chuyển khoản',ONLINE:'Thanh toán trực tuyến'})[String(o.payMethod||'').toUpperCase()] || '';
 
     const items = (o.items||[]).map(it => `
       <li class="list-group-item d-flex justify-content-between">
@@ -299,6 +304,10 @@
         <div>${money((Number(it.price)||0) * (Number(it.qty)||0))}</div>
       </li>
     `).join('');
+
+    // nút Huỷ (chỉ hiện khi trạng thái cho phép)
+    const showCancel = canUserCancel(stKey);
+    const cancelBtn  = showCancel ? `<button class="btn btn-sm btn-outline-danger" data-cancel="${escapeHtml(o.id)}">Huỷ đơn</button>` : '';
 
     return `
       <div class="card mb-3">
@@ -321,8 +330,12 @@
             <span>Phí vận chuyển</span><strong>${money(o.ship)}</strong>
           </div>
           <hr>
-          <div class="d-flex justify-content-between">
-            <span>Tổng cộng</span><strong>${money(o.total)}</strong>
+          <div class="d-flex justify-content-between align-items-center">
+            <div><span>Tổng cộng</span></div>
+            <div class="d-flex align-items-center gap-2">
+              ${cancelBtn}
+              <strong class="ml-3">${money(o.total)}</strong>
+            </div>
           </div>
         </div>
       </div>`;
@@ -332,9 +345,67 @@
     return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
+  // Click: HUỶ ĐƠN từ phía user
+  document.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-cancel]');
+    if(!btn) return;
+    const id = btn.getAttribute('data-cancel');
+    const email = (document.querySelector('#accEmail')?.value || '').trim().toLowerCase();
+    cancelOrderFromUser(id, email, btn);
+  });
+
+
+function cancelOrderFromUser(orderId, email, btn){
+  if(!email){ alert('Vui lòng nhập email tài khoản để tải đơn.'); return; }
+  if(!confirm('Xác nhận huỷ đơn này?')) return;
+
+  btn?.setAttribute('disabled','disabled');
+
+  // 1) Cập nhật kho user: sv_orders_v1 = { email: [orders...] }
+  const store = LS.get('sv_orders_v1', {});
+  const list = store[email] || [];
+  const idx = list.findIndex(o => String(o.id)===String(orderId));
+  if(idx<0){ alert('Không tìm thấy đơn hàng.'); btn?.removeAttribute('disabled'); return; }
+
+  const current = list[idx];
+  if(!canUserCancel(String(current.status).toLowerCase())){
+    alert('Đơn hiện không thể huỷ.'); btn?.removeAttribute('disabled'); return;
+  }
+
+  current.status = 'canceled';
+  current.canceledAt = new Date().toISOString();
+  list[idx] = current;
+  store[email] = list;
+  LS.set('sv_orders_v1', store);
+
+  // 2) Đồng bộ sang kho Admin (nếu Admin đã từng đọc dữ liệu)
+  try{
+    const admin = LS.get('admin.orders', []);
+    const aidx = admin.findIndex(x => String(x.id)===String(orderId));
+    if(aidx>=0){
+      admin[aidx].status = 'canceled';
+      admin[aidx].canceledAt = current.canceledAt;
+      LS.set('admin.orders', admin);
+    }
+  }catch{}
+
+  // >>> NEW: ép bridge cập nhật ngay sv_orders_flat + đánh chuông cho Admin
+  try {
+    if (window.BridgeOrders?.flattenNow) window.BridgeOrders.flattenNow(); // NEW
+    localStorage.setItem('orders.bump', String(Date.now()));               // NEW
+  } catch {}
+
+  // 3) Phát tín hiệu để tab Admin / tab user khác reload (giữ nguyên)
+  localStorage.setItem('sv_orders_ping', JSON.stringify({ t: Date.now(), action:'user_cancel', id: orderId }));
+
+  // 4) Render lại danh sách
+  load();
+  if(window.SVUI?.toast){ SVUI.toast('Đã huỷ đơn.'); } else { alert('Đã huỷ đơn.'); }
+  btn?.removeAttribute('disabled');
+}
   // nút tải
   document.getElementById('btnLoad').addEventListener('click', load);
-  window.UserOrdersReload = load; 
+  window.UserOrdersReload = load;
 })();
 </script>
 
@@ -367,7 +438,7 @@ window.BridgeOrders?.flattenNow();
 <script>
   // Khi Admin đổi trạng thái: nghe chuông và render lại
   window.addEventListener('storage', function(e){
-    if (e.key === 'orders.bump' || e.key === 'sv_orders_v1' || e.key === 'sv_orders_flat') {
+    if (e.key === 'orders.bump' || e.key === 'sv_orders_v1' || e.key === 'sv_orders_flat' || e.key==='sv_orders_ping') {
       window.UserOrdersReload?.();
     }
   });

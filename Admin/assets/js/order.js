@@ -1,297 +1,399 @@
+// ./assets/js/order.js (HOÀN CHỈNH)
+(function () {
+  /* ================== Keys & Helpers ================== */
+  const KEYS = {
+    ADMIN: 'admin.orders',     // mảng đơn phẳng ở admin
+    USER  : 'sv_orders_v1',    // { email: [orders...] }
+    FLAT  : 'sv_orders_flat',  // mảng đơn phẳng (bridge cho admin)
+    PING1 : 'orders.bump',     // chuông thay đổi để các tab reload
+    PING2 : 'sv_orders_ping'   // chuông user phát ra
+  };
 
-(function(){
-  // ===== Storage Keys =====
-  const ORDER_KEY = 'admin.orders';
-  const USER_KEYS = ['sv_orders_flat','sv_orders_v1','sv_orders','orders']; // nguồn bên User
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 
-  // ===== Helpers =====
-  const $ = (s,ctx=document)=> ctx.querySelector(s);
-  const money = x => (Number(x)||0).toLocaleString('vi-VN');
+  const LS = {
+    get(k, def){ try{ return JSON.parse(localStorage.getItem(k)) ?? def }catch{ return def } },
+    set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+  };
 
-  function jget(k, def){ try{ return JSON.parse(localStorage.getItem(k)||JSON.stringify(def)); }catch{return def;} }
-  function jset(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+  const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
+  const parseD = s => (s ? new Date(s) : null);
 
-  // ===== Importer: chỉ chạy nếu admin.orders đang rỗng =====
-  (function importOnce(){
-    const has = jget(ORDER_KEY, []);
-    if (has && has.length) return;
+  const STATUS_TEXT = {
+    new       : 'Chưa xử lý',
+    confirmed : 'Đã xác nhận',
+    delivered : 'Đã giao',
+    canceled  : 'Đã huỷ',
+    cancelled : 'Đã huỷ', // alias
+  };
 
-    let src = [];
-    for (const k of USER_KEYS){
-      try {
-        const arr = JSON.parse(localStorage.getItem(k) || '[]');
-        if (Array.isArray(arr) && arr.length){ src = arr; break; }
-        // sv_orders_v1 dạng object theo email
-        if (!arr.length && k==='sv_orders_v1'){
-          const obj = JSON.parse(localStorage.getItem('sv_orders_v1')||'{}');
-          const merged = [];
-          Object.values(obj).forEach(list=>{
-            if(Array.isArray(list)) merged.push(...list);
-          });
-          if (merged.length){ src = merged; break; }
-        }
-      }catch{}
-    }
-    if (!src.length) return;
+  const STATUS_CLASS = {
+    new       : 'status-chip st-new',
+    confirmed : 'status-chip st-confirmed',
+    delivered : 'status-chip st-delivered',
+    canceled  : 'status-chip st-canceled',
+    cancelled : 'status-chip st-canceled',
+  };
 
-    const norm = normalize(src);
-    jset(ORDER_KEY, norm);
-  })();
+  const canConfirm = s => s === 'new';
+  const canDeliver = s => s === 'confirmed';
+  const canCancel  = s => (s === 'new' || s === 'confirmed');
 
-  // ===== Chuẩn hoá đơn từ các schema khác nhau =====
-  function normalize(list){
-    return (list||[]).map((o,i)=>({
-      id: o.id || o.code || `U${Date.now()}_${i+1}`,
-      code: o.code || o.order_code || `OD-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${String(i+1).padStart(3,'0')}`,
-      date: o.date || o.created_at || o.createdAt || new Date().toISOString().slice(0,10),
-      status: String(o.status||'new')
-                .replace(/^paid$/,'confirmed')
-                .replace(/^pending$/,'new'),
-      note: o.note || '',
-      customer: {
-        name:  o.customer?.name || o.shipping?.fullname || o.name || '',
-        phone: o.customer?.phone || o.shipping?.phone || o.phone || '',
-        address: o.customer?.address || o.address || o.shipping?.address || '',
-        ward:    o.customer?.ward    || o.ward    || '',
-        district:o.customer?.district|| o.district|| (o.shipping?.district||''),
-        city:    o.customer?.city    || o.city    || (o.shipping?.city||'')
-      },
-      items: (o.items||[]).map(it=>({
-        productId:   it.productId || it.id,
-        productCode: it.productCode || it.code || it.specs?.Mã || '',
-        productName: it.productName || it.name || '',
-        price: Number(it.price)||0,
-        quantity: Number(it.quantity||it.qty||1)||1
-      })),
-      total: Number(o.total)
-           || (o.items||[]).reduce((s,it)=> s + Number(it.price||0)*Number(it.quantity||it.qty||1), 0)
-    }));
+  /* ================== DOM refs ================== */
+  const tb         = $('#od-body');
+  const qInput     = $('#q');
+  const fromInput  = $('#from');
+  const toInput    = $('#to');
+  const stSelect   = $('#status');
+  const sortWard   = $('#sortWard');
+  const btnFilter  = $('#btnFilter');
+
+  // Modal
+  const modal      = $('#od-modal');
+  const mTitle     = $('#od-title');
+  const mStatusSel = $('#od-status');
+  const mBtnUpdate = $('#btnUpdateStatus');
+  const mBtnClose  = $('#btnClose');
+  const vCode      = $('#vCode');
+  const vDate      = $('#vDate');
+  const vStatus    = $('#vStatus');
+  const vNote      = $('#vNote');
+  const vCus       = $('#vCus');
+  const vPhone     = $('#vPhone');
+  const vAddr      = $('#vAddr');
+  const vItems     = $('#vItems');
+  const vTotal     = $('#vTotal');
+
+  let state = {
+    list: [],        // danh sách admin đã merge
+    filtered: [],    // danh sách sau lọc
+    modalId: null,   // id đang xem trong modal
+  };
+
+  /* ================== Merge & Sync ================== */
+  function flattenUserOrders() {
+    // Build sv_orders_flat từ sv_orders_v1 (nếu cần)
+    const raw = LS.get(KEYS.USER, {});
+    const flat = Array.isArray(raw) ? raw : Object.values(raw||{}).flat();
+    LS.set(KEYS.FLAT, flat);
+    return flat;
   }
 
-  // ===== Repo =====
-  function list(){ return jget(ORDER_KEY, []).sort((a,b)=> new Date(b.date) - new Date(a.date)); }
-  function save(arr){ jset(ORDER_KEY, arr||[]); }
-  function findById(id){ return list().find(x=> String(x.id)===String(id)); }
+  function loadAdminOrdersMerged() {
+    let adminList = LS.get(KEYS.ADMIN, []);
+    const userFlat = LS.get(KEYS.FLAT, []) ?? [];
 
-function updateStatus(id, status){
-  const all = list();
-  const i = all.findIndex(x => String(x.id) === String(id));
-  if (i < 0) throw new Error('Không tìm thấy đơn hàng');
-
-  // 1) Cập nhật trong kho admin
-  all[i].status = status;
-  all[i].updatedAt = Date.now();
-  save(all);
-
-  // 2) Đồng bộ về kho user (sv_orders_v1)
-  try {
-    const db = JSON.parse(localStorage.getItem('sv_orders_v1') || '{}');
-    let touched = false;
-
-    // duyệt theo email: [ {id, ...}, ... ]
-    for (const email of Object.keys(db)) {
-      const arr = Array.isArray(db[email]) ? db[email] : [];
-      for (const o of arr) {
-        // khớp theo id đơn (ví dụ SV123...) hoặc theo code nếu bạn dùng code là mã hiển thị
-        if (String(o.id) === String(all[i].id) || String(o.id) === String(all[i].code)) {
-          o.status = status;            // new | confirmed | delivered | canceled
-          o.updated_at = Date.now();
-          touched = true;
-        }
+    // Hợp nhất theo id: ưu tiên fields mới từ userFlat
+    const map = new Map(adminList.map(o => [String(o.id), o]));
+    for (const u of (Array.isArray(userFlat)?userFlat:[])) {
+      const id = String(u.id);
+      if (map.has(id)) {
+        const a = map.get(id);
+        // copy các field chính (giữ a nếu u undefined)
+        a.status      = (u.status ?? a.status);
+        a.total       = (u.total ?? a.total);
+        a.subtotal    = (u.subtotal ?? a.subtotal);
+        a.ship        = (u.ship ?? a.ship);
+        a.items       = (u.items ?? a.items);
+        a.shipping    = (u.shipping ?? a.shipping);
+        a.payMethod   = (u.payMethod ?? a.payMethod);
+        a.created_at  = (u.created_at ?? a.created_at);
+        a.email       = (u.email ?? a.email);
+        a.canceledAt  = (u.canceledAt ?? a.canceledAt);
+        a.deliveredAt = (u.deliveredAt ?? a.deliveredAt);
+        a.updatedAt   = new Date().toISOString();
+      } else {
+        map.set(id, u);
       }
-      if (touched) db[email] = arr;
     }
-    if (touched) localStorage.setItem('sv_orders_v1', JSON.stringify(db));
-  } catch(e) {
-    console.warn('Sync status to sv_orders_v1 failed:', e);
+    adminList = Array.from(map.values());
+    LS.set(KEYS.ADMIN, adminList);
+    return adminList;
   }
 
-  // 3) Gõ chuông cho các tab user
-  try { localStorage.setItem('orders.bump', String(Date.now())); } catch(_) {}
+  // Update 1 đơn theo id ở cả 3 nơi: admin.orders, sv_orders_v1[email], sv_orders_flat
+  function writeOrderEverywhere(order) {
+    const id = String(order.id);
 
-  return all[i];
-}
+    // 1) admin.orders
+    const adminList = LS.get(KEYS.ADMIN, []);
+    const aidx = adminList.findIndex(o => String(o.id) === id);
+    if (aidx >= 0) adminList[aidx] = order; else adminList.push(order);
+    LS.set(KEYS.ADMIN, adminList);
 
+    // 2) sv_orders_v1[email]
+    if (order.email) {
+      const userStore = LS.get(KEYS.USER, {});
+      const arr = userStore[order.email] || [];
+      const uidx = arr.findIndex(o => String(o.id) === id);
+      if (uidx >= 0) arr[uidx] = order; else arr.push(order);
+      userStore[order.email] = arr;
+      LS.set(KEYS.USER, userStore);
+    }
 
-  // ===== UI Refs =====
-  const $q = $('#q');
-  const $from = $('#from');
-  const $to = $('#to');
-  const $status = $('#status');
-  const $sortWard = $('#sortWard');
-  const $tbody = $('#od-body');
-  const $btnFilter = $('#btnFilter');
+    // 3) sv_orders_flat
+    let flat = LS.get(KEYS.FLAT, []);
+    const fidx = flat.findIndex(o => String(o.id) === id);
+    if (fidx >= 0) flat[fidx] = order; else flat.push(order);
+    LS.set(KEYS.FLAT, flat);
 
-  // Modal (CHỈ 1 khối #od-modal trong HTML)
-  const $modal = $('#od-modal');
-  const $title = $('#od-title');
-  const $vCode = $('#vCode');
-  const $vDate = $('#vDate');
-  const $vStatus = $('#vStatus');
-  const $vNote = $('#vNote');
-  const $vCus = $('#vCus');
-  const $vPhone = $('#vPhone');
-  const $vAddr = $('#vAddr');
-  const $vItems = $('#vItems');
-  const $vTotal = $('#vTotal');
-  const $odStatus = $('#od-status');
-  const $btnUpdateStatus = $('#btnUpdateStatus');
-  const $btnClose = $('#btnClose');
-
-  function chip(st){
-    const map = { new:'st-new', confirmed:'st-confirmed', delivered:'st-delivered', canceled:'st-canceled' };
-    const label = st==='new'?'chưa xử lý': st==='confirmed'?'đã xác nhận': st==='delivered'?'đã giao':'đã huỷ';
-    return `<span class="status-chip ${map[st]||'st-new'}">${label}</span>`;
+    // 4) phát chuông cho các tab
+    localStorage.setItem(KEYS.PING1, String(Date.now()));
   }
 
-  function render(){
-    const q = ($q?.value||'').trim().toLowerCase();
-    const st = $status?.value || '';
-    const from = $from?.value ? new Date($from.value) : null;
-    const to   = $to?.value   ? new Date($to.value)   : null;
-    const sortWard = $sortWard?.value || '';
+  /* ================== Render Table ================== */
+  function matchQuery(o, q) {
+    if (!q) return true;
+    q = q.toLowerCase();
+    const address = [
+      o?.shipping?.address,
+      o?.shipping?.ward,
+      o?.shipping?.district,
+      o?.shipping?.city
+    ].filter(Boolean).join(' ');
 
-    let rows = list().filter(o=>{
-      if (st && o.status!==st) return false;
-      const d = new Date(o.date);
-      if (from && d < from) return false;
-      if (to && d > to) return false;
-      if (q){
-        const hay = `${o.code} ${o.customer?.name||''} ${o.customer?.phone||''} ${o.customer?.address||''} ${o.customer?.ward||''} ${o.customer?.district||''} ${o.customer?.city||''}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
+    return [
+      String(o.id||'').toLowerCase(),
+      String(o?.shipping?.fullname||'').toLowerCase(),
+      String(o?.shipping?.phone||'').toLowerCase(),
+      String(address).toLowerCase()
+    ].some(x => x.includes(q));
+  }
 
-    if (sortWard){
-      rows.sort((a,b)=>{
-        const aw = (a.customer?.ward||'').toLowerCase();
-        const bw = (b.customer?.ward||'').toLowerCase();
-        return sortWard==='asc' ? aw.localeCompare(bw) : bw.localeCompare(aw);
+  function inDateRange(o, from, to) {
+    if (!from && !to) return true;
+    const d = parseD(o.created_at);
+    if (!d) return false;
+    const ms = d.getTime();
+    if (from && ms < from.getTime()) return false;
+    if (to) {
+      // chặn đến cuối ngày to
+      const end = new Date(to.getFullYear(), to.getMonth(), to.getDate(), 23,59,59,999);
+      if (ms > end.getTime()) return false;
+    }
+    return true;
+  }
+
+  function applyFilters() {
+    const q      = (qInput?.value || '').trim();
+    const st     = (stSelect?.value || '').trim();
+    const fDate  = fromInput?.value ? new Date(fromInput.value) : null;
+    const tDate  = toInput?.value ? new Date(toInput.value) : null;
+    const wardSort = (sortWard?.value || '').trim(); // '', 'asc', 'desc'
+
+    let arr = [...state.list];
+
+    // lọc
+    arr = arr.filter(o => matchQuery(o, q));
+    if (st) {
+      const stLower = st.toLowerCase();
+      arr = arr.filter(o => String(o.status||'').toLowerCase() === stLower);
+    }
+    arr = arr.filter(o => inDateRange(o, fDate, tDate));
+
+    // sort theo phường/xã nếu có dữ liệu
+    if (wardSort) {
+      arr.sort((a, b) => {
+        const wa = (a?.shipping?.ward || a?.shipping?.district || '').toString().toLowerCase();
+        const wb = (b?.shipping?.ward || b?.shipping?.district || '').toString().toLowerCase();
+        if (wa < wb) return wardSort === 'asc' ? -1 : 1;
+        if (wa > wb) return wardSort === 'asc' ? 1 : -1;
+        return 0;
       });
+    } else {
+      // mặc định: mới nhất lên trước theo created_at
+      arr.sort((a, b) => new Date(b.created_at||0) - new Date(a.created_at||0));
     }
 
-    if (!$tbody) return;
-    if (!rows.length){
-      $tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#9aa3ad;padding:20px">Không có dữ liệu</td></tr>';
+    state.filtered = arr;
+  }
+
+  function render() {
+    applyFilters();
+    if (!state.filtered.length) {
+      tb.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#9aa3ad;padding:20px">Không có dữ liệu</td></tr>`;
       return;
     }
 
-    $tbody.innerHTML = rows.map(o=>{
-      const qty = (o.items||[]).reduce((s,it)=> s + Number(it.quantity||0), 0);
-      const addr = [o.customer?.address, o.customer?.ward, o.customer?.district, o.customer?.city].filter(Boolean).join(', ');
+    tb.innerHTML = state.filtered.map(o => {
+      const st = String(o.status||'new').toLowerCase();
+      const stLabel = STATUS_TEXT[st] || STATUS_TEXT.new;
+      const stClass = STATUS_CLASS[st] || STATUS_CLASS.new;
+      const when = o.created_at ? new Date(o.created_at).toLocaleString('vi-VN') : '';
+
+      const addr = [
+        o?.shipping?.address,
+        o?.shipping?.ward,
+        o?.shipping?.district,
+        o?.shipping?.city
+      ].filter(Boolean).join(', ');
+
+      const qty = (o.items||[]).reduce((s,it)=> s + (Number(it.qty)||0), 0);
+
+      // actions
+      const btnView     = `<button class="btn" data-act="view" data-id="${o.id}">Xem</button>`;
+      const btnConfirm  = canConfirm(st) ? `<button class="btn" data-act="confirm" data-id="${o.id}">Xác nhận</button>` : '';
+      const btnDeliver  = canDeliver(st) ? `<button class="btn" data-act="deliver" data-id="${o.id}">Giao xong</button>` : '';
+      const btnCancel   = canCancel(st)  ? `<button class="btn" data-act="cancel" data-id="${o.id}">Huỷ</button>` : '';
+
       return `
         <tr>
-          <td><b>${o.code}</b></td>
-          <td>${o.date}</td>
-          <td>${o.customer?.name||'-'}<div class="small">${o.customer?.phone||''}</div></td>
-          <td>${addr||'-'}</td>
+          <td><strong>${escapeHtml(o.id)}</strong></td>
+          <td class="small">${escapeHtml(when)}</td>
+          <td>
+            <div>${escapeHtml(o?.shipping?.fullname||'')}</div>
+            <div class="small">${escapeHtml(o?.shipping?.phone||'')}</div>
+          </td>
+          <td class="small">${escapeHtml(addr)}</td>
           <td style="text-align:right">${qty}</td>
           <td style="text-align:right">${money(o.total)}</td>
-          <td>${chip(o.status)}</td>
-          <td>
-            <button class="btn sm" data-act="view" data-id="${o.id}">Xem</button>
-            ${o.status!=='canceled' && o.status!=='delivered' ? `<button class="btn sm primary" data-act="confirm" data-id="${o.id}">Xác nhận</button>` : ''}
-            ${o.status==='confirmed' ? `<button class="btn sm" data-act="deliver" data-id="${o.id}">Giao xong</button>` : ''}
-            ${(o.status==='new' || o.status==='confirmed') ? `<button class="btn sm" data-act="cancel" data-id="${o.id}">Huỷ</button>` : ''}
+          <td><span class="${stClass}">${escapeHtml(stLabel)}</span></td>
+          <td style="white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap">
+            ${btnView}${btnConfirm}${btnDeliver}${btnCancel}
           </td>
-        </tr>`;
+        </tr>
+      `;
     }).join('');
   }
 
-  function openDetail(id){
-    const o = findById(id); if(!o) return;
-    $title.textContent = `Đơn ${o.code}`;
-    $vCode.textContent = o.code;
-    $vDate.textContent = o.date;
-    $vStatus.textContent = o.status;
-    $vNote.textContent = o.note||'';
-    $vCus.textContent = o.customer?.name||'';
-    $vPhone.textContent = o.customer?.phone||'';
-    $vAddr.textContent = [o.customer?.address, o.customer?.ward, o.customer?.district, o.customer?.city].filter(Boolean).join(', ');
-    $odStatus.value = o.status;
+  function escapeHtml(s){
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
 
-    $vItems.innerHTML = (o.items||[]).map(it=>{
-      const line = Number(it.price||0) * Number(it.quantity||0);
-      return `<tr>
-        <td>${it.productCode||''}</td>
-        <td>${it.productName||''}</td>
+  /* ================== Modal ================== */
+  function openModal(id) {
+    const o = state.list.find(x => String(x.id)===String(id));
+    if (!o) return;
+
+    state.modalId = id;
+    mTitle.textContent = `Chi tiết đơn #${o.id||'—'}`;
+    $('#vCode').textContent = o.id || '—';
+    $('#vDate').textContent = o.created_at ? new Date(o.created_at).toLocaleString('vi-VN') : '—';
+
+    const st = String(o.status||'new').toLowerCase();
+    $('#vStatus').textContent = STATUS_TEXT[st] || STATUS_TEXT.new;
+    $('#vNote').textContent = o.note || '—';
+
+    $('#vCus').textContent = o?.shipping?.fullname || '—';
+    $('#vPhone').textContent = o?.shipping?.phone || '—';
+    const addr = [o?.shipping?.address,o?.shipping?.ward,o?.shipping?.district,o?.shipping?.city].filter(Boolean).join(', ');
+    $('#vAddr').textContent = addr || '—';
+
+    mStatusSel.value = (st === 'cancelled') ? 'canceled' : st;
+
+    vItems.innerHTML = (o.items||[]).map(it => `
+      <tr>
+        <td>${escapeHtml(it.code||'')}</td>
+        <td>${escapeHtml(it.name||'')}</td>
         <td style="text-align:right">${money(it.price)}</td>
-        <td style="text-align:right">${it.quantity}</td>
-        <td style="text-align:right">${money(line)}</td>
-      </tr>`;
-    }).join('');
-    $vTotal.textContent = money(o.total||0);
+        <td style="text-align:right">${Number(it.qty)||0}</td>
+        <td style="text-align:right">${money((Number(it.qty)||0)*(Number(it.price)||0))}</td>
+      </tr>
+    `).join('');
+    vTotal.textContent = money(o.total||0);
 
-    $modal?.classList.add('show');
-    $modal?.setAttribute('aria-hidden','false');
-
-    // gán lại handler mỗi lần mở để bám đúng đơn đang xem
-    $btnUpdateStatus.onclick = function(){
-      try{
-        updateStatus(o.id, $odStatus.value);
-        alert('Đã cập nhật trạng thái');
-        closeModal();
-        render();
-      }catch(err){ alert(err.message||err); }
-    };
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden','false');
   }
-  function closeModal(){ $modal?.classList.remove('show'); $modal?.setAttribute('aria-hidden','true'); }
-  $btnClose?.addEventListener('click', closeModal);
-  $modal?.addEventListener('click', (e)=>{ if(e.target === $modal || e.target.classList?.contains('sv-modal__backdrop')) closeModal(); });
+  function closeModal() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden','true');
+    state.modalId = null;
+  }
+  mBtnClose?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-  // ===== Events =====
-  $btnFilter?.addEventListener('click', render);
-  $tbody?.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button[data-act]'); if(!btn) return;
-    const id = btn.getAttribute('data-id'); const act = btn.getAttribute('data-act');
-    try{
-      if (act==='view') return openDetail(id);
-      if (act==='confirm'){ updateStatus(id,'confirmed'); render(); return; }
-      if (act==='deliver'){ updateStatus(id,'delivered'); render(); return; }
-      if (act==='cancel'){ if(!confirm('Huỷ đơn này?')) return; updateStatus(id,'canceled'); render(); return; }
-    }catch(err){ alert(err.message||err); }
+  mBtnUpdate?.addEventListener('click', () => {
+    if (!state.modalId) return;
+    const id = state.modalId;
+    const newStatus = mStatusSel.value;
+
+    const idx = state.list.findIndex(x => String(x.id)===String(id));
+    if (idx<0) return;
+
+    const o = {...state.list[idx]};
+    o.status = newStatus;
+    if (newStatus === 'canceled')  o.canceledAt  = new Date().toISOString();
+    if (newStatus === 'delivered') o.deliveredAt = new Date().toISOString();
+    o.updatedAt = new Date().toISOString();
+
+    // ghi ở mọi nơi & render
+    writeOrderEverywhere(o);
+    state.list[idx] = o;
+    render();
+    closeModal();
   });
 
-  // ===== Đồng bộ từ User (sv_orders_flat) theo "chuông" =====
-  (function listenUserFlat(){
-    function upsertFromFlat(){
-      let flat = [];
-      try{ flat = JSON.parse(localStorage.getItem('sv_orders_flat') || '[]'); }catch{}
-      if(!Array.isArray(flat) || !flat.length) return;
+  /* ================== Row Actions ================== */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    const id = btn.getAttribute('data-id');
+    const act = btn.getAttribute('data-act');
 
-      const incoming = normalize(flat);
-      const current  = jget(ORDER_KEY, []);
-      const byCode   = new Map(current.map(x => [String(x.code), x]));
+    const idx = state.list.findIndex(x => String(x.id)===String(id));
+    if (idx < 0) return;
+    const o = {...state.list[idx]};
+    const st = String(o.status||'').toLowerCase();
 
-      incoming.forEach(x=>{
-        if(!byCode.has(String(x.code))){
-          current.push(x);
-          byCode.set(String(x.code), x);
-        }
-      });
-      current.sort((a,b)=> new Date(b.date) - new Date(a.date));
-      jset(ORDER_KEY, current);
+    if (act === 'view') {
+      openModal(id);
+      return;
     }
 
-    window.addEventListener('storage', (e)=>{
-      if (e.key === 'orders.bump' || e.key === 'sv_orders_flat'){
-        // có thể là cập nhật trạng thái hoặc user vừa đặt đơn: nhập & render
-        if (e.key === 'sv_orders_flat') upsertFromFlat();
-        render();
-      }
-    });
+    if (act === 'confirm') {
+      if (!canConfirm(st)) return;
+      o.status = 'confirmed';
+      o.updatedAt = new Date().toISOString();
+      writeOrderEverywhere(o);
+      state.list[idx] = o;
+      render();
+      return;
+    }
 
-    // chạy 1 lần khi mở trang
-    upsertFromFlat();
-  })();
+    if (act === 'deliver') {
+      if (!canDeliver(st)) return;
+      o.status = 'delivered';
+      o.deliveredAt = new Date().toISOString();
+      o.updatedAt = new Date().toISOString();
+      writeOrderEverywhere(o);
+      state.list[idx] = o;
+      render();
+      return;
+    }
 
-  // ===== Init =====
-  (function init(){
-    const now = new Date();
-    const start = new Date(now); start.setDate(now.getDate()-7);
-    if ($from) $from.value = start.toISOString().slice(0,10);
-    if ($to)   $to.value   = now.toISOString().slice(0,10);
-    render();
-  })();
+    if (act === 'cancel') {
+      if (!canCancel(st)) return;
+      if (!confirm('Xác nhận huỷ đơn này?')) return;
+      o.status = 'canceled';
+      o.canceledAt = new Date().toISOString();
+      o.updatedAt = new Date().toISOString();
+      writeOrderEverywhere(o);
+      state.list[idx] = o;
+      render();
+      return;
+    }
+  });
+
+  /* ================== Filters & Events ================== */
+  btnFilter?.addEventListener('click', render);
+  qInput?.addEventListener('keyup', (e)=>{ if (e.key==='Enter') render(); });
+  [fromInput,toInput,stSelect,sortWard].forEach(el => el?.addEventListener('change', render));
+
+  // Tự reload khi tab khác đổi (user hủy/đặt hàng, admin tab khác thao tác…)
+  window.addEventListener('storage', (e) => {
+    // Nghe cả 'admin.orders' để bắt kịch bản user ghi trực tiếp
+    if ([KEYS.PING1, KEYS.PING2, KEYS.USER, KEYS.FLAT, KEYS.ADMIN].includes(e.key)) {
+      // Nếu kho user đổi → ép bridge cập nhật FLAT trước
+      if (e.key === KEYS.USER) flattenUserOrders();
+      state.list = loadAdminOrdersMerged();
+      render();
+    }
+  });
+
+
+  if (!Array.isArray(LS.get(KEYS.FLAT))) flattenUserOrders();
+  state.list = loadAdminOrdersMerged();
+  render();
 })();
