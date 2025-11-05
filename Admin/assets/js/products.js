@@ -222,7 +222,7 @@ function render(list) {
       const stopLabel = p.status === "selling" ? "Hết bán" : "Bán lại";
       const hideLabel = p.status === "hidden" ? "Hiện" : "Ẩn";
 
-      return `
+      return `  
       <tr>
         <td>${i + 1}</td>
         <td>${img}</td>
@@ -323,7 +323,6 @@ document.getElementById("prod-form")?.addEventListener("submit", (e) => {
     supplier: document.getElementById("supplier").value.trim(),
     status: document.getElementById("status").value,
     image: currentImageData,
-    // giữ seedId nếu có (sửa không làm mất liên kết)
     seedId:
       prods.find(
         (x) => x.id === Number(document.getElementById("id").value || 0)
