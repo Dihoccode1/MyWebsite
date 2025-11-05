@@ -1,325 +1,496 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Lịch sử đơn hàng</title>
-  <link rel="stylesheet" href="/bootstrap-4.6.2-dist/css/bootstrap.css">
-  <link rel="stylesheet" href="/assets/css/base.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-<header class="header">
-  <div class="topbar">
-    <div class="container">
-      <div class="topbar-right"></div>
-    </div>
-  </div>
-</header>
-
-<header class="mid-header">
-  <div class="container">
-    <div class="header-main">
-      <div class="header-left">
-        <!-- Chặn autofill & gõ dấu ok -->
-        <form action="/search" method="get" class="search-bar" autocomplete="off">
-          <input type="text" name="query" placeholder="Tìm kiếm"
-                 autocomplete="off" autocapitalize="off" autocorrect="off"
-                 spellcheck="false" inputmode="search" />
-          <button type="submit" aria-label="Tìm kiếm">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-      </div>
-
-      <div class="header-center">
-        <a href="/trangchu.html" class="logo">
-          <img src="/assets/images/logo.jpg" alt="GENTLEMAN">
-        </a>
-      </div>
-
-      <div class="header-right">
-        <a href="/giohang.html" class="cart-link">
-          <i class="fa-solid fa-cart-shopping"></i>
-          GIỎ HÀNG (<span class="cart-count">0</span>)
-        </a>
-      </div>
-    </div>
-  </div>
-</header>
-
-<nav class="main-nav">
-  <ul>
-    <li><a href="/trangchu.html">TRANG CHỦ</a></li>
-    <li><a href="/gioithieu.html">GIỚI THIỆU</a></li>
-    <li><a href="/sanpham/sanpham.html" class="js-products-url">SẢN PHẨM</a></li>
-    <li><a href="/tintuc.html">TIN TỨC</a></li>
-    <li><a href="/lienhe.html">LIÊN HỆ</a></li>
-  </ul>
-</nav>
-
-<script>
-(function (w, d) {
-  function getProductsURL() {
-    var a = d.querySelector('nav.main-nav a.js-products-url')
-          || d.querySelector('nav.main-nav a[href*="/sanpham"]');
-    return (a && a.getAttribute('href')) ? a.getAttribute('href') : '/sanpham/sanpham.html';
-  }
-
-  var form = d.querySelector('.search-bar');
-  if (!form) return;
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var input = form.querySelector('input[name="query"], input[name="q"]');
-    var q = (input && input.value || '').trim().replace(/\s+/g, ' ');
-    var raw = getProductsURL();
-    var url = new URL(raw, w.location.origin);
-    if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
-    w.location.href = url.pathname + (url.search ? url.search : '');
-  }, { passive: false });
-})(window, document);
-</script>
-<script>
-(function (w, d) {
-  function makeWelcomeClickable() {
-    var el = d.querySelector('.welcome-user');
-    if (el) { el.setAttribute('href', '/account/profile.html'); return; }
-    var target = d.querySelector('#welcomeName, [data-welcome-name], .js-welcome-name');
-    if (!target) return;
-    if (target.tagName !== 'A') {
-      var a = d.createElement('a');
-      a.href = '/account/profile.html';
-      a.className = 'welcome-link';
-      while (target.firstChild) a.appendChild(target.firstChild);
-      target.appendChild(a);
-    } else {
-      target.setAttribute('href', '/account/profile.html');
-    }
-  }
-  d.addEventListener('auth:ready', makeWelcomeClickable);
-  if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
-})(window, document);
-</script>
-
-<div class="container py-4">
-  <h3 class="mb-3">Lịch sử mua hàng</h3>
-
-  <div class="form-inline mb-3">
-    <label class="mr-2">Email tài khoản</label>
-    <input id="accEmail" class="form-control mr-2" style="min-width:260px" placeholder="nhập email để tra đơn">
-    <button id="btnLoad" class="btn btn-secondary">Tải</button>
-  </div>
-
-  <div id="ordersWrap"></div>
-</div>
-
-<footer class="footer">
-  <div class="site-footer">
-    <div class="top-footer">
-      <div class="container">
-        <div class="row">
-          <section class="widget-ft">
-            <h4 class="title-menu">Thông tin</h4>
-            <ul class="list-menu">
-              <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
-              <li class="li_menu"><a href="/gioithieu.html">Giới thiệu</a></li>
-              <li class="li_menu"><a href="/sanpham/sanpham.html">Sản phẩm</a></li>
-              <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-              <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-            </ul>
-          </section>
-
-          <section class="widget-ft">
-            <h4 class="title-menu">Hỗ trợ</h4>
-            <ul class="list-menu">
-              <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
-              <li class="li_menu"><a href="/gioithieu.html">Giới thiệu</a></li>
-              <li class="li_menu"><a href="/sanpham/sanpham.html">Sản phẩm</a></li>
-              <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-              <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-            </ul>
-          </section>
-
-          <section class="widget-ft">
-            <h4 class="title-menu">Hướng dẫn</h4>
-            <ul class="list-menu">
-              <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
-              <li class="li_menu"><a href="/gioithieu.html">Giới thiệu</a></li>
-              <li class="li_menu"><a href="/sanpham/sanpham.html">Sản phẩm</a></li>
-              <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-              <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-            </ul>
-          </section>
-
-          <section class="widget-ft">
-            <h4 class="title-menu">Chính sách</h4>
-            <ul class="list-menu">
-              <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
-              <li class="li_menu"><a href="/gioithieu.html">Giới thiệu</a></li>
-              <li class="li_menu"><a href="/sanpham/sanpham.html">Sản phẩm</a></li>
-              <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-              <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-            </ul>
-          </section>
-
-          <section class="wg-logo">
-            <h4 class="title-menu">Liên hệ</h4>
-            <ul class="contact">
-              <li>
-                <span class="txt_content_child">
-                  <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
-                  140B-Tổ 3, Ấp Xóm Chùa, Tỉnh Tây Ninh
-                </span>
-              </li>
-              <li class="sdt">
-                <span><i class="fa-solid fa-phone" aria-hidden="true"></i></span>
-                <a href="tel:0338286525">0338286525</a>
-              </li>
-              <li class="sdt">
-                <span><i class="fa-solid fa-envelope"></i></span>
-                <a href="mailto:thanhloc29052006@gmail.com">thanhloc29052006@gmail.com</a>
-              </li>
-            </ul>
-          </section>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Lịch sử đơn hàng</title>
+    <link rel="stylesheet" href="/bootstrap-4.6.2-dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <div class="topbar">
+        <div class="container">
+          <div class="topbar-right"></div>
         </div>
       </div>
-    </div>
+    </header>
 
-    <div class="mid-footer">
+    <header class="mid-header">
       <div class="container">
-        <div class="row">
-          <div class="fot_copyright">
-            <span class="wsp"><span>Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span></span>
+        <div class="header-main">
+          <div class="header-left">
+            <!-- Chặn autofill & gõ dấu ok -->
+            <form
+              action="/search"
+              method="get"
+              class="search-bar"
+              autocomplete="off"
+            >
+              <input
+                type="text"
+                name="query"
+                placeholder="Tìm kiếm"
+                autocomplete="off"
+                autocapitalize="off"
+                autocorrect="off"
+                spellcheck="false"
+                inputmode="search"
+              />
+              <button type="submit" aria-label="Tìm kiếm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </form>
           </div>
-          <nav class="fot_menu_copyright">
-            <ul class="ul_menu_fot">
-              <li><a href="/trangchu.html" title="Trang chủ">Trang chủ</a></li>
-              <li><a href="/gioithieu.html" title="Giới thiệu">Giới thiệu</a></li>
-              <li><a href="/sanpham/sanpham.html" title="Sản phẩm">Sản phẩm</a></li>
-              <li><a href="/tin-tuc.html" title="Tin tức">Tin tức</a></li>
-              <li><a href="/lienhe.html" title="Liên hệ">Liên hệ</a></li>
-            </ul>
-          </nav>
-          <div class="pay_footer">
-            <ul class="follow_option">
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png" alt="Payment"></a></li>
-              <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png" alt="Payment"></a></li>
-            </ul>
+
+          <div class="header-center">
+            <a href="/trangchu.html" class="logo">
+              <img src="/assets/images/logo.jpg" alt="GENTLEMAN" />
+            </a>
           </div>
-          <a href="#" id="back-to-top" class="backtop" title="Lên đầu trang">
-            <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
-          </a>
+
+          <div class="header-right">
+            <a href="/giohang.html" class="cart-link">
+              <i class="fa-solid fa-cart-shopping"></i>
+              GIỎ HÀNG (<span class="cart-count">0</span>)
+            </a>
+          </div>
         </div>
       </div>
+    </header>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/trangchu.html">TRANG CHỦ</a></li>
+        <li><a href="/gioithieu.html">GIỚI THIỆU</a></li>
+        <li>
+          <a href="/sanpham/sanpham.html" class="js-products-url">SẢN PHẨM</a>
+        </li>
+        <li><a href="/tintuc.html">TIN TỨC</a></li>
+        <li><a href="/lienhe.html">LIÊN HỆ</a></li>
+      </ul>
+    </nav>
+
+    <script>
+      (function (w, d) {
+        function getProductsURL() {
+          var a =
+            d.querySelector("nav.main-nav a.js-products-url") ||
+            d.querySelector('nav.main-nav a[href*="/sanpham"]');
+          return a && a.getAttribute("href")
+            ? a.getAttribute("href")
+            : "/sanpham/sanpham.html";
+        }
+
+        var form = d.querySelector(".search-bar");
+        if (!form) return;
+
+        form.addEventListener(
+          "submit",
+          function (e) {
+            e.preventDefault();
+            var input = form.querySelector(
+              'input[name="query"], input[name="q"]'
+            );
+            var q = ((input && input.value) || "").trim().replace(/\s+/g, " ");
+            var raw = getProductsURL();
+            var url = new URL(raw, w.location.origin);
+            if (q) url.searchParams.set("q", q);
+            else url.searchParams.delete("q");
+            w.location.href = url.pathname + (url.search ? url.search : "");
+          },
+          { passive: false }
+        );
+      })(window, document);
+    </script>
+    <script>
+      (function (w, d) {
+        function makeWelcomeClickable() {
+          var el = d.querySelector(".welcome-user");
+          if (el) {
+            el.setAttribute("href", "/account/profile.html");
+            return;
+          }
+          var target = d.querySelector(
+            "#welcomeName, [data-welcome-name], .js-welcome-name"
+          );
+          if (!target) return;
+          if (target.tagName !== "A") {
+            var a = d.createElement("a");
+            a.href = "/account/profile.html";
+            a.className = "welcome-link";
+            while (target.firstChild) a.appendChild(target.firstChild);
+            target.appendChild(a);
+          } else {
+            target.setAttribute("href", "/account/profile.html");
+          }
+        }
+        d.addEventListener("auth:ready", makeWelcomeClickable);
+        if (w.AUTH && w.AUTH.ready) makeWelcomeClickable();
+      })(window, document);
+    </script>
+
+    <div class="container py-4">
+      <h3 class="mb-3">Lịch sử mua hàng</h3>
+
+      <div class="form-inline mb-3">
+        <label class="mr-2">Email tài khoản</label>
+        <input
+          id="accEmail"
+          class="form-control mr-2"
+          style="min-width: 260px"
+          placeholder="nhập email để tra đơn"
+        />
+        <button id="btnLoad" class="btn btn-secondary">Tải</button>
+      </div>
+
+      <div id="ordersWrap"></div>
     </div>
-  </div>
-</footer>
 
-<!-- Auth + Data + Store -->
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/auth.security.enforcer.js"></script>
-<script src="/assets/js/auth.localstorage.bridge.js"></script>
-<script src="/assets/js/auth.reactive.guard.v2.js"></script>
-<script src="/assets/js/auth.modal.bridge.js"></script>
-<script src="/assets/js/products.seed.js"></script>
-<script src="/assets/js/store.js"></script>
-<script src="/assets/js/ui.js"></script>
+    <footer class="footer">
+      <div class="site-footer">
+        <div class="top-footer">
+          <div class="container">
+            <div class="row">
+              <section class="widget-ft">
+                <h4 class="title-menu">Thông tin</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
 
-<script>
-/* Lịch sử đơn hàng – localStorage demo
+              <section class="widget-ft">
+                <h4 class="title-menu">Hỗ trợ</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="widget-ft">
+                <h4 class="title-menu">Hướng dẫn</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="widget-ft">
+                <h4 class="title-menu">Chính sách</h4>
+                <ul class="list-menu">
+                  <li class="li_menu">
+                    <a href="/trangchu.html">Trang chủ</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/gioithieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="li_menu">
+                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
+                  </li>
+                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
+                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
+                </ul>
+              </section>
+
+              <section class="wg-logo">
+                <h4 class="title-menu">Liên hệ</h4>
+                <ul class="contact">
+                  <li>
+                    <span class="txt_content_child">
+                      <span
+                        ><i
+                          class="fa-solid fa-location-dot"
+                          aria-hidden="true"
+                        ></i
+                      ></span>
+                      140B-Tổ 3, Ấp Xóm Chùa, Tỉnh Tây Ninh
+                    </span>
+                  </li>
+                  <li class="sdt">
+                    <span
+                      ><i class="fa-solid fa-phone" aria-hidden="true"></i
+                    ></span>
+                    <a href="tel:0338286525">0338286525</a>
+                  </li>
+                  <li class="sdt">
+                    <span><i class="fa-solid fa-envelope"></i></span>
+                    <a href="mailto:thanhloc29052006@gmail.com"
+                      >thanhloc29052006@gmail.com</a
+                    >
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="mid-footer">
+          <div class="container">
+            <div class="row">
+              <div class="fot_copyright">
+                <span class="wsp"
+                  ><span
+                    >Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span
+                  ></span
+                >
+              </div>
+              <nav class="fot_menu_copyright">
+                <ul class="ul_menu_fot">
+                  <li>
+                    <a href="/trangchu.html" title="Trang chủ">Trang chủ</a>
+                  </li>
+                  <li>
+                    <a href="/gioithieu.html" title="Giới thiệu">Giới thiệu</a>
+                  </li>
+                  <li>
+                    <a href="/sanpham/sanpham.html" title="Sản phẩm"
+                      >Sản phẩm</a
+                    >
+                  </li>
+                  <li><a href="/tin-tuc.html" title="Tin tức">Tin tức</a></li>
+                  <li><a href="/lienhe.html" title="Liên hệ">Liên hệ</a></li>
+                </ul>
+              </nav>
+              <div class="pay_footer">
+                <ul class="follow_option">
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                </ul>
+              </div>
+              <a
+                href="#"
+                id="back-to-top"
+                class="backtop"
+                title="Lên đầu trang"
+              >
+                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Auth + Data + Store -->
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/auth.security.enforcer.js"></script>
+    <script src="/assets/js/auth.localstorage.bridge.js"></script>
+    <script src="/assets/js/auth.reactive.guard.v2.js"></script>
+    <script src="/assets/js/auth.modal.bridge.js"></script>
+    <script src="/assets/js/products.seed.js"></script>
+    <script src="/assets/js/store.js"></script>
+    <script src="/assets/js/ui.js"></script>
+
+    <script>
+      /* Lịch sử đơn hàng – localStorage demo
    Đọc từ localStorage['sv_orders_v1'] = { email: [order,…] }
 */
-(function(){
-  const KEY = 'sv_orders_v1';
-  const $ = s => document.querySelector(s);
-  const ordersWrap = $('#ordersWrap');
-  const accEmail   = $('#accEmail');
-  const money = n => (Number(n)||0).toLocaleString('vi-VN') + '₫';
+      (function () {
+        const KEY = "sv_orders_v1";
+        const $ = (s) => document.querySelector(s);
+        const ordersWrap = $("#ordersWrap");
+        const accEmail = $("#accEmail");
+        const money = (n) => (Number(n) || 0).toLocaleString("vi-VN") + "₫";
 
-  /* ===== Map tiếng Việt cho status & payment (chỉ HIỂN THỊ) ===== */
-  const STATUS_TEXT = {
-    new:        'Mới',
-    confirmed:  'Đã xác nhận',
-    shipping:   'Đang giao',
-    delivered:  'Đã giao',
-    cancelled:  'Đã hủy',   // giữ lại dạng cũ
-    canceled:   'Đã hủy'    // alias khớp với Admin (1 chữ "l")
-  };
-  const STATUS_BADGE = {
-    new:        'badge-secondary',
-    confirmed:  'badge-info',
-    shipping:   'badge-warning',
-    delivered:  'badge-success',
-    cancelled:  'badge-danger',
-    canceled:   'badge-danger'
-  };
+        /* ===== Map tiếng Việt cho status & payment (chỉ HIỂN THỊ) ===== */
+        const STATUS_TEXT = {
+          new: "Chưa xử lý",
+          confirmed: "Đã xác nhận",
+          shipping: "Đang giao",
+          delivered: "Đã giao",
+          cancelled: "Đã hủy", // giữ lại dạng cũ
+          canceled: "Đã hủy", // alias khớp với Admin (1 chữ "l")
+        };
+        const STATUS_BADGE = {
+          new: "badge-secondary",
+          confirmed: "badge-info",
+          shipping: "badge-warning",
+          delivered: "badge-success",
+          cancelled: "badge-danger",
+          canceled: "badge-danger",
+        };
 
-  // Quy tắc: user được huỷ khi đơn còn 'new' hoặc 'confirmed'
-  const canUserCancel = s => (s === 'new' || s === 'confirmed');
+        // Quy tắc: user được huỷ khi đơn còn 'new' hoặc 'confirmed'
+        const canUserCancel = (s) => s === "new" || s === "confirmed";
 
-  const LS = {
-    get(k, def){ try{ return JSON.parse(localStorage.getItem(k)) ?? def }catch{ return def } },
-    set(k, v){ localStorage.setItem(k, JSON.stringify(v)) }
-  };
+        const LS = {
+          get(k, def) {
+            try {
+              return JSON.parse(localStorage.getItem(k)) ?? def;
+            } catch {
+              return def;
+            }
+          },
+          set(k, v) {
+            localStorage.setItem(k, JSON.stringify(v));
+          },
+        };
 
-  // Tự điền email từ hệ auth nếu có
-  document.addEventListener('auth:ready', fillEmailFromAuth);
-  if (window.AUTH && window.AUTH.ready) fillEmailFromAuth();
+        // Tự điền email từ hệ auth nếu có
+        document.addEventListener("auth:ready", fillEmailFromAuth);
+        if (window.AUTH && window.AUTH.ready) fillEmailFromAuth();
 
-  function fillEmailFromAuth(){
-    if (window.AUTH?.loggedIn && window.AUTH.user?.email) {
-      accEmail.value = window.AUTH.user.email;
-      load();
-    }
-  }
+        function fillEmailFromAuth() {
+          if (window.AUTH?.loggedIn && window.AUTH.user?.email) {
+            accEmail.value = window.AUTH.user.email;
+            load();
+          }
+        }
 
-  function load(){
-    const email = (accEmail.value||'').trim().toLowerCase();
-    if (!email) { alert('Nhập email tài khoản'); return; }
-    const db = LS.get(KEY, {});
-    const list = Array.isArray(db[email]) ? db[email] : [];
-    ordersWrap.innerHTML = list.length ? list.map(renderCard).join('') : '<div class="text-muted">Chưa có đơn hàng.</div>';
-  }
+        function load() {
+          const email = (accEmail.value || "").trim().toLowerCase();
+          if (!email) {
+            alert("Nhập email tài khoản");
+            return;
+          }
+          const db = LS.get(KEY, {});
+          const list = Array.isArray(db[email]) ? db[email] : [];
+          ordersWrap.innerHTML = list.length
+            ? list.map(renderCard).join("")
+            : '<div class="text-muted">Chưa có đơn hàng.</div>';
+        }
 
-  function renderCard(o){
-    const date = new Date(o.created_at);
-    const when = isNaN(date) ? (o.created_at||'') : date.toLocaleString('vi-VN');
-    const ship = [o.shipping?.address, o.shipping?.district, o.shipping?.city].filter(Boolean).join(', ');
+        function renderCard(o) {
+          const date = new Date(o.created_at);
+          const when = isNaN(date)
+            ? o.created_at || ""
+            : date.toLocaleString("vi-VN");
+          const ship = [
+            o.shipping?.address,
+            o.shipping?.district,
+            o.shipping?.city,
+          ]
+            .filter(Boolean)
+            .join(", ");
 
-    const stKey    = String(o.status||'new').toLowerCase();
-    const stLabel  = STATUS_TEXT[stKey] || 'Mới';
-    const stBadge  = STATUS_BADGE[stKey] || 'badge-secondary';
-    const payLabel = ({COD:'Tiền mặt khi nhận (COD)',BANK:'Chuyển khoản',ONLINE:'Thanh toán trực tuyến'})[String(o.payMethod||'').toUpperCase()] || '';
+          const stKey = String(o.status || "new").toLowerCase();
+          const stLabel = STATUS_TEXT[stKey] || "Mới";
+          const stBadge = STATUS_BADGE[stKey] || "badge-secondary";
+          const payLabel =
+            {
+              COD: "Tiền mặt khi nhận (COD)",
+              BANK: "Chuyển khoản",
+              ONLINE: "Thanh toán trực tuyến",
+            }[String(o.payMethod || "").toUpperCase()] || "";
 
-    const items = (o.items||[]).map(it => `
+          const items = (o.items || [])
+            .map(
+              (it) => `
       <li class="list-group-item d-flex justify-content-between">
-        <div>${escapeHtml(it.name)} <span class="text-muted">x${Number(it.qty)||0}</span></div>
-        <div>${money((Number(it.price)||0) * (Number(it.qty)||0))}</div>
+        <div>${escapeHtml(it.name)} <span class="text-muted">x${
+                Number(it.qty) || 0
+              }</span></div>
+        <div>${money((Number(it.price) || 0) * (Number(it.qty) || 0))}</div>
       </li>
-    `).join('');
+    `
+            )
+            .join("");
 
-    // nút Huỷ (chỉ hiện khi trạng thái cho phép)
-    const showCancel = canUserCancel(stKey);
-    const cancelBtn  = showCancel ? `<button class="btn btn-sm btn-outline-danger" data-cancel="${escapeHtml(o.id)}">Huỷ đơn</button>` : '';
+          // nút Huỷ (chỉ hiện khi trạng thái cho phép)
+          const showCancel = canUserCancel(stKey);
+          const cancelBtn = showCancel
+            ? `<button class="btn btn-sm btn-outline-danger" data-cancel="${escapeHtml(
+                o.id
+              )}">Huỷ đơn</button>`
+            : "";
 
-    return `
+          return `
       <div class="card mb-3">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Đơn ${escapeHtml(o.id||'—')}</h5>
+            <h5 class="mb-0">Đơn ${escapeHtml(o.id || "—")}</h5>
             <span class="badge ${stBadge}">${escapeHtml(stLabel)}</span>
           </div>
-          <div class="text-muted mb-2">${escapeHtml(when)}${payLabel ? ' • ' + escapeHtml(payLabel) : ''}</div>
+          <div class="text-muted mb-2">${escapeHtml(when)}${
+            payLabel ? " • " + escapeHtml(payLabel) : ""
+          }</div>
           <div class="mb-2">
             <strong>Giao đến:</strong>
-            ${escapeHtml(o.shipping?.fullname||'')} • ${escapeHtml(o.shipping?.phone||'')}<br>
+            ${escapeHtml(o.shipping?.fullname || "")} • ${escapeHtml(
+            o.shipping?.phone || ""
+          )}<br>
             ${escapeHtml(ship)}
           </div>
           <ul class="list-group list-group-flush mb-2">${items}</ul>
@@ -339,113 +510,164 @@
           </div>
         </div>
       </div>`;
-  }
+        }
 
-  function escapeHtml(s){
-    return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
+        function escapeHtml(s) {
+          return String(s || "").replace(
+            /[&<>"']/g,
+            (m) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              }[m])
+          );
+        }
 
-  // Click: HUỶ ĐƠN từ phía user
-  document.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button[data-cancel]');
-    if(!btn) return;
-    const id = btn.getAttribute('data-cancel');
-    const email = (document.querySelector('#accEmail')?.value || '').trim().toLowerCase();
-    cancelOrderFromUser(id, email, btn);
-  });
+        // Click: HUỶ ĐƠN từ phía user
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-cancel]");
+          if (!btn) return;
+          const id = btn.getAttribute("data-cancel");
+          const email = (document.querySelector("#accEmail")?.value || "")
+            .trim()
+            .toLowerCase();
+          cancelOrderFromUser(id, email, btn);
+        });
 
+        function cancelOrderFromUser(orderId, email, btn) {
+          if (!email) {
+            alert("Vui lòng nhập email tài khoản để tải đơn.");
+            return;
+          }
+          if (!confirm("Xác nhận huỷ đơn này?")) return;
 
-function cancelOrderFromUser(orderId, email, btn){
-  if(!email){ alert('Vui lòng nhập email tài khoản để tải đơn.'); return; }
-  if(!confirm('Xác nhận huỷ đơn này?')) return;
+          btn?.setAttribute("disabled", "disabled");
 
-  btn?.setAttribute('disabled','disabled');
+          // 1) Cập nhật kho user: sv_orders_v1 = { email: [orders...] }
+          const store = LS.get("sv_orders_v1", {});
+          const list = store[email] || [];
+          const idx = list.findIndex((o) => String(o.id) === String(orderId));
+          if (idx < 0) {
+            alert("Không tìm thấy đơn hàng.");
+            btn?.removeAttribute("disabled");
+            return;
+          }
 
-  // 1) Cập nhật kho user: sv_orders_v1 = { email: [orders...] }
-  const store = LS.get('sv_orders_v1', {});
-  const list = store[email] || [];
-  const idx = list.findIndex(o => String(o.id)===String(orderId));
-  if(idx<0){ alert('Không tìm thấy đơn hàng.'); btn?.removeAttribute('disabled'); return; }
+          const current = list[idx];
+          if (!canUserCancel(String(current.status).toLowerCase())) {
+            alert("Đơn hiện không thể huỷ.");
+            btn?.removeAttribute("disabled");
+            return;
+          }
 
-  const current = list[idx];
-  if(!canUserCancel(String(current.status).toLowerCase())){
-    alert('Đơn hiện không thể huỷ.'); btn?.removeAttribute('disabled'); return;
-  }
+          current.status = "canceled";
+          current.canceledAt = new Date().toISOString();
+          list[idx] = current;
+          store[email] = list;
+          LS.set("sv_orders_v1", store);
 
-  current.status = 'canceled';
-  current.canceledAt = new Date().toISOString();
-  list[idx] = current;
-  store[email] = list;
-  LS.set('sv_orders_v1', store);
+          // 2) Đồng bộ sang kho Admin (nếu Admin đã từng đọc dữ liệu)
+          try {
+            const admin = LS.get("admin.orders", []);
+            const aidx = admin.findIndex(
+              (x) => String(x.id) === String(orderId)
+            );
+            if (aidx >= 0) {
+              admin[aidx].status = "canceled";
+              admin[aidx].canceledAt = current.canceledAt;
+              LS.set("admin.orders", admin);
+            }
+          } catch {}
 
-  // 2) Đồng bộ sang kho Admin (nếu Admin đã từng đọc dữ liệu)
-  try{
-    const admin = LS.get('admin.orders', []);
-    const aidx = admin.findIndex(x => String(x.id)===String(orderId));
-    if(aidx>=0){
-      admin[aidx].status = 'canceled';
-      admin[aidx].canceledAt = current.canceledAt;
-      LS.set('admin.orders', admin);
-    }
-  }catch{}
+          // >>> NEW: ép bridge cập nhật ngay sv_orders_flat + đánh chuông cho Admin
+          try {
+            if (window.BridgeOrders?.flattenNow)
+              window.BridgeOrders.flattenNow(); // NEW
+            localStorage.setItem("orders.bump", String(Date.now())); // NEW
+          } catch {}
 
-  // >>> NEW: ép bridge cập nhật ngay sv_orders_flat + đánh chuông cho Admin
-  try {
-    if (window.BridgeOrders?.flattenNow) window.BridgeOrders.flattenNow(); // NEW
-    localStorage.setItem('orders.bump', String(Date.now()));               // NEW
-  } catch {}
+          // 3) Phát tín hiệu để tab Admin / tab user khác reload (giữ nguyên)
+          localStorage.setItem(
+            "sv_orders_ping",
+            JSON.stringify({
+              t: Date.now(),
+              action: "user_cancel",
+              id: orderId,
+            })
+          );
 
-  // 3) Phát tín hiệu để tab Admin / tab user khác reload (giữ nguyên)
-  localStorage.setItem('sv_orders_ping', JSON.stringify({ t: Date.now(), action:'user_cancel', id: orderId }));
+          // 4) Render lại danh sách
+          load();
+          if (window.SVUI?.toast) {
+            SVUI.toast("Đã huỷ đơn.");
+          } else {
+            alert("Đã huỷ đơn.");
+          }
+          btn?.removeAttribute("disabled");
+        }
+        // nút tải
+        document.getElementById("btnLoad").addEventListener("click", load);
+        window.UserOrdersReload = load;
+      })();
+    </script>
 
-  // 4) Render lại danh sách
-  load();
-  if(window.SVUI?.toast){ SVUI.toast('Đã huỷ đơn.'); } else { alert('Đã huỷ đơn.'); }
-  btn?.removeAttribute('disabled');
-}
-  // nút tải
-  document.getElementById('btnLoad').addEventListener('click', load);
-  window.UserOrdersReload = load;
-})();
-</script>
+    <script>
+      /* Bridge: {email:[orders]} -> flat array cho Admin + bump */
+      (function () {
+        const SRC = "sv_orders_v1";
+        const DST = "sv_orders_flat";
+        const BUMP = "orders.bump";
 
-<script>
-/* Bridge: {email:[orders]} -> flat array cho Admin + bump */
-(function(){
-  const SRC = 'sv_orders_v1';
-  const DST = 'sv_orders_flat';
-  const BUMP = 'orders.bump';
+        function flatten() {
+          try {
+            const raw = JSON.parse(localStorage.getItem(SRC) || "{}");
+            const list = Array.isArray(raw)
+              ? raw
+              : Object.values(raw || {}).flat();
+            localStorage.setItem(DST, JSON.stringify(list || []));
+            localStorage.setItem(BUMP, String(Date.now())); // 🔔 báo cho Admin
+          } catch (e) {
+            console.warn("Bridge flatten error:", e);
+          }
+        }
 
-  function flatten(){
-    try{
-      const raw = JSON.parse(localStorage.getItem(SRC) || '{}');
-      const list = Array.isArray(raw) ? raw : Object.values(raw||{}).flat();
-      localStorage.setItem(DST, JSON.stringify(list || []));
-      localStorage.setItem(BUMP, String(Date.now())); // 🔔 báo cho Admin
-    }catch(e){ console.warn('Bridge flatten error:', e); }
-  }
+        // chạy lúc vào trang & khi dữ liệu nguồn đổi
+        flatten();
+        window.addEventListener("storage", (e) => {
+          if (e.key === SRC) flatten();
+        });
 
-  // chạy lúc vào trang & khi dữ liệu nguồn đổi
-  flatten();
-  window.addEventListener('storage', (e)=>{ if(e.key === SRC) flatten(); });
+        // cho phép gọi thủ công ngay sau khi tạo đơn (cùng tab)
+        window.BridgeOrders = { flattenNow: flatten };
+      })();
+      window.BridgeOrders?.flattenNow();
+    </script>
 
-  // cho phép gọi thủ công ngay sau khi tạo đơn (cùng tab)
-  window.BridgeOrders = { flattenNow: flatten };
-})();
-window.BridgeOrders?.flattenNow();
-</script>
+    <script>
+      // Khi Admin đổi trạng thái: nghe chuông và render lại
+      window.addEventListener("storage", function (e) {
+        if (
+          e.key === "orders.bump" ||
+          e.key === "sv_orders_v1" ||
+          e.key === "sv_orders_flat" ||
+          e.key === "sv_orders_ping"
+        ) {
+          window.UserOrdersReload?.();
+        }
+      });
+    </script>
 
-<script>
-  // Khi Admin đổi trạng thái: nghe chuông và render lại
-  window.addEventListener('storage', function(e){
-    if (e.key === 'orders.bump' || e.key === 'sv_orders_v1' || e.key === 'sv_orders_flat' || e.key==='sv_orders_ping') {
-      window.UserOrdersReload?.();
-    }
-  });
-</script>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-</body>
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
