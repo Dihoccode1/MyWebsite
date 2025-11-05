@@ -1,11 +1,4 @@
-/* assets/js/order.js
-   Quản lý đơn hàng (Admin) – Bản ổn định
-   - Import 1 lần từ sv_orders_* nếu admin rỗng
-   - Lọc theo ngày/trạng thái, sắp xếp theo phường
-   - Cập nhật trạng thái: new / confirmed / delivered / canceled
-   - Phát "chuông" orders.bump để các tab Admin khác tự reload
-   - Lắng nghe sv_orders_flat & orders.bump để auto cập nhật theo user
-*/
+
 (function(){
   // ===== Storage Keys =====
   const ORDER_KEY = 'admin.orders';
