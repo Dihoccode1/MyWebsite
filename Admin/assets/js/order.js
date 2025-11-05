@@ -1,3 +1,12 @@
+// assets/js/order.js
+/*
+  Quản lý đơn hàng (Admin) – Bản ổn định + TÍCH HỢP KHO
+  - Import 1 lần từ sv_orders_* nếu admin rỗng
+  - Lọc theo ngày/trạng thái, sắp xếp theo phường
+  - Cập nhật trạng thái: new / confirmed / delivered / canceled
+  - Trừ/hoàn kho qua admin.products & admin.stock theo chuyển trạng thái
+  - Phát "chuông" orders.bump để các tab tự reload; lắng nghe sv_orders_flat
+*/
 (function () {
   // ===== Storage Keys =====
   const ORDER_KEY = "admin.orders";
@@ -109,27 +118,113 @@
     return list().find((x) => String(x.id) === String(id));
   }
 
-  // Cập nhật trạng thái đơn hàng
+  // ====== STOCK INTEGRATION ======
+  const PROD_KEY = "admin.products";
+  const TX_KEY = "admin.stock";
+
+  function prodsList() {
+    try {
+      return JSON.parse(localStorage.getItem(PROD_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+  function prodsSave(arr) {
+    localStorage.setItem(PROD_KEY, JSON.stringify(arr || []));
+    try {
+      localStorage.setItem("catalog.bump", String(Date.now()));
+    } catch {}
+  }
+  function txList() {
+    try {
+      return JSON.parse(localStorage.getItem(TX_KEY) || "[]");
+    } catch {
+      return [];
+    }
+  }
+  function txSave(arr) {
+    localStorage.setItem(TX_KEY, JSON.stringify(arr || []));
+    try {
+      localStorage.setItem("stock.bump", String(Date.now()));
+    } catch {}
+  }
+  // tìm sản phẩm theo id hoặc theo code (snapshot từ item)
+  function findProdForItem(pList, it) {
+    const byId = pList.find((p) => String(p.id) === String(it.productId));
+    if (byId) return byId;
+    const code = String(it.productCode || "").toUpperCase();
+    return pList.find((p) => String(p.code || "").toUpperCase() === code);
+  }
+  // sign = -1 (trừ kho), +1 (hoàn kho)
+  function applyStockForOrder(order, sign) {
+    if (!order || !Array.isArray(order.items)) return;
+
+    const prods = prodsList();
+    const txs = txList();
+    const when = order.date || new Date().toISOString().slice(0, 10);
+
+    order.items.forEach((it) => {
+      const p = findProdForItem(prods, it);
+      if (!p) return;
+      const q = Number(it.quantity || 0) * (sign || -1);
+      const newQty = Math.max(0, Number(p.qty || 0) + q); // tránh âm
+      p.qty = newQty;
+
+      txs.push({
+        id:
+          "STK_" +
+          Math.random().toString(36).slice(2, 8) +
+          Date.now().toString(36).slice(-4),
+        productId: p.id,
+        type: (sign || -1) < 0 ? "export" : "import",
+        qty: Math.abs(Number(it.quantity || 0)),
+        note: `Đơn ${order.code} – ${(sign || -1) < 0 ? "bán" : "hoàn kho"}`,
+        ref: order.id,
+        createdAt: when,
+      });
+    });
+
+    prodsSave(prods);
+    txSave(txs);
+  }
+  // chỉ trừ 1 lần khi NEW→CONFIRMED (hoặc NEW→DELIVERED), hoàn kho CONFIRMED→CANCELED
+  function handleStockTransition(prev, next, order) {
+    if (!order) return;
+    const P = String(prev || "new"),
+      N = String(next);
+    if (P === "new" && (N === "confirmed" || N === "delivered"))
+      applyStockForOrder(order, -1);
+    if (P === "confirmed" && N === "canceled") applyStockForOrder(order, +1);
+  }
+
+  // ===== Cập nhật trạng thái đơn hàng (CÓ tích hợp kho) =====
   function updateStatus(id, status) {
     const all = list();
     const i = all.findIndex((x) => String(x.id) === String(id));
     if (i < 0) throw new Error("Không tìm thấy đơn hàng");
+
+    const prev = all[i].status;
 
     // 1) Cập nhật trong kho admin
     all[i].status = status;
     all[i].updatedAt = Date.now();
     save(all);
 
+    // 1.1) Trừ/hoàn kho theo chuyển trạng thái
+    try {
+      handleStockTransition(prev, status, all[i]);
+    } catch (e) {
+      console.warn("stock transition failed", e);
+    }
+
     // 2) Đồng bộ về kho user (sv_orders_v1)
     try {
       const db = JSON.parse(localStorage.getItem("sv_orders_v1") || "{}");
       let touched = false;
 
-      // duyệt theo email: [ {id, ...}, ... ]
       for (const email of Object.keys(db)) {
         const arr = Array.isArray(db[email]) ? db[email] : [];
         for (const o of arr) {
-          // khớp theo id đơn (ví dụ SV123...) hoặc theo code nếu bạn dùng code là mã hiển thị
           if (
             String(o.id) === String(all[i].id) ||
             String(o.id) === String(all[i].code)
@@ -139,6 +234,7 @@
             touched = true;
           }
         }
+        if (touched) db[email] = arr;
       }
       if (touched) localStorage.setItem("sv_orders_v1", JSON.stringify(db));
     } catch (e) {
@@ -402,7 +498,6 @@
 
     window.addEventListener("storage", (e) => {
       if (e.key === "orders.bump" || e.key === "sv_orders_flat") {
-        // có thể là cập nhật trạng thái hoặc user vừa đặt đơn: nhập & render
         if (e.key === "sv_orders_flat") upsertFromFlat();
         render();
       }
