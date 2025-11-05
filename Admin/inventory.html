@@ -169,67 +169,97 @@
       <div class="navagation">
         <ul>
           <li>
-            <a href="./index.html"
-              ><span class="icon"><ion-icon name="logo-apple"></ion-icon></span
-              ><span class="title">Nobility 1800s</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+              <span class="title">Nobility 1800s</span>
+            </a>
           </li>
           <li id="nav-dashboard">
-            <a href="./index.html"
-              ><span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span
-              ><span class="title">Bảng điều khiển</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Bảng điều khiển</span>
+            </a>
           </li>
           <li id="nav-customers">
-            <a href="./users.html"
-              ><span class="icon"
-                ><ion-icon name="people-outline"></ion-icon></span
-              ><span class="title">Quản lý khách hàng</span></a
-            >
+            <a href="./users.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý khách hàng</span>
+            </a>
           </li>
           <li id="nav-categories">
-            <a href="./categories.html"
-              ><span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon></span
-              ><span class="title">Quản lý danh mục</span></a
-            >
+            <a href="./categories.html">
+              <span class="icon"
+                ><ion-icon name="bookmarks-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý danh mục</span>
+            </a>
           </li>
           <li id="nav-products">
-            <a href="./products.html"
-              ><span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon></span
-              ><span class="title">Quản lý sản phẩm</span></a
-            >
+            <a href="./products.html">
+              <span class="icon"
+                ><ion-icon name="bag-remove-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý sản phẩm</span>
+            </a>
           </li>
           <li id="nav-imports">
-            <a href="./imports.html"
-              ><span class="icon"
-                ><ion-icon name="download-outline"></ion-icon></span
-              ><span class="title">Phiếu nhập hàng</span></a
-            >
+            <a href="./imports.html">
+              <span class="icon"
+                ><ion-icon name="download-outline"></ion-icon
+              ></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
           </li>
           <li id="nav-inventory" class="hovered">
-            <a href="./inventory.html"
-              ><span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
-              ><span class="title">Quản lý tồn kho</span></a
-            >
+            <a href="./inventory.html">
+              <span class="icon"
+                ><ion-icon name="file-tray-stacked-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý hàng tồn kho</span>
+            </a>
           </li>
           <li id="nav-orders">
-            <a href="./orders.html"
-              ><span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon></span
-              ><span class="title">Quản lý đơn hàng</span></a
-            >
+            <a href="./orders.html">
+              <span class="icon"
+                ><ion-icon name="newspaper-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý đơn hàng</span>
+            </a>
           </li>
+
           <hr />
-          <li>
-            <a href="#" id="btn-logout-side"
-              ><span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon></span
-              ><span class="title">Đăng xuất</span></a
+
+          <!-- 👋 Welcome tile -->
+          <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px;
+                border: 1px solid #2a2f8a;
+                border-radius: 12px;
+                background: #fff;
+                color: #1f235a;
+                font-weight: 700;
+              "
             >
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <span>Chào mừng, Admin</span>
+            </div>
+          </li>
+
+          <li>
+            <a href="#" id="btn-logout-side">
+              <span class="icon"
+                ><ion-icon name="log-in-outline"></ion-icon
+              ></span>
+              <span class="title">Đăng xuất</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -239,14 +269,14 @@
       <div class="topbar">
         <div class="toggle"><ion-icon name="menu-outline"></ion-icon></div>
         <div class="search">
-          <label
-            ><input
+          <label>
+            <input
               id="q"
               type="text"
-              placeholder="Tìm theo mã / tên sản phẩm..." /><ion-icon
-              name="search-outline"
-            ></ion-icon
-          ></label>
+              placeholder="Tìm theo mã / tên sản phẩm..."
+            />
+            <ion-icon name="search-outline"></ion-icon>
+          </label>
         </div>
         <div class="user"><img src="./assets/img/user1.png" alt="user" /></div>
       </div>
@@ -365,7 +395,9 @@
               <button id="btn-check-low" class="btn primary">
                 Quét tồn hiện tại
               </button>
-              <span class="muted">Kiểm tra theo số tồn **hiện tại**.</span>
+              <span class="muted"
+                >Kiểm tra theo số tồn <strong>hiện tại</strong>.</span
+              >
             </div>
           </div>
 
