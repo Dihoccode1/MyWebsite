@@ -58,22 +58,38 @@
 
   // -------- Tính tồn
   // Tổng qty (+ import/adjust+, - export/adjust-) lên đến 1 thời điểm (<= at)
+  // Lấy tồn hiện tại từ admin.products
+  function currentQty(productId) {
+    const p = state.prods.find((x) => String(x.id) === String(productId));
+    return Number(p?.qty || 0);
+  }
+
+  // Tính tồn tại thời điểm at bằng cách "quay ngược" từ tồn hiện tại
   function stockOn(productId, at) {
-    const end = at ? toDate(at).getTime() : Date.now();
-    let sum = 0;
+    const atTS = at ? new Date(at).getTime() : Date.now();
+    const nowTS = Date.now();
+    // Nếu thời điểm >= hiện tại (±1s) thì trả tồn hiện tại luôn
+    if (atTS >= nowTS - 1000) return currentQty(productId);
+
+    let deltaAfter = 0; // tổng phát sinh sau thời điểm tra cứu
     for (const t of state.txs) {
       if (String(t.productId) !== String(productId)) continue;
       const ts = new Date(
-        t.createdAt || t.date || t.time || nowISO()
+        t.createdAt || t.date || t.time || new Date()
       ).getTime();
-      if (ts <= end) {
-        if (t.type === "import") sum += Number(t.qty || 0);
-        else if (t.type === "export") sum -= Number(t.qty || 0);
-        else if (t.type === "adjust") sum += Number(t.qty || 0); // adjust: dương/âm tuỳ nghiệp vụ
+      if (ts > atTS) {
+        const q = Number(t.qty || 0);
+        if (t.type === "import")
+          deltaAfter += q; // nhập sau T làm tồn hiện tại tăng
+        else if (t.type === "export")
+          deltaAfter -= q; // xuất sau T làm tồn hiện tại giảm
+        else if (t.type === "adjust") deltaAfter += q; // điều chỉnh (dương/âm)
       }
     }
-    return sum;
+    // Tồn tại T = tồn hiện tại - phát sinh sau T
+    return currentQty(productId) - deltaAfter;
   }
+
   // Tồn hiện tại
   const stockNow = (productId) => stockOn(productId, new Date());
 
