@@ -851,12 +851,19 @@
             const raw = JSON.parse(
               localStorage.getItem("admin.categories") || "[]"
             );
+            const STORE_SLUG_MAP = {
+              "Sáp vuốt tóc": "hair_wax",
+              "Gôm xịt": "hair_spray",
+              "Bột tạo phồng": "volumizing_powder",
+            };
+
             return raw
               .filter((c) => c && (c.active ?? true))
-              .map((c) => ({
-                slug: toSlug(c.name),
-                name: String(c.name || "").trim(),
-              }))
+              .map((c) => {
+                const name = String(c.name || "").trim();
+                const slug = STORE_SLUG_MAP[name] || toSlug(name); // ưu tiên slug storefront
+                return { slug, name };
+              })
               .sort((a, b) => a.name.localeCompare(b.name, "vi"));
           } catch {
             return [];
@@ -874,14 +881,12 @@
               if (s) out.add(s);
             });
           } catch {}
-          return [...out]
-            .sort()
-            .map((s) => ({
-              slug: s,
-              name: s
-                .replace(/[-_]+/g, " ")
-                .replace(/\b\w/g, (c) => c.toUpperCase()),
-            }));
+          return [...out].sort().map((s) => ({
+            slug: s,
+            name: s
+              .replace(/[-_]+/g, " ")
+              .replace(/\b\w/g, (c) => c.toUpperCase()),
+          }));
         }
 
         function populateCategories(keepValue = true) {
