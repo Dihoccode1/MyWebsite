@@ -81,11 +81,10 @@ img {
   border-radius: 12px;
   font-weight: 700;
   text-decoration: none;
-  color: #ffff;
+  color: #fff;
   transition: background var(--speed), transform var(--speed);
 }
 .navagation a:hover {
-  background: #f3f6ff;
   transform: translateY(-1px);
 }
 .navagation .icon {
@@ -665,7 +664,7 @@ table thead td {
   letter-spacing: 0.2px;
 }
 tbody tr:hover td {
-  background: #fafafa;
+  background: #fff;
 }
 input::placeholder {
   color: #9aa3ad;
