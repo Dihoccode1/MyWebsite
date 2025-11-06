@@ -2,9 +2,15 @@
 (function (w, d) {
   "use strict";
 
+  // ======================= KEYS & FLAGS =======================
   const LS_USERS = "sv_users_v1"; // [{name,email,passHash,createdAt}]
   const LS_AUTH = "sv_auth_user_v1"; // {name,email,loginAt}
 
+  // Cờ chống auto-login DEMO: chỉ được set khi đăng nhập qua form/hàm AUTH.login
+  const LOGIN_INTENT_FLAG = "sv_auth_via_login"; // sessionStorage flag
+  const DEMO_EMAIL = "khachhang1@demo.local"; // email tài khoản DEMO
+
+  // ======================= HELPERS =======================
   function qs(sel, root) {
     return (root || d).querySelector(sel);
   }
@@ -22,7 +28,7 @@
   }
   function redirectToLogin() {
     const back = makeBackParam();
-    w.location.href = "/login.php" + (back ? "?redirect=" + back : "");
+    w.location.href = "/login.html" + (back ? "?redirect=" + back : "");
   }
   function escapeHtml(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) {
@@ -74,9 +80,9 @@
   // Chỉ phục vụ đăng nhập mua hàng cho tài khoản cố định khachhang1 / 123456
   const DEMO_BUYER = Object.freeze({
     username: "khachhang1",
-    email: "khachhang1@demo.local",
+    email: DEMO_EMAIL,
     name: "Khách hàng 1",
-    passHash: hash("123456"), // dùng cùng hàm hash để so sánh
+    passHash: hash("123456"),
   });
   /* ================================================================ */
 
@@ -88,16 +94,34 @@
 
     check: function () {
       const cur = getAuth();
-      AUTH.loggedIn = !!cur;
-      AUTH.user = cur ? { name: cur.name, email: cur.email } : null;
+
+      // ===== CHỐT CHẶN ANTI AUTO-LOGIN DEMO =====
+      // Nếu thấy phiên DEMO mà KHÔNG có cờ "đăng nhập qua form", coi là auto-login -> huỷ
+      try {
+        if (
+          cur &&
+          cur.email === DEMO_EMAIL &&
+          !sessionStorage.getItem(LOGIN_INTENT_FLAG)
+        ) {
+          console.warn("[AUTH] Auto DEMO session detected — dropping.");
+          setAuth(null);
+        }
+      } catch (_) {}
+
+      const current = getAuth();
+      AUTH.loggedIn = !!current;
+      AUTH.user = current ? { name: current.name, email: current.email } : null;
       AUTH.ready = true;
+
       AUTH.updateAuthUI();
+
       try {
         while (AUTH._queue.length) {
           var fn = AUTH._queue.shift();
           if (typeof fn === "function") fn();
         }
       } catch (_) {}
+
       d.dispatchEvent(new Event("auth:ready"));
       return Promise.resolve();
     },
@@ -121,14 +145,15 @@
         var shouldShow = want === "logged-in" ? AUTH.loggedIn : !AUTH.loggedIn;
         el.style.display = shouldShow ? "" : "none";
       });
+
       var nameEl = qs("[data-auth-name]");
       if (nameEl)
         nameEl.textContent =
           (AUTH.user && (AUTH.user.name || AUTH.user.email)) || "";
+
       var chip = qs("#auth-chip");
       if (chip) {
         if (AUTH.loggedIn) {
-          // dùng data-logout để JS xử lý
           chip.innerHTML =
             "Xin chào, <strong>" +
             escapeHtml((AUTH.user && AUTH.user.name) || "") +
@@ -154,6 +179,7 @@
       const users = loadUsers();
       if (users.some((u) => u.email === email))
         throw new Error("Email đã tồn tại.");
+
       users.push({
         name,
         email,
@@ -161,49 +187,65 @@
         createdAt: new Date().toISOString(),
       });
       saveUsers(users);
+
       setAuth({ name, email, loginAt: new Date().toISOString() });
+      try {
+        sessionStorage.setItem(LOGIN_INTENT_FLAG, "1");
+      } catch (_) {}
       return { name, email };
     },
 
-    login: function (email, password) {
+    login: function (emailOrUsername, password) {
       // ===== Nhánh DEMO: cho phép khachhang1 / 123456 =====
-      var id = String(email || "")
+      var id = String(emailOrUsername || "")
         .trim()
         .toLowerCase();
       var pwd = String(password || "");
       var isDemoUser =
         id === DEMO_BUYER.username || id === DEMO_BUYER.email.toLowerCase();
+      if (!id || !pwd) throw new Error("Vui lòng nhập email và mật khẩu.");
+
       if (isDemoUser && hash(pwd) === DEMO_BUYER.passHash) {
         setAuth({
           name: DEMO_BUYER.name,
           email: DEMO_BUYER.email,
           loginAt: new Date().toISOString(),
         });
+        try {
+          sessionStorage.setItem(LOGIN_INTENT_FLAG, "1");
+        } catch (_) {}
         return { name: DEMO_BUYER.name, email: DEMO_BUYER.email };
       }
-      // ===== Hết nhánh DEMO, tiếp tục login LocalStorage bình thường =====
 
-      email = id; // đã chuẩn hoá ở trên
-      if (!email || !pwd) throw new Error("Vui lòng nhập email và mật khẩu.");
-
+      // ===== Login LocalStorage bình thường =====
+      const email = id; // chuẩn hoá ở trên
       const users = loadUsers();
       const u = users.find((u) => u.email === email);
       if (!u || u.passHash !== hash(pwd))
         throw new Error("Thông tin đăng nhập không đúng.");
+
       setAuth({
         name: u.name,
         email: u.email,
         loginAt: new Date().toISOString(),
       });
+      try {
+        sessionStorage.setItem(LOGIN_INTENT_FLAG, "1");
+      } catch (_) {}
       return { name: u.name, email: u.email };
     },
 
     logout: function () {
       setAuth(null);
+      try {
+        sessionStorage.removeItem(LOGIN_INTENT_FLAG);
+      } catch (_) {}
     },
   };
 
+  // ======================= GUARDS =======================
   function installGuards() {
+    // Chặn nút Thêm vào giỏ nếu chưa đăng nhập
     d.addEventListener(
       "click",
       function (e) {
@@ -215,13 +257,14 @@
         if (!btn) return;
         if (!AUTH.loggedIn) {
           e.preventDefault();
-          e.stopImmediatePropagation();
+          e.stopImmediatePropagation && e.stopImmediatePropagation();
           redirectToLogin();
         }
       },
       true
     );
 
+    // Chặn form mua nhanh nếu chưa đăng nhập
     d.addEventListener(
       "submit",
       function (e) {
@@ -229,24 +272,25 @@
         if (!form) return;
         if (!AUTH.loggedIn) {
           e.preventDefault();
-          e.stopImmediatePropagation();
+          e.stopImmediatePropagation && e.stopImmediatePropagation();
           redirectToLogin();
         }
       },
       true
     );
 
-    // logout handler
+    // Đăng xuất
     d.addEventListener("click", function (e) {
       var out = e.target && e.target.closest("[data-logout]");
       if (!out) return;
       e.preventDefault();
       AUTH.logout();
       AUTH.check();
-      // Stay on page; UI auto-updates
+      // Ở lại trang; UI sẽ tự cập nhật
     });
   }
 
+  // ======================= EXPORT & INIT =======================
   w.AUTH = AUTH;
 
   d.addEventListener("DOMContentLoaded", function () {
