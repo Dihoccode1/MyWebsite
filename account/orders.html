@@ -15,6 +15,7 @@
     />
   </head>
   <body>
+    <!-- HEADER -->
     <header class="header">
       <div class="topbar">
         <div class="container">
@@ -27,7 +28,7 @@
       <div class="container">
         <div class="header-main">
           <div class="header-left">
-            <!-- Chặn autofill & gõ dấu ok -->
+            <!-- Search => /sanpham/sanpham.html?q= -->
             <form
               action="/search"
               method="get"
@@ -78,6 +79,7 @@
       </ul>
     </nav>
 
+    <!-- Search redirect script -->
     <script>
       (function (w, d) {
         function getProductsURL() {
@@ -110,6 +112,8 @@
         );
       })(window, document);
     </script>
+
+    <!-- Welcome click => profile -->
     <script>
       (function (w, d) {
         function makeWelcomeClickable() {
@@ -137,6 +141,7 @@
       })(window, document);
     </script>
 
+    <!-- MAIN CONTENT -->
     <div class="container py-4">
       <h3 class="mb-3">Lịch sử mua hàng</h3>
 
@@ -146,14 +151,15 @@
           id="accEmail"
           class="form-control mr-2"
           style="min-width: 260px"
-          placeholder="nhập email để tra đơn"
+          placeholder="Nhập email để tra đơn"
         />
-        <button id="btnLoad" class="btn btn-secondary">Tải</button>
+        <button id="btnLoad" class="btn btn-secondary">Tải đơn</button>
       </div>
 
       <div id="ordersWrap"></div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="footer">
       <div class="site-footer">
         <div class="top-footer">
@@ -162,9 +168,7 @@
               <section class="widget-ft">
                 <h4 class="title-menu">Thông tin</h4>
                 <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
+                  <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
                   <li class="li_menu">
                     <a href="/gioithieu.html">Giới thiệu</a>
                   </li>
@@ -179,9 +183,7 @@
               <section class="widget-ft">
                 <h4 class="title-menu">Hỗ trợ</h4>
                 <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
+                  <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
                   <li class="li_menu">
                     <a href="/gioithieu.html">Giới thiệu</a>
                   </li>
@@ -196,9 +198,7 @@
               <section class="widget-ft">
                 <h4 class="title-menu">Hướng dẫn</h4>
                 <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
+                  <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
                   <li class="li_menu">
                     <a href="/gioithieu.html">Giới thiệu</a>
                   </li>
@@ -213,9 +213,7 @@
               <section class="widget-ft">
                 <h4 class="title-menu">Chính sách</h4>
                 <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
+                  <li class="li_menu"><a href="/trangchu.html">Trang chủ</a></li>
                   <li class="li_menu">
                     <a href="/gioithieu.html">Giới thiệu</a>
                   </li>
@@ -264,9 +262,7 @@
             <div class="row">
               <div class="fot_copyright">
                 <span class="wsp"
-                  ><span
-                    >Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span
-                  ></span
+                  >Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span
                 >
               </div>
               <nav class="fot_menu_copyright">
@@ -282,61 +278,23 @@
                       >Sản phẩm</a
                     >
                   </li>
-                  <li><a href="/tin-tuc.html" title="Tin tức">Tin tức</a></li>
-                  <li><a href="/lienhe.html" title="Liên hệ">Liên hệ</a></li>
+                  <li>
+                    <a href="/tin-tuc.html" title="Tin tức">Tin tức</a>
+                  </li>
+                  <li>
+                    <a href="/lienhe.html" title="Liên hệ">Liên hệ</a>
+                  </li>
                 </ul>
               </nav>
               <div class="pay_footer">
                 <ul class="follow_option">
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png" alt="Payment" /></a></li>
+                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png" alt="Payment" /></a></li>
                 </ul>
               </div>
               <a
@@ -354,34 +312,29 @@
     </footer>
 
     <!-- Auth + Data + Store -->
-<script src="/assets/js/auth.js"></script>
-<script src="/assets/js/auth.modal.bridge.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/auth.modal.bridge.js"></script>
+    <script src="/assets/js/products.seed.js"></script>
+    <script src="/assets/js/store.js"></script>
+    <script src="/assets/js/ui.js"></script>
+    <script src="/assets/js/products.app.js"></script>
 
-<script src="/assets/js/products.seed.js"></script>
-<script src="/assets/js/store.js"></script>
-<script src="/assets/js/ui.js"></script>
-<script src="/assets/js/products.app.js"></script>
-
-
+    <!-- LỊCH SỬ ĐƠN HÀNG + HUỶ ĐƠN -->
     <script>
-      /* Lịch sử đơn hàng – localStorage demo
-   Đọc từ localStorage['sv_orders_v1'] = { email: [order,…] }
-*/
       (function () {
-        const KEY = "sv_orders_v1";
+        const KEY = "sv_orders_v1"; // { email: [orders...] }
         const $ = (s) => document.querySelector(s);
         const ordersWrap = $("#ordersWrap");
         const accEmail = $("#accEmail");
         const money = (n) => (Number(n) || 0).toLocaleString("vi-VN") + "₫";
 
-        /* ===== Map tiếng Việt cho status & payment (chỉ HIỂN THỊ) ===== */
         const STATUS_TEXT = {
           new: "Chưa xử lý",
           confirmed: "Đã xác nhận",
           shipping: "Đang giao",
           delivered: "Đã giao",
-          cancelled: "Đã hủy", // giữ lại dạng cũ
-          canceled: "Đã hủy", // alias khớp với Admin (1 chữ "l")
+          cancelled: "Đã hủy",
+          canceled: "Đã hủy",
         };
         const STATUS_BADGE = {
           new: "badge-secondary",
@@ -392,13 +345,14 @@
           canceled: "badge-danger",
         };
 
-        // Quy tắc: user được huỷ khi đơn còn 'new' hoặc 'confirmed'
-        const canUserCancel = (s) => s === "new" || s === "confirmed";
+        // Chỉ cho phép KH huỷ khi đơn còn NEW
+        const canUserCancel = (s) => s === "new";
 
         const LS = {
           get(k, def) {
             try {
-              return JSON.parse(localStorage.getItem(k)) ?? def;
+              const raw = localStorage.getItem(k);
+              return raw ? JSON.parse(raw) : def;
             } catch {
               return def;
             }
@@ -408,7 +362,7 @@
           },
         };
 
-        // Tự điền email từ hệ auth nếu có
+        // Tự fill email từ AUTH nếu có
         document.addEventListener("auth:ready", fillEmailFromAuth);
         if (window.AUTH && window.AUTH.ready) fillEmailFromAuth();
 
@@ -422,21 +376,25 @@
         function load() {
           const email = (accEmail.value || "").trim().toLowerCase();
           if (!email) {
-            alert("Nhập email tài khoản");
+            alert("Nhập email tài khoản để tra đơn.");
             return;
           }
+
           const db = LS.get(KEY, {});
+          // db[email] là array đơn
           const list = Array.isArray(db[email]) ? db[email] : [];
-          ordersWrap.innerHTML = list.length
-            ? list.map(renderCard).join("")
-            : '<div class="text-muted">Chưa có đơn hàng.</div>';
+          ordersWrap.innerHTML =
+            list.length > 0
+              ? list.map(renderCard).join("")
+              : '<div class="text-muted">Chưa có đơn hàng.</div>';
         }
 
         function renderCard(o) {
-          const date = new Date(o.created_at);
+          const date = new Date(o.created_at || o.createdAt);
           const when = isNaN(date)
-            ? o.created_at || ""
+            ? o.created_at || o.createdAt || ""
             : date.toLocaleString("vi-VN");
+
           const ship = [
             o.shipping?.address,
             o.shipping?.district,
@@ -448,6 +406,7 @@
           const stKey = String(o.status || "new").toLowerCase();
           const stLabel = STATUS_TEXT[stKey] || "Mới";
           const stBadge = STATUS_BADGE[stKey] || "badge-secondary";
+
           const payLabel =
             {
               COD: "Tiền mặt khi nhận (COD)",
@@ -458,17 +417,17 @@
           const items = (o.items || [])
             .map(
               (it) => `
-      <li class="list-group-item d-flex justify-content-between">
-        <div>${escapeHtml(it.name)} <span class="text-muted">x${
-                Number(it.qty) || 0
-              }</span></div>
-        <div>${money((Number(it.price) || 0) * (Number(it.qty) || 0))}</div>
-      </li>
-    `
+              <li class="list-group-item d-flex justify-content-between">
+                <div>${escapeHtml(it.name)} 
+                  <span class="text-muted">x${Number(it.qty) || 0}</span>
+                </div>
+                <div>${money(
+                  (Number(it.price) || 0) * (Number(it.qty) || 0)
+                )}</div>
+              </li>`
             )
             .join("");
 
-          // nút Huỷ (chỉ hiện khi trạng thái cho phép)
           const showCancel = canUserCancel(stKey);
           const cancelBtn = showCancel
             ? `<button class="btn btn-sm btn-outline-danger" data-cancel="${escapeHtml(
@@ -477,63 +436,64 @@
             : "";
 
           return `
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Đơn ${escapeHtml(o.id || "—")}</h5>
-            <span class="badge ${stBadge}">${escapeHtml(stLabel)}</span>
-          </div>
-          <div class="text-muted mb-2">${escapeHtml(when)}${
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0">Đơn ${escapeHtml(o.id || "—")}</h5>
+                  <span class="badge ${stBadge}">${escapeHtml(stLabel)}</span>
+                </div>
+                <div class="text-muted mb-2">
+                  ${escapeHtml(when)}${
             payLabel ? " • " + escapeHtml(payLabel) : ""
-          }</div>
-          <div class="mb-2">
-            <strong>Giao đến:</strong>
-            ${escapeHtml(o.shipping?.fullname || "")} • ${escapeHtml(
+          }
+                </div>
+                <div class="mb-2">
+                  <strong>Giao đến:</strong>
+                  ${escapeHtml(o.shipping?.fullname || "")} • ${escapeHtml(
             o.shipping?.phone || ""
-          )}<br>
-            ${escapeHtml(ship)}
-          </div>
-          <ul class="list-group list-group-flush mb-2">${items}</ul>
-          <div class="d-flex justify-content-between mt-2">
-            <span>Tạm tính</span><strong>${money(o.subtotal)}</strong>
-          </div>
-          <div class="d-flex justify-content-between">
-            <span>Phí vận chuyển</span><strong>${money(o.ship)}</strong>
-          </div>
-          <hr>
-          <div class="d-flex justify-content-between align-items-center">
-            <div><span>Tổng cộng</span></div>
-            <div class="d-flex align-items-center gap-2">
-              ${cancelBtn}
-              <strong class="ml-3">${money(o.total)}</strong>
+          )}<br/>
+                  ${escapeHtml(ship)}
+                </div>
+                <ul class="list-group list-group-flush mb-2">
+                  ${items}
+                </ul>
+                <div class="d-flex justify-content-between mt-2">
+                  <span>Tạm tính</span><strong>${money(o.subtotal)}</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span>Phí vận chuyển</span><strong>${money(o.ship)}</strong>
+                </div>
+                <hr/>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>${cancelBtn}</div>
+                  <strong>${money(o.total)}</strong>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>`;
+          `;
         }
 
         function escapeHtml(s) {
           return String(s || "").replace(
             /[&<>"']/g,
-            (m) =>
-              ({
+            function (m) {
+              return {
                 "&": "&amp;",
                 "<": "&lt;",
                 ">": "&gt;",
                 '"': "&quot;",
                 "'": "&#39;",
-              }[m])
+              }[m];
+            }
           );
         }
 
-        // Click: HUỶ ĐƠN từ phía user
-        document.addEventListener("click", (e) => {
+        // Sự kiện nút Huỷ đơn
+        document.addEventListener("click", function (e) {
           const btn = e.target.closest("button[data-cancel]");
           if (!btn) return;
           const id = btn.getAttribute("data-cancel");
-          const email = (document.querySelector("#accEmail")?.value || "")
-            .trim()
-            .toLowerCase();
+          const email = (accEmail.value || "").trim().toLowerCase();
           cancelOrderFromUser(id, email, btn);
         });
 
@@ -544,22 +504,25 @@
           }
           if (!confirm("Xác nhận huỷ đơn này?")) return;
 
-          btn?.setAttribute("disabled", "disabled");
+          btn && btn.setAttribute("disabled", "disabled");
 
-          // 1) Cập nhật kho user: sv_orders_v1 = { email: [orders...] }
-          const store = LS.get("sv_orders_v1", {});
+          // 1) Cập nhật sv_orders_v1
+          const store = LS.get(KEY, {});
           const list = store[email] || [];
-          const idx = list.findIndex((o) => String(o.id) === String(orderId));
+          const idx = list.findIndex(
+            (o) => String(o.id) === String(orderId)
+          );
           if (idx < 0) {
             alert("Không tìm thấy đơn hàng.");
-            btn?.removeAttribute("disabled");
+            btn && btn.removeAttribute("disabled");
             return;
           }
 
           const current = list[idx];
-          if (!canUserCancel(String(current.status).toLowerCase())) {
+          const stKey = String(current.status || "new").toLowerCase();
+          if (!canUserCancel(stKey)) {
             alert("Đơn hiện không thể huỷ.");
-            btn?.removeAttribute("disabled");
+            btn && btn.removeAttribute("disabled");
             return;
           }
 
@@ -567,55 +530,89 @@
           current.canceledAt = new Date().toISOString();
           list[idx] = current;
           store[email] = list;
-          LS.set("sv_orders_v1", store);
+          LS.set(KEY, store);
 
-          // 2) Đồng bộ sang kho Admin (nếu Admin đã từng đọc dữ liệu)
+          // 2) Đồng bộ admin.orders (nếu tồn tại)
           try {
-            const admin = LS.get("admin.orders", []);
-            const aidx = admin.findIndex(
-              (x) => String(x.id) === String(orderId)
-            );
-            if (aidx >= 0) {
-              admin[aidx].status = "canceled";
-              admin[aidx].canceledAt = current.canceledAt;
-              LS.set("admin.orders", admin);
+            const adminOrders = LS.get("admin.orders", []);
+            let changed = false;
+
+            if (Array.isArray(adminOrders)) {
+              const aidx = adminOrders.findIndex(
+                (x) => String(x.id) === String(orderId)
+              );
+              if (aidx >= 0) {
+                adminOrders[aidx].status = "canceled";
+                adminOrders[aidx].canceledAt = current.canceledAt;
+                changed = true;
+              }
+              if (changed) LS.set("admin.orders", adminOrders);
+            } else if (
+              adminOrders &&
+              typeof adminOrders === "object"
+            ) {
+              Object.keys(adminOrders).forEach((k) => {
+                const o = adminOrders[k];
+                if (o && String(o.id) === String(orderId)) {
+                  o.status = "canceled";
+                  o.canceledAt = current.canceledAt;
+                  changed = true;
+                }
+              });
+              if (changed) LS.set("admin.orders", adminOrders);
             }
-          } catch {}
+          } catch (e) {
+            console.warn("Không đồng bộ được admin.orders:", e);
+          }
 
-          // >>> NEW: ép bridge cập nhật ngay sv_orders_flat + đánh chuông cho Admin
+          // 3) Cập nhật sv_orders_flat + bắn orders.bump
           try {
-            if (window.BridgeOrders?.flattenNow)
-              window.BridgeOrders.flattenNow(); // NEW
-            localStorage.setItem("orders.bump", String(Date.now())); // NEW
-          } catch {}
+            if (window.BridgeOrders && window.BridgeOrders.flattenNow) {
+              window.BridgeOrders.flattenNow();
+            } else {
+              const raw = LS.get(KEY, {});
+              const flat = Array.isArray(raw)
+                ? raw
+                : Object.values(raw || {}).flat();
+              LS.set("sv_orders_flat", flat || []);
+            }
+            localStorage.setItem("orders.bump", String(Date.now()));
+          } catch (e) {
+            console.warn("BridgeOrders lỗi:", e);
+          }
 
-          // 3) Phát tín hiệu để tab Admin / tab user khác reload (giữ nguyên)
+          // 4) Ping để tab khác reload
           localStorage.setItem(
             "sv_orders_ping",
             JSON.stringify({
               t: Date.now(),
               action: "user_cancel",
               id: orderId,
+              email: email,
             })
           );
 
-          // 4) Render lại danh sách
+          // 5) Render lại
           load();
-          if (window.SVUI?.toast) {
-            SVUI.toast("Đã huỷ đơn.");
+          if (window.SVUI && window.SVUI.toast) {
+            window.SVUI.toast("Đã huỷ đơn.");
           } else {
             alert("Đã huỷ đơn.");
           }
-          btn?.removeAttribute("disabled");
+
+          btn && btn.removeAttribute("disabled");
         }
-        // nút tải
+
+        // Nút Tải đơn
         document.getElementById("btnLoad").addEventListener("click", load);
+
+        // Cho phép tab khác gọi reload
         window.UserOrdersReload = load;
       })();
     </script>
 
+    <!-- Bridge: {email:[orders]} -> flat array cho Admin -->
     <script>
-      /* Bridge: {email:[orders]} -> flat array cho Admin + bump */
       (function () {
         const SRC = "sv_orders_v1";
         const DST = "sv_orders_flat";
@@ -628,26 +625,23 @@
               ? raw
               : Object.values(raw || {}).flat();
             localStorage.setItem(DST, JSON.stringify(list || []));
-            localStorage.setItem(BUMP, String(Date.now())); // 🔔 báo cho Admin
+            localStorage.setItem(BUMP, String(Date.now()));
           } catch (e) {
             console.warn("Bridge flatten error:", e);
           }
         }
 
-        // chạy lúc vào trang & khi dữ liệu nguồn đổi
         flatten();
-        window.addEventListener("storage", (e) => {
+        window.addEventListener("storage", function (e) {
           if (e.key === SRC) flatten();
         });
 
-        // cho phép gọi thủ công ngay sau khi tạo đơn (cùng tab)
         window.BridgeOrders = { flattenNow: flatten };
       })();
-      window.BridgeOrders?.flattenNow();
     </script>
 
+    <!-- Nghe tín hiệu để tự reload khi Admin/User khác thay đổi -->
     <script>
-      // Khi Admin đổi trạng thái: nghe chuông và render lại
       window.addEventListener("storage", function (e) {
         if (
           e.key === "orders.bump" ||
@@ -655,7 +649,7 @@
           e.key === "sv_orders_flat" ||
           e.key === "sv_orders_ping"
         ) {
-          window.UserOrdersReload?.();
+          window.UserOrdersReload && window.UserOrdersReload();
         }
       });
     </script>
