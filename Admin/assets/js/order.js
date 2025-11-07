@@ -1,28 +1,14 @@
-// ./assets/js/order.js – Admin Orders (Hợp nhất, có TÍCH HỢP KHO + đồng bộ User)
-/*
-  Tính năng chính
-  - Import lần đầu từ kho User (sv_orders_v1 | sv_orders_flat | sv_orders | orders) nếu admin rỗng
-  - Lắng nghe thay đổi từ User (sv_orders_v1, sv_orders_flat) và hợp nhất vào admin.orders
-  - Lọc theo ngày/trạng thái, tìm kiếm, sắp xếp theo phường/xã
-  - Cập nhật trạng thái: new / confirmed / delivered / canceled
-  - TÍCH HỢP KHO:
-      * Trừ kho lần đầu khi NEW→CONFIRMED hoặc NEW→DELIVERED (không trừ lại ở CONFIRMED→DELIVERED)
-      * Hoàn kho khi CONFIRMED→CANCELED
-      * Đảm bảo không double-count bằng cờ o.inventoryCommitted
-  - Đồng bộ ngược về kho User (sv_orders_v1[email]) và bridge sv_orders_flat
-  - Phát "chuông" orders.bump để các tab tự reload
-*/
+// ./assets/js/order.js – Admin Orders (Hợp nhất + TÍCH HỢP KHO + đồng bộ User)
 (function () {
   /* ================== Keys & Helpers ================== */
   const KEYS = {
     ADMIN: "admin.orders", // mảng đơn (admin)
-    USER: "sv_orders_v1", // { email: [orders...] }
+    USER: "sv_orders_v1", // { email: [orders...] } hoặc mảng
     FLAT: "sv_orders_flat", // mảng đơn phẳng (bridge)
-    PING1: "orders.bump", // chuông thay đổi
-    PING2: "sv_orders_ping", // chuông từ phía user (nếu có dùng)
-    // kho & tồn
+    PING1: "orders.bump", // chuông thay đổi cho tab admin
+    PING2: "sv_orders_ping", // chuông từ phía user (nếu có)
     PROD: "admin.products", // mảng sản phẩm {id, code, qty, ...}
-    STOCK: "admin.stock", // giao dịch kho
+    STOCK: "admin.stock", // lịch sử giao dịch kho
     CAT_BMP: "catalog.bump",
     STK_BMP: "stock.bump",
   };
@@ -39,7 +25,8 @@
   const LS = {
     get(k, def) {
       try {
-        return JSON.parse(localStorage.getItem(k)) ?? def;
+        const v = localStorage.getItem(k);
+        return v ? JSON.parse(v) : def;
       } catch {
         return def;
       }
@@ -83,7 +70,7 @@
 
       const items = (o.items || []).map((it) => ({
         id: it.id || it.productId,
-        code: it.code || it.productCode || it.specs?.Mã || "",
+        code: it.code || it.productCode || (it.specs && it.specs["Mã"]) || "",
         name: it.name || it.productName || "",
         price: Number(it.price) || 0,
         qty: Number(it.qty || it.quantity || 1) || 1,
@@ -116,8 +103,8 @@
             ).padStart(3, "0")}`);
 
       const st = String(o.status || "new")
-        .replace(/^paid$/, "confirmed")
-        .replace(/^pending$/, "new")
+        .replace(/^paid$/i, "confirmed")
+        .replace(/^pending$/i, "new")
         .toLowerCase();
       const status = st === "cancelled" ? "canceled" : st;
 
@@ -141,7 +128,6 @@
         deliveredAt: o.deliveredAt || undefined,
         payMethod: o.payMethod || o.payment || undefined,
 
-        // flag kho (optional, sẽ set khi trừ kho)
         inventoryCommitted: !!o.inventoryCommitted,
       };
     });
@@ -182,42 +168,45 @@
 
   /* ================== Bridge: build/refresh sv_orders_flat ================== */
   function flattenUserOrders() {
-    const raw = LS.get(KEYS.USER, {}); // object {email:[...]} hoặc đôi khi mảng
+    const raw = LS.get(KEYS.USER, {});
     const flat = Array.isArray(raw) ? raw : Object.values(raw || {}).flat();
     LS.set(KEYS.FLAT, flat);
     return flat;
   }
 
-  /* ================== Hợp nhất admin + flat (ưu tiên dữ liệu mới) ================== */
+  /* ================== Hợp nhất admin + flat ================== */
   function loadAdminOrdersMerged() {
     let adminList = LS.get(KEYS.ADMIN, []);
     const userFlat = LS.get(KEYS.FLAT, []) ?? [];
 
-    const map = new Map(adminList.map((o) => [String(o.id), o]));
+    const map = new Map(
+      (Array.isArray(adminList) ? adminList : []).map((o) => [String(o.id), o])
+    );
+
     for (const u of Array.isArray(userFlat) ? userFlat : []) {
-      const id = String(u.id);
+      const norm = normalize([u])[0];
+      const id = String(norm.id);
       if (map.has(id)) {
         const a = map.get(id);
-        const m = normalize([u])[0]; // đảm bảo field chuẩn
-        // ghi đè dữ liệu có trong user
         Object.assign(a, {
-          status: m.status ?? a.status,
-          total: m.total ?? a.total,
-          subtotal: m.subtotal ?? a.subtotal,
-          ship: m.ship ?? a.ship,
-          items: m.items ?? a.items,
-          shipping: m.shipping ?? a.shipping,
-          payMethod: m.payMethod ?? a.payMethod,
-          created_at: m.created_at ?? a.created_at,
-          email: m.email ?? a.email,
-          canceledAt: m.canceledAt ?? a.canceledAt,
-          deliveredAt: m.deliveredAt ?? a.deliveredAt,
+          status: norm.status ?? a.status,
+          total: norm.total ?? a.total,
+          subtotal: norm.subtotal ?? a.subtotal,
+          ship: norm.ship ?? a.ship,
+          items: norm.items ?? a.items,
+          shipping: norm.shipping ?? a.shipping,
+          payMethod: norm.payMethod ?? a.payMethod,
+          created_at: norm.created_at ?? a.created_at,
+          email: norm.email ?? a.email,
+          canceledAt: norm.canceledAt ?? a.canceledAt,
+          deliveredAt: norm.deliveredAt ?? a.deliveredAt,
           updatedAt: new Date().toISOString(),
         });
       } else {
-        map.set(id, normalize([u])[0]);
+        map.set(id, norm);
       }
     }
+
     adminList = Array.from(map.values());
     adminList.sort(
       (x, y) => new Date(y.created_at || 0) - new Date(x.created_at || 0)
@@ -237,18 +226,20 @@
     else adminList.push(order);
     LS.set(KEYS.ADMIN, adminList);
 
-    // 2) sv_orders_v1: cập nhật TẤT CẢ email chứa đơn này (không chỉ order.email)
+    // 2) sv_orders_v1
     const userStore = LS.get(KEYS.USER, {});
     let touched = false;
-    for (const email of Object.keys(userStore || {})) {
-      const arr = Array.isArray(userStore[email]) ? userStore[email] : [];
-      const uidx = arr.findIndex(
-        (o) => String(o.id) === id || String(o.code) === order.code
-      );
-      if (uidx >= 0) {
-        arr[uidx] = order;
-        userStore[email] = arr;
-        touched = true;
+    if (userStore && typeof userStore === "object") {
+      for (const email of Object.keys(userStore)) {
+        const arr = Array.isArray(userStore[email]) ? userStore[email] : [];
+        const uidx = arr.findIndex(
+          (o) => String(o.id) === id || String(o.code) === order.code
+        );
+        if (uidx >= 0) {
+          arr[uidx] = order;
+          userStore[email] = arr;
+          touched = true;
+        }
       }
     }
     if (!touched && order.email) {
@@ -272,13 +263,13 @@
     else flat.push(order);
     LS.set(KEYS.FLAT, flat);
 
-    // 4) phát chuông cho các tab
+    // 4) phát chuông
     try {
       localStorage.setItem(KEYS.PING1, String(Date.now()));
     } catch {}
   }
 
-  /* ================== KHO: products & stock ================== */
+  /* ================== KHO ================== */
   function prodsList() {
     return LS.get(KEYS.PROD, []);
   }
@@ -299,24 +290,22 @@
   }
 
   function findProdForItem(pList, it) {
-    // 1) khớp theo id nội bộ
     const byAdminId = pList.find((p) => String(p.id) === String(it.id));
     if (byAdminId) return byAdminId;
 
-    // 2) khớp theo seedId (id gốc của site User: SV..., v.v.)
     const bySeedId = pList.find(
       (p) => p.seedId && String(p.seedId) === String(it.id)
     );
     if (bySeedId) return bySeedId;
 
-    // 3) khớp theo mã (code) không phân biệt hoa/thường
     const code = String(it.code || "").toUpperCase();
-    const byCode = pList.find(
-      (p) => String(p.code || "").toUpperCase() === code
-    );
-    if (byCode) return byCode;
+    if (code) {
+      const byCode = pList.find(
+        (p) => String(p.code || "").toUpperCase() === code
+      );
+      if (byCode) return byCode;
+    }
 
-    // 4) fallback: khớp theo tên (ít ưu tiên hơn)
     const name = String(it.name || "")
       .trim()
       .toLowerCase();
@@ -331,7 +320,7 @@
     );
   }
 
-  // sign = -1 (trừ kho), +1 (cộng lại). typeOverride: 'export' | 'import' | 'adjust'
+  // sign = -1 (trừ kho), +1 (cộng lại)
   function applyStockForOrder(order, sign, typeOverride) {
     if (!order || !Array.isArray(order.items)) return;
 
@@ -345,7 +334,9 @@
 
       const delta = Number(it.qty || 0) * (sign || -1);
       const newQty = Number(p.qty || 0) + delta;
-      p.qty = newQty < 0 ? 0 : newQty; // tránh âm
+      p.qty = newQty < 0 ? 0 : newQty;
+
+      const type = typeOverride || ((sign || -1) < 0 ? "export" : "import");
 
       txs.push({
         id:
@@ -353,16 +344,14 @@
           Math.random().toString(36).slice(2, 8) +
           Date.now().toString(36).slice(-4),
         productId: p.id,
-        type: typeOverride || ((sign || -1) < 0 ? "export" : "import"),
+        type,
         qty: Math.abs(Number(it.qty || 0)),
-        note: `Đơn ${order.code} – ${
-          (typeOverride || ((sign || -1) < 0 ? "export" : "import")) ===
-          "export"
-            ? "bán"
-            : typeOverride === "adjust"
-            ? "hoàn kho (huỷ đơn)"
-            : "nhập"
-        }`,
+        note:
+          type === "export"
+            ? `Đơn ${order.code} – bán`
+            : type === "adjust"
+            ? `Đơn ${order.code} – hoàn kho (huỷ đơn)`
+            : `Đơn ${order.code} – nhập`,
         ref: order.id,
         createdAt: when,
       });
@@ -372,44 +361,37 @@
     txSave(txs);
   }
 
-  /* ================== Trạng thái: cập nhật + kho + sync ================== */
+  /* ================== Cập nhật trạng thái ================== */
   function updateStatus(id, status) {
     const list = LS.get(KEYS.ADMIN, []);
     const i = list.findIndex((x) => String(x.id) === String(id));
     if (i < 0) throw new Error("Không tìm thấy đơn hàng");
 
     const prev = String(list[i].status || "new").toLowerCase();
-    const next =
-      String(status).toLowerCase() === "cancelled"
-        ? "canceled"
-        : String(status).toLowerCase();
+    const nextRaw = String(status).toLowerCase();
+    const next = nextRaw === "cancelled" ? "canceled" : nextRaw;
 
-    // clone & cập nhật
     const o = { ...list[i] };
     o.status = next;
     o.updatedAt = new Date().toISOString();
     if (next === "delivered") o.deliveredAt = new Date().toISOString();
     if (next === "canceled") o.canceledAt = new Date().toISOString();
 
-    // ====== INVENTORY RULES (chống trừ 2 lần bằng flag) ======
-    // Lần đầu chuyển sang trạng thái đã chốt -> TRỪ KHO
+    // INVENTORY RULES
     if (
       !o.inventoryCommitted &&
       ((prev === "new" && next === "confirmed") ||
         (prev === "new" && next === "delivered"))
     ) {
-      applyStockForOrder(o, -1, "export"); // xuất bán
+      applyStockForOrder(o, -1, "export");
       o.inventoryCommitted = true;
     }
-    // Nếu huỷ từ confirmed -> hoàn kho
+
     if (o.inventoryCommitted && prev === "confirmed" && next === "canceled") {
-      applyStockForOrder(o, +1, "adjust"); // hoàn kho (điều chỉnh +)
+      applyStockForOrder(o, +1, "adjust");
       o.inventoryCommitted = false;
     }
-    // Không trừ thêm khi confirmed -> delivered
-    // Không cho canceled -> delivered trong UI (canCancel chỉ cho new/confirmed)
 
-    // Ghi lại admin & đồng bộ
     list[i] = o;
     LS.set(KEYS.ADMIN, list);
     writeOrderEverywhere(o);
@@ -443,7 +425,7 @@
 
   let state = { list: [], filtered: [], modalId: null };
 
-  /* ================== Render helpers ================== */
+  /* ================== Helpers ================== */
   function matchQuery(o, q) {
     if (!q) return true;
     q = q.toLowerCase();
@@ -460,7 +442,7 @@
       String(o.code || "").toLowerCase(),
       String(o?.shipping?.fullname || "").toLowerCase(),
       String(o?.shipping?.phone || "").toLowerCase(),
-      String(address).toLowerCase(),
+      address.toLowerCase(),
     ].some((x) => x.includes(q));
   }
 
@@ -504,7 +486,7 @@
     const st = (stSelect?.value || "").trim();
     const fDate = fromInput?.value ? new Date(fromInput.value) : null;
     const tDate = toInput?.value ? new Date(toInput.value) : null;
-    const wardSort = (sortWard?.value || "").trim(); // '', 'asc', 'desc'
+    const wardSort = (sortWard?.value || "").trim();
 
     let arr = [...state.list];
 
@@ -539,7 +521,8 @@
   function render() {
     applyFilters();
     if (!state.filtered.length) {
-      tb.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#9aa3ad;padding:20px">Không có dữ liệu</td></tr>`;
+      tb.innerHTML =
+        '<tr><td colspan="8" style="text-align:center;color:#9aa3ad;padding:20px">Không có dữ liệu</td></tr>';
       return;
     }
 
@@ -578,22 +561,26 @@
           : "";
 
         return `
-        <tr>
-          <td><strong>${escapeHtml(o.code || o.id)}</strong></td>
-          <td class="small">${escapeHtml(when)}</td>
-          <td>
-            <div>${escapeHtml(o?.shipping?.fullname || "")}</div>
-            <div class="small">${escapeHtml(o?.shipping?.phone || "")}</div>
-          </td>
-          <td class="small">${escapeHtml(addr)}</td>
-          <td style="text-align:right">${qty}</td>
-          <td style="text-align:right">${money(o.total)}</td>
-          <td><span class="${stClass}">${escapeHtml(stLabel)}</span></td>
-          <td style="white-space:nowrap;display:flex;gap:6px;flex-wrap:wrap">
-            ${btnView}${btnConfirm}${btnDeliver}${btnCancel}
-          </td>
-        </tr>
-      `;
+          <tr>
+            <td><strong>${escapeHtml(o.code || o.id)}</strong></td>
+            <td class="small">${escapeHtml(when)}</td>
+            <td>
+              <div>${escapeHtml(o?.shipping?.fullname || "")}</div>
+              <div class="small">${escapeHtml(o?.shipping?.phone || "")}</div>
+            </td>
+            <td class="small">${escapeHtml(addr)}</td>
+            <td style="text-align:right">${qty}</td>
+            <td style="text-align:right">${money(o.total)}</td>
+            <td>
+              <span class="${stClass}">
+                ${escapeHtml(stLabel)}
+              </span>
+            </td>
+            <td style="display:flex;gap:4px;flex-wrap:wrap">
+              ${btnView}${btnConfirm}${btnDeliver}${btnCancel}
+            </td>
+          </tr>
+        `;
       })
       .join("");
   }
@@ -631,35 +618,33 @@
     vItems.innerHTML = (o.items || [])
       .map(
         (it) => `
-      <tr>
-        <td>${escapeHtml(it.code || "")}</td>
-        <td>${escapeHtml(it.name || "")}</td>
-        <td style="text-align:right">${money(it.price)}</td>
-        <td style="text-align:right">${Number(it.qty) || 0}</td>
-        <td style="text-align:right">${money(
-          (Number(it.qty) || 0) * (Number(it.price) || 0)
-        )}</td>
-      </tr>
-    `
+        <tr>
+          <td>${escapeHtml(it.code || "")}</td>
+          <td>${escapeHtml(it.name || "")}</td>
+          <td style="text-align:right">${money(it.price)}</td>
+          <td style="text-align:right">${Number(it.qty) || 0}</td>
+          <td style="text-align:right">${money(
+            (Number(it.qty) || 0) * (Number(it.price) || 0)
+          )}</td>
+        </tr>`
       )
       .join("");
+
     vTotal.textContent = money(o.total || 0);
 
     modal.classList.add("show");
     modal.setAttribute("aria-hidden", "false");
   }
+
   function closeModal() {
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
     state.modalId = null;
   }
+
   mBtnClose?.addEventListener("click", closeModal);
   modal?.addEventListener("click", (e) => {
-    if (
-      e.target === modal ||
-      e.target.classList?.contains("sv-modal__backdrop")
-    )
-      closeModal();
+    if (e.target === modal) closeModal();
   });
 
   mBtnUpdate?.addEventListener("click", () => {
@@ -725,12 +710,14 @@
     el?.addEventListener("change", render)
   );
 
-  // Tự reload khi tab khác đổi (user hủy/đặt hàng, admin tab khác thao tác…)
+  // Tự reload khi tab khác đổi dữ liệu
   window.addEventListener("storage", (e) => {
     if (
       [KEYS.PING1, KEYS.PING2, KEYS.USER, KEYS.FLAT, KEYS.ADMIN].includes(e.key)
     ) {
-      if (e.key === KEYS.USER) flattenUserOrders();
+      if (e.key === KEYS.USER) {
+        flattenUserOrders();
+      }
       state.list = loadAdminOrdersMerged();
       render();
     }
@@ -738,13 +725,13 @@
 
   /* ================== Init ================== */
   (function init() {
-    if (!Array.isArray(LS.get(KEYS.FLAT))) flattenUserOrders();
+    if (!Array.isArray(LS.get(KEYS.FLAT))) {
+      flattenUserOrders();
+    }
 
-    const now = new Date();
-    const start = new Date(now);
-    start.setDate(now.getDate() - 7);
-    if (fromInput) fromInput.value = start.toISOString().slice(0, 10);
-    if (toInput) toInput.value = now.toISOString().slice(0, 10);
+    // Không auto lọc 7 ngày, để trống => show hết
+    if (fromInput) fromInput.value = "";
+    if (toInput) toInput.value = "";
 
     state.list = loadAdminOrdersMerged();
     render();

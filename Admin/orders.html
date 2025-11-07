@@ -59,6 +59,7 @@
         background: #fff;
         color: #111;
         outline: none;
+        font-size: 13px;
       }
       table {
         width: 100%;
@@ -77,6 +78,7 @@
         padding: 12px;
         border-bottom: 1px solid #f0f2f5;
         vertical-align: top;
+        font-size: 13px;
       }
       tr:hover {
         background: #fafafa;
@@ -84,14 +86,15 @@
       .btn {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         border: 1px solid #e5e7eb;
         border-radius: 10px;
-        padding: 8px 10px;
+        padding: 6px 9px;
         background: #fff;
         cursor: pointer;
-        font-weight: 700;
-        font-size: 13px;
+        font-weight: 600;
+        font-size: 12px;
+        white-space: nowrap;
       }
       .btn.primary {
         background: #1f235a;
@@ -102,7 +105,7 @@
         display: inline-block;
         padding: 4px 8px;
         border-radius: 999px;
-        font-size: 12px;
+        font-size: 11px;
         border: 1px solid #e5e7eb;
       }
       .st-new {
@@ -182,6 +185,13 @@
         height: 1px;
         background: #eef2f7;
         margin: 10px 0;
+      }
+      .cardHeader h2 {
+        font-size: 18px;
+        margin: 0 0 8px;
+      }
+      .details {
+        margin-top: 4px;
       }
     </style>
   </head>
@@ -307,12 +317,17 @@
             <option value="asc">Phường/Xã (A → Z)</option>
             <option value="desc">Phường/Xã (Z → A)</option>
           </select>
-          <button id="btnFilter" class="btn">Lọc</button>
+          <button id="btnFilter" class="btn">
+            <i class="fa-solid fa-filter"></i>
+            <span>Lọc</span>
+          </button>
         </div>
 
         <div class="details">
           <div class="recentOrders" style="flex: 2">
-            <div class="cardHeader"><h2>Danh sách đơn hàng</h2></div>
+            <div class="cardHeader">
+              <h2>Danh sách đơn hàng</h2>
+            </div>
             <table>
               <thead>
                 <tr>
@@ -347,7 +362,14 @@
       <div class="panel">
         <div class="hd">
           <h3 id="od-title" style="margin: 0">Chi tiết đơn</h3>
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+          <div
+            style="
+              display: flex;
+              gap: 8px;
+              align-items: center;
+              flex-wrap: wrap;
+            "
+          >
             <select id="od-status" class="input">
               <option value="new">Chưa xử lý</option>
               <option value="confirmed">Đã xác nhận</option>
@@ -358,7 +380,9 @@
               <i class="fa-solid fa-floppy-disk"></i>
               <span>Cập nhật</span>
             </button>
-            <button class="btn" id="btnClose">Đóng</button>
+            <button class="btn" id="btnClose">
+              <span>Đóng</span>
+            </button>
           </div>
         </div>
         <div class="bd">
@@ -431,40 +455,14 @@
     <script src="./assets/js/order.js"></script>
 
     <script>
-      // Đăng xuất sidebar
+      // Đăng xuất
       document
         .getElementById("btn-logout-side")
-        ?.addEventListener("click", (e) => {
+        ?.addEventListener("click", function (e) {
           e.preventDefault();
           sessionStorage.removeItem("session.user");
           location.href = "./login.html";
         });
-
-      // Modal handlers (phần chi tiết đơn, cho order.js gọi)
-      (function () {
-        const modal = document.getElementById("od-modal");
-        const btnClose = document.getElementById("btnClose");
-
-        function openModal() {
-          modal.classList.add("show");
-          modal.setAttribute("aria-hidden", "false");
-        }
-        function closeModal() {
-          modal.classList.remove("show");
-          modal.setAttribute("aria-hidden", "true");
-        }
-
-        btnClose.addEventListener("click", closeModal);
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeModal();
-        });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeModal();
-        });
-
-        // Cho order.js sử dụng
-        window.AdminOrderModal = { open: openModal, close: closeModal };
-      })();
     </script>
   </body>
 </html>
