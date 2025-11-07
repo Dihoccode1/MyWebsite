@@ -592,13 +592,17 @@
         const id = usp.get("id") || "";
 
         function esc(s = "") {
-          return String(s).replace(/[&<>"']/g, (m) => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-          }[m]));
+          return String(s).replace(
+            /[&<>"']/g,
+            (m) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              }[m])
+          );
         }
         function toSentenceCase(s = "") {
           s = String(s).trim();
@@ -613,9 +617,13 @@
         // ===== Helpers lấy catalog =====
         function getCatalog() {
           try {
-            if (window.SVStore && typeof SVStore.getAllProducts === "function") {
+            if (
+              window.SVStore &&
+              typeof SVStore.getAllProducts === "function"
+            ) {
               const fromStore = SVStore.getAllProducts();
-              if (Array.isArray(fromStore) && fromStore.length) return fromStore;
+              if (Array.isArray(fromStore) && fromStore.length)
+                return fromStore;
             }
           } catch (e) {}
 
@@ -662,13 +670,10 @@
             if (window.SVStore?.getCart) {
               const cart = SVStore.getCart() || [];
               const found = cart.find(
-                (i) =>
-                  String(i.id ?? i.productId) === String(productId)
+                (i) => String(i.id ?? i.productId) === String(productId)
               );
               if (found) {
-                const n = Number(
-                  found.qty ?? found.quantity ?? found.q ?? 0
-                );
+                const n = Number(found.qty ?? found.quantity ?? found.q ?? 0);
                 if (!isNaN(n)) return n;
               }
             }
@@ -677,18 +682,13 @@
           // Fallback: đọc localStorage trực tiếp
           try {
             const email = getCurrentUserEmail();
-            const key = email
-              ? "sv_cart_user_" + email
-              : "sv_cart_v1";
+            const key = email ? "sv_cart_user_" + email : "sv_cart_v1";
             const cart = JSON.parse(localStorage.getItem(key) || "[]");
             const found = cart.find(
-              (i) =>
-                String(i.id ?? i.productId) === String(productId)
+              (i) => String(i.id ?? i.productId) === String(productId)
             );
             if (found) {
-              const n = Number(
-                found.qty ?? found.quantity ?? found.q ?? 0
-              );
+              const n = Number(found.qty ?? found.quantity ?? found.q ?? 0);
               if (!isNaN(n)) return n;
             }
           } catch (e) {}
@@ -711,9 +711,7 @@
           if (maxPerProduct && maxPerProduct > 0) {
             const leftByMax = maxPerProduct - inCart;
             if (leftByMax <= 0) {
-              alert(
-                "Bạn đã thêm tối đa số lượng được phép cho sản phẩm này."
-              );
+              alert("Bạn đã thêm tối đa số lượng được phép cho sản phẩm này.");
               return false;
             }
             allowed = Math.min(allowed, leftByMax);
@@ -732,9 +730,7 @@
             // fallback
             try {
               const email = getCurrentUserEmail();
-              const key = email
-                ? "sv_cart_user_" + email
-                : "sv_cart_v1";
+              const key = email ? "sv_cart_user_" + email : "sv_cart_v1";
               const cart = JSON.parse(localStorage.getItem(key) || "[]");
               const idx = cart.findIndex(
                 (x) => String(x.id ?? x.productId) === String(productId)
@@ -791,7 +787,8 @@
 
         // Chuẩn hoá
         p.unit =
-          p.unit || (String(p.category || "").includes("wax") ? "hũ" : "sản phẩm");
+          p.unit ||
+          (String(p.category || "").includes("wax") ? "hũ" : "sản phẩm");
         p.quantity = Number(p.quantity || 1);
         p.min_qty = Math.max(1, Number(p.min_qty || 1));
         p.max_qty = Math.max(p.min_qty, Number(p.max_qty || 0) || 0);
@@ -854,7 +851,7 @@
             ? '<span class="pd-badge sale">Sale</span>'
             : badge === "new"
             ? '<span class="pd-badge new">Mới</span>'
-            : (isGlobalOOS || isUserMaxed)
+            : isGlobalOOS || isUserMaxed
             ? '<span class="pd-badge oos">Hết hàng</span>'
             : "";
 
@@ -898,9 +895,7 @@
             : longDesc || "<p>Đang cập nhật nội dung chi tiết…</p>";
 
           const usageHTML = hasUsage
-            ? `<ol>${prod.usage
-                .map((u) => `<li>${esc(u)}</li>`)
-                .join("")}</ol>`
+            ? `<ol>${prod.usage.map((u) => `<li>${esc(u)}</li>`).join("")}</ol>`
             : "<p>Đang cập nhật hướng dẫn sử dụng…</p>";
 
           return `
@@ -977,8 +972,8 @@
                     ? `<span class="text-danger">
                          <i class="fa-regular fa-circle-xmark"></i>
                          Bạn đã thêm tối đa ${baseStock} ${esc(
-                         p.unit
-                       )} trong giỏ hàng (theo tồn kho hiện tại).
+                        p.unit
+                      )} trong giỏ hàng (theo tồn kho hiện tại).
                        </span>`
                     : `<span>
                          <i class="fa-regular fa-circle-check"></i>
@@ -1020,9 +1015,7 @@
                     ${
                       !canBuy
                         ? "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
-                        : `Đơn vị: ${esc(
-                            p.unit
-                          )} · Mua tối thiểu ${p.min_qty}${
+                        : `Đơn vị: ${esc(p.unit)} · Mua tối thiểu ${p.min_qty}${
                             effectiveMax
                               ? ` – tối đa ${effectiveMax} (theo tồn kho còn lại).`
                               : ""
@@ -1160,8 +1153,7 @@
           btnAdd.addEventListener("click", () => {
             const isLogged =
               (window.AUTH &&
-                (window.AUTH.loggedIn ||
-                  window.AUTH.isAuthenticated?.())) ||
+                (window.AUTH.loggedIn || window.AUTH.isAuthenticated?.())) ||
               !!getCurrentUserEmail();
 
             if (!isLogged) {
@@ -1230,7 +1222,9 @@
         });
 
         if (!related.length) {
-          related = all.filter((x) => String(x.id) !== String(p.id)).slice(0, 3);
+          related = all
+            .filter((x) => String(x.id) !== String(p.id))
+            .slice(0, 3);
         } else {
           related = related.slice(0, 3);
         }
@@ -1312,6 +1306,5 @@
       })();
     </script>
     <!-- cuối body, sau các script khác -->
-    <script src="/assets/js/auth.kick.guard.js"></script>
   </body>
 </html>
