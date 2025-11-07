@@ -31,6 +31,41 @@
       .col-md-9,.col-md-3{flex:0 0 100%;max-width:100%}
       .col-md-push-3,.col-md-pull-9{order:initial}
     }
+    /* link trong topbar */
+.topbar-right a {
+  margin-left: 10px;
+  padding: 5px 12px;
+  font-size: 13px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* viền đen, chữ đen */
+.btn-outline {
+  border: 1px solid #333;
+  color: #333;
+}
+.btn-outline:hover {
+  background: #333;
+  color: #fff;
+}
+
+/* nút đen, chữ trắng */
+.btn-primary {
+  background: #333;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 5px 12px;      /* giống topbar-right a */
+  font-size: 13px;
+  text-decoration: none;  /* để không bị gạch */
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background: #555;
+}
+
 
     /* ===== BREADCRUMB ===== */
     .bread-crumb{padding:10px 0;border-bottom:1px solid #eee;background:transparent}
@@ -100,6 +135,7 @@
     /* Đảm bảo sidebar full trong cột */
     .sidebar-pad .col-md-3,
     .sidebar-pad .col-md-pull-9{flex:0 0 100%!important;max-width:100%!important;order:initial!important}
+    
   </style>
 </head>
 
