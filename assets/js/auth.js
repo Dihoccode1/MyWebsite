@@ -95,19 +95,6 @@
     check: function () {
       const cur = getAuth();
 
-      // ===== CHỐT CHẶN ANTI AUTO-LOGIN DEMO =====
-      // Nếu thấy phiên DEMO mà KHÔNG có cờ "đăng nhập qua form", coi là auto-login -> huỷ
-      try {
-        if (
-          cur &&
-          cur.email === DEMO_EMAIL &&
-          !sessionStorage.getItem(LOGIN_INTENT_FLAG)
-        ) {
-          console.warn("[AUTH] Auto DEMO session detected — dropping.");
-          setAuth(null);
-        }
-      } catch (_) {}
-
       const current = getAuth();
       AUTH.loggedIn = !!current;
       AUTH.user = current ? { name: current.name, email: current.email } : null;

@@ -156,16 +156,38 @@
           <div class="card">
             <div class="card-body">
               <h3 class="card-title mb-4">Thông tin tài khoản</h3>
-              <div id="profileInfo">
-                <p>Đang tải...</p>
-              </div>
-              <hr />
-              <a href="/giohang.html" class="btn btn-primary"
-                >Giỏ hàng của tôi</a
-              >
-              <a href="/account/orders.html" class="btn btn-outline-info"
-                >Lịch sử mua hàng</a
-              >
+<div id="profileInfo">
+  <p>Đang tải...</p>
+</div>
+
+<button id="btnToggleEdit" class="btn btn-outline-dark mt-3" style="display:none;">
+  Cập nhật thông tin
+</button>
+
+<div id="profileEdit" class="mt-3" style="display:none;">
+  <h5 class="mb-3">Thay đổi thông tin</h5>
+  <form id="formProfile">
+    <div class="form-group">
+      <label for="profileName">Họ tên</label>
+      <input type="text" id="profileName" name="fullname" class="form-control" required />
+    </div>
+    <div class="form-group">
+      <label for="profilePhone">Số điện thoại</label>
+      <input type="text" id="profilePhone" name="phone" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="profileAddress">Địa chỉ</label>
+      <input type="text" id="profileAddress" name="address" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-dark">Lưu thay đổi</button>
+  </form>
+</div>
+
+
+<hr />
+<a href="/giohang.html" class="btn btn-primary">Giỏ hàng của tôi</a>
+<a href="/account/orders.html" class="btn btn-outline-info">Lịch sử mua hàng</a>
+
             </div>
           </div>
         </div>
@@ -378,61 +400,233 @@
     <script src="/assets/js/store.js"></script>
     <script src="/assets/js/ui.js"></script>
 
-    <script>
-      // ====== Lấy thông tin phụ (SĐT, địa chỉ) từ localStorage ======
-      function getExtraProfile(email) {
-        if (!email) return {};
-        try {
-          const KEY = "sv_profiles_v1";
-          const allProfiles = JSON.parse(localStorage.getItem(KEY) || "{}");
-          return allProfiles[(email || "").toLowerCase()] || {};
-        } catch (e) {
-          console.error("Lỗi khi đọc dữ liệu hồ sơ:", e);
-          return {};
-        }
+<script>
+  (function (w, d) {
+    const PROFILE_KEY = "sv_profiles_v1";   // { [email]: { phone, address } }
+    const USERS_KEY   = "sv_users_v1";      // [{ name, email, passHash, createdAt }]
+    const AUTH_KEY    = "sv_auth_user_v1";  // { name, email, loginAt }
+
+    // Cờ tránh gắn event nhiều lần
+    let profileUIInited = false;
+
+    function goLogin() {
+      w.location.href = "/account/login.html";
+    }
+
+    function safeJSON(key, def) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : def;
+      } catch (e) {
+        console.warn("[PROFILE] Lỗi JSON", key, e);
+        return def;
+      }
+    }
+
+    function getCurrentUser() {
+      if (w.AUTH && w.AUTH.user && w.AUTH.user.email) {
+        return {
+          name:  w.AUTH.user.name  || "",
+          email: String(w.AUTH.user.email).toLowerCase(),
+        };
       }
 
-      // ====== Render thông tin tài khoản ======
-      function renderProfile() {
-        const info = document.getElementById("profileInfo");
-
-        if (window.AUTH?.loggedIn && window.AUTH.user) {
-          const u = window.AUTH.user;
-          const extraInfo = getExtraProfile(u.email);
-
-          info.innerHTML = `
-      <dl class="row">
-        <dt class="col-sm-4">Họ tên:</dt>
-        <dd class="col-sm-8"><strong>${u.name || "—"}</strong></dd>
-
-        <dt class="col-sm-4">Email:</dt>
-        <dd class="col-sm-8">${u.email || "—"}</dd>
-
-        <dt class="col-sm-4">Số điện thoại:</dt>
-        <dd class="col-sm-8">${extraInfo.phone || "Chưa cập nhật"}</dd>
-
-        <dt class="col-sm-4">Địa chỉ:</dt>
-        <dd class="col-sm-8">${extraInfo.address || "Chưa cập nhật"}</dd>
-      </dl>
-    `;
-        } else {
-          info.innerHTML =
-            '<p class="text-danger">Bạn chưa đăng nhập. <a href="/account/login.html">Đăng nhập ngay</a></p>';
-        }
+      const cur = safeJSON(AUTH_KEY, null);
+      if (cur && cur.email) {
+        return {
+          name:  cur.name  || "",
+          email: String(cur.email).toLowerCase(),
+        };
       }
 
-      document.addEventListener("auth:ready", renderProfile);
-      if (window.AUTH && window.AUTH.ready) renderProfile();
-    </script>
+      return null;
+    }
 
-    <!-- Bootstrap JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-      crossorigin="anonymous"
-    ></script>
+    function getExtraProfile(email) {
+      if (!email) return {};
+      const all = safeJSON(PROFILE_KEY, {});
+      return all[String(email).toLowerCase()] || {};
+    }
+
+    function saveExtraProfile(email, data) {
+      if (!email) return;
+      const key = String(email).toLowerCase();
+      const all = safeJSON(PROFILE_KEY, {});
+      all[key] = Object.assign({}, all[key] || {}, data || {});
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(all));
+      console.log("[PROFILE] Đã lưu hồ sơ", key, all[key]);
+    }
+
+    function updateUserName(email, newName) {
+      if (!email) return;
+      const key = String(email).toLowerCase();
+
+      try {
+        const list = safeJSON(USERS_KEY, []);
+        let changed = false;
+        list.forEach(function (u) {
+          if (String(u.email || "").toLowerCase() === key) {
+            u.name = newName;
+            changed = true;
+          }
+        });
+        if (changed) {
+          localStorage.setItem(USERS_KEY, JSON.stringify(list));
+          console.log("[PROFILE] Đã cập nhật tên trong sv_users_v1");
+        }
+      } catch (e) {
+        console.warn("[PROFILE] Không cập nhật được tên trong sv_users_v1:", e);
+      }
+
+      try {
+        const cur = safeJSON(AUTH_KEY, null);
+        if (cur && String(cur.email || "").toLowerCase() === key) {
+          cur.name = newName;
+          localStorage.setItem(AUTH_KEY, JSON.stringify(cur));
+          console.log("[PROFILE] Đã cập nhật tên trong sv_auth_user_v1");
+        }
+      } catch (e) {
+        console.warn("[PROFILE] Không cập nhật được tên trong sv_auth_user_v1:", e);
+      }
+
+      if (w.AUTH && w.AUTH.user && String(w.AUTH.user.email || "").toLowerCase() === key) {
+        w.AUTH.user.name = newName;
+        if (typeof w.AUTH.updateAuthUI === "function") {
+          w.AUTH.updateAuthUI();
+        }
+        console.log("[PROFILE] Đã cập nhật tên trong AUTH.user");
+      }
+    }
+
+    function renderProfile() {
+      const info = d.getElementById("profileInfo");
+      const btn  = d.getElementById("btnToggleEdit");
+      const edit = d.getElementById("profileEdit");
+      const form = d.getElementById("formProfile");
+      if (!info) return;
+
+      const current = getCurrentUser();
+
+      if (current && current.email) {
+        const extra = getExtraProfile(current.email);
+
+        info.innerHTML = `
+          <dl class="row mb-0">
+            <dt class="col-sm-4">Họ tên:</dt>
+            <dd class="col-sm-8"><strong>${current.name || "—"}</strong></dd>
+
+            <dt class="col-sm-4">Email:</dt>
+            <dd class="col-sm-8">${current.email}</dd>
+
+            <dt class="col-sm-4">Số điện thoại:</dt>
+            <dd class="col-sm-8">${extra.phone || "Chưa cập nhật"}</dd>
+
+            <dt class="col-sm-4">Địa chỉ:</dt>
+            <dd class="col-sm-8">${extra.address || "Chưa cập nhật"}</dd>
+          </dl>
+        `;
+
+        if (btn)  btn.style.display  = "inline-block";
+        if (edit) edit.style.display = "none";
+
+        if (form) {
+          const nameInput    = form.querySelector('[name="fullname"]');
+          const phoneInput   = form.querySelector('[name="phone"]');
+          const addressInput = form.querySelector('[name="address"]');
+
+          if (nameInput)    nameInput.value    = current.name || "";
+          if (phoneInput)   phoneInput.value   = extra.phone || "";
+          if (addressInput) addressInput.value = extra.address || "";
+        }
+      } else {
+        info.innerHTML =
+          '<p class="text-danger mb-0">Bạn chưa đăng nhập. <a href="/account/login.html">Đăng nhập ngay</a></p>';
+        if (btn)  btn.style.display  = "none";
+        if (edit) edit.style.display = "none";
+      }
+    }
+
+    function initProfileUIOnce() {
+      if (profileUIInited) {
+        return; // đã gắn rồi thì thôi, không gắn lại
+      }
+      profileUIInited = true;
+
+      const btn  = d.getElementById("btnToggleEdit");
+      const edit = d.getElementById("profileEdit");
+      const form = d.getElementById("formProfile");
+
+      if (btn && edit) {
+        btn.addEventListener("click", function () {
+          const current = getCurrentUser();
+          if (!current) {
+            alert("Bạn cần đăng nhập trước.");
+            goLogin();
+            return;
+          }
+
+          const isHidden =
+            edit.style.display === "none" ||
+            edit.style.display === "" ||
+            edit.style.display === null;
+
+          edit.style.display = isHidden ? "block" : "none";
+        });
+      }
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const current = getCurrentUser();
+          if (!current) {
+            alert("Bạn cần đăng nhập trước.");
+            goLogin();
+            return;
+          }
+
+          const nameInput    = form.querySelector('[name="fullname"]');
+          const phoneInput   = form.querySelector('[name="phone"]');
+          const addressInput = form.querySelector('[name="address"]');
+
+          const name    = nameInput    ? nameInput.value.trim()    : "";
+          const phone   = phoneInput   ? phoneInput.value.trim()   : "";
+          const address = addressInput ? addressInput.value.trim() : "";
+
+          if (!name) {
+            alert("Vui lòng nhập họ tên.");
+            return;
+          }
+
+          updateUserName(current.email, name);
+          saveExtraProfile(current.email, { phone, address });
+
+          renderProfile();
+          alert("Đã cập nhật thông tin tài khoản.");
+          if (edit) edit.style.display = "none";
+        });
+      }
+    }
+
+    function bootstrap() {
+      renderProfile();
+      initProfileUIOnce();
+    }
+
+    if (d.readyState === "loading") {
+      d.addEventListener("DOMContentLoaded", bootstrap);
+    } else {
+      bootstrap();
+    }
+
+    d.addEventListener("auth:ready", function () {
+      // auth xong thì render lại, nhưng không gắn event lần 2
+      renderProfile();
+    });
+  })(window, document);
+</script>
+
+
+
   </body>
 </html>
