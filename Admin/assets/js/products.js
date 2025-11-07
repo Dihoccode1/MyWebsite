@@ -93,7 +93,7 @@ function mapAdminProdToPublic(p, cats) {
     category,
     price: Number(p.price) || 0,
     original_price: undefined,
-    image: p.image || "/assets/img/placeholder.png",
+    image: p.image || "/assets/images/placeholder.png",
     images: p.image ? [p.image] : [],
     badge: "",
     featured: false,
@@ -118,7 +118,8 @@ function syncToStorefront(prods) {
     .map((p) => mapAdminProdToPublic(p, cats));
 
   localStorage.setItem(PUBLIC_CATALOG_KEY, JSON.stringify(list));
-  localStorage.setItem(BUMP_KEY, String(Date.now())); // 🔔 báo cho phía User
+  // 🔔 báo cho phía User trang đang mở (sanpham, trangchu) tự refresh
+  localStorage.setItem(BUMP_KEY, String(Date.now()));
 }
 
 const saveProds = (a) => {
@@ -309,8 +310,10 @@ document
 document.getElementById("prod-form")?.addEventListener("submit", (e) => {
   e.preventDefault();
   const prods = loadProds();
+  const currentId = Number(document.getElementById("id").value || 0);
+
   const data = {
-    id: Number(document.getElementById("id").value || 0),
+    id: currentId,
     code: document.getElementById("code").value.trim(),
     name: document.getElementById("name").value.trim(),
     categoryId: Number(document.getElementById("categoryId").value),
@@ -323,10 +326,8 @@ document.getElementById("prod-form")?.addEventListener("submit", (e) => {
     supplier: document.getElementById("supplier").value.trim(),
     status: document.getElementById("status").value,
     image: currentImageData,
-    seedId:
-      prods.find(
-        (x) => x.id === Number(document.getElementById("id").value || 0)
-      )?.seedId || undefined,
+    // giữ seedId cũ nếu là sửa
+    seedId: prods.find((x) => x.id === currentId)?.seedId || undefined,
   };
 
   if (!data.code || !data.name) {
@@ -442,15 +443,18 @@ function importUserSeedIntoAdmin({ force = false } = {}) {
       return [];
     }
   })();
+
+  // Ưu tiên seed trong file, nếu không có thì lấy cái admin đang public
   const source = userSeed.length ? userSeed : seedFromStore;
   if (!source.length) return;
 
   const already = loadProds();
   const importedFlag = localStorage.getItem("admin.userImported") === "1";
+  // nếu đã có sp và đã import rồi thì thôi
   if (already.length && importedFlag && !force) return;
 
   const prods = [];
-  let id = 0;
+  let autoId = 0;
 
   source.forEach((item) => {
     const slug =
@@ -466,16 +470,17 @@ function importUserSeedIntoAdmin({ force = false } = {}) {
 
     const price = Number(item.price) || 0;
     const cost = Number.isFinite(Number(item.cost)) ? Number(item.cost) : price;
-    const margin = 0;
+
+    autoId += 1;
 
     const code =
       (item.specs && (item.specs.Mã || item.specs["Mã"])) ||
       item.code ||
-      "SP" + pad3(++id);
+      "SP" + pad3(autoId);
 
     prods.push({
-      id,
-      seedId: item.id, // ✅ giữ id gốc của User
+      id: autoId, // ✅ id auto tăng, không trùng
+      seedId: item.id, // giữ id gốc của user
       code: String(code).toUpperCase(),
       name: item.name || "",
       categoryId,
@@ -483,7 +488,7 @@ function importUserSeedIntoAdmin({ force = false } = {}) {
       uom: item.unit || "",
       qty: Number(item.stock || 0),
       cost,
-      margin,
+      margin: 0,
       price,
       supplier: item.brand || "",
       status,
