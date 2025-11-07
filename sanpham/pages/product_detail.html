@@ -523,7 +523,7 @@
             </li>
             <li class="sep"><i class="fa-solid fa-angle-right"></i></li>
             <li>
-              <a href="/sanpham/pages/sanpham.html"><span>Sản phẩm</span></a>
+              <a href="/sanpham/sanpham.html"><span>Sản phẩm</span></a>
             </li>
             <li class="sep"><i class="fa-solid fa-angle-right"></i></li>
             <li>
@@ -540,10 +540,9 @@
       <div id="pd-related" class="row"></div>
     </div>
 
-    <!-- FOOTER (giữ nguyên như bạn đang dùng) -->
+    <!-- FOOTER (giữ nguyên như site) -->
     <footer class="footer">
-      <!-- ... footer y như cũ ... -->
-      <!-- (bạn giữ nguyên phần footer trong file của bạn, mình rút gọn ở đây cho đỡ dài) -->
+      <!-- Dán nguyên footer chuẩn của bạn ở đây -->
     </footer>
 
     <!-- Auth + Data + Store -->
@@ -578,7 +577,7 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- MODULE CHI TIẾT SẢN PHẨM (ĐÃ HOÀN CHỈNH) -->
+    <!-- MODULE CHI TIẾT SẢN PHẨM + GIỚI HẠN TỒN KHO -->
     <script>
       (function () {
         const Login = {
@@ -593,17 +592,13 @@
         const id = usp.get("id") || "";
 
         function esc(s = "") {
-          return String(s).replace(
-            /[&<>"']/g,
-            (m) =>
-              ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;",
-              }[m])
-          );
+          return String(s).replace(/[&<>"']/g, (m) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          }[m]));
         }
         function toSentenceCase(s = "") {
           s = String(s).trim();
@@ -615,6 +610,7 @@
           return toSentenceCase(String(k).replace(/_/g, " ").trim());
         }
 
+        // ===== Helpers lấy catalog =====
         function getCatalog() {
           try {
             if (window.SVStore && typeof SVStore.getAllProducts === "function") {
@@ -632,7 +628,7 @@
 
           try {
             const fromAdmin = JSON.parse(
-              localStorage.getItem("admin.products") || "[]"
+              localStorage.getItem("admin.products") || "[]" // fallback
             );
             if (Array.isArray(fromAdmin) && fromAdmin.length) return fromAdmin;
           } catch (e) {}
@@ -640,6 +636,138 @@
           return window.SV_PRODUCT_SEED || [];
         }
 
+        // ===== Helpers tồn kho & giỏ hàng (QUAN TRỌNG) =====
+        function getCurrentUserEmail() {
+          try {
+            if (window.AUTH?.getCurrentUser) {
+              return window.AUTH.getCurrentUser()?.email || null;
+            }
+            if (window.AUTH?.currentUser) {
+              return window.AUTH.currentUser.email || null;
+            }
+          } catch (e) {}
+          return null;
+        }
+
+        function getCartQty(productId) {
+          // Ưu tiên API của SVStore
+          try {
+            if (window.SVStore?.getCartItemQty) {
+              const n = Number(SVStore.getCartItemQty(productId) || 0);
+              if (!isNaN(n)) return n;
+            }
+          } catch (e) {}
+
+          try {
+            if (window.SVStore?.getCart) {
+              const cart = SVStore.getCart() || [];
+              const found = cart.find(
+                (i) =>
+                  String(i.id ?? i.productId) === String(productId)
+              );
+              if (found) {
+                const n = Number(
+                  found.qty ?? found.quantity ?? found.q ?? 0
+                );
+                if (!isNaN(n)) return n;
+              }
+            }
+          } catch (e) {}
+
+          // Fallback: đọc localStorage trực tiếp
+          try {
+            const email = getCurrentUserEmail();
+            const key = email
+              ? "sv_cart_user_" + email
+              : "sv_cart_v1";
+            const cart = JSON.parse(localStorage.getItem(key) || "[]");
+            const found = cart.find(
+              (i) =>
+                String(i.id ?? i.productId) === String(productId)
+            );
+            if (found) {
+              const n = Number(
+                found.qty ?? found.quantity ?? found.q ?? 0
+              );
+              if (!isNaN(n)) return n;
+            }
+          } catch (e) {}
+
+          return 0;
+        }
+
+        function addToCartLimited(productId, qty, baseStock, maxPerProduct) {
+          const inCart = getCartQty(productId);
+          const remain = Math.max(0, baseStock - inCart);
+
+          if (remain <= 0) {
+            alert(
+              "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+            );
+            return false;
+          }
+
+          let allowed = remain;
+          if (maxPerProduct && maxPerProduct > 0) {
+            const leftByMax = maxPerProduct - inCart;
+            if (leftByMax <= 0) {
+              alert(
+                "Bạn đã thêm tối đa số lượng được phép cho sản phẩm này."
+              );
+              return false;
+            }
+            allowed = Math.min(allowed, leftByMax);
+          }
+
+          if (qty > allowed) {
+            alert(
+              "Số lượng bạn chọn vượt quá tồn kho còn lại. Tối đa bạn có thể thêm là " +
+                allowed +
+                "."
+            );
+            return false;
+          }
+
+          if (!window.SVStore?.addToCart) {
+            // fallback
+            try {
+              const email = getCurrentUserEmail();
+              const key = email
+                ? "sv_cart_user_" + email
+                : "sv_cart_v1";
+              const cart = JSON.parse(localStorage.getItem(key) || "[]");
+              const idx = cart.findIndex(
+                (x) => String(x.id ?? x.productId) === String(productId)
+              );
+              if (idx >= 0) {
+                const newQty = Number(
+                  (cart[idx].qty ?? cart[idx].quantity ?? 0) + qty
+                );
+                if (newQty > allowed + inCart) {
+                  alert(
+                    "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+                  );
+                  return false;
+                }
+                cart[idx].qty = newQty;
+              } else {
+                cart.push({ id: productId, qty });
+              }
+              localStorage.setItem(key, JSON.stringify(cart));
+            } catch (e) {
+              console.warn("Không thể ghi giỏ hàng fallback:", e);
+              return false;
+            }
+          } else {
+            SVStore.addToCart(productId, qty);
+          }
+
+          window.dispatchEvent(new CustomEvent("cart:changed"));
+          window.SVUI?.updateCartCount?.();
+          return true;
+        }
+
+        // ===== Lấy sản phẩm =====
         const all = getCatalog();
         const fmt = window.SVStore?.fmtVND
           ? window.SVStore.fmtVND
@@ -661,27 +789,56 @@
           return;
         }
 
-        // Chuẩn hoá tồn kho
+        // Chuẩn hoá
         p.unit =
-          p.unit || (String(p.category || "").includes("wax") ? "hũ" : "chai");
+          p.unit || (String(p.category || "").includes("wax") ? "hũ" : "sản phẩm");
         p.quantity = Number(p.quantity || 1);
         p.min_qty = Math.max(1, Number(p.min_qty || 1));
-        p.max_qty = Math.max(p.min_qty, Number(p.max_qty || 99));
+        p.max_qty = Math.max(p.min_qty, Number(p.max_qty || 0) || 0);
 
-        // Đọc tồn kho live:
-        // ưu tiên p.stock, nếu không có dùng p.qty (từ admin.products)
-        p.stock = Number(p.stock ?? p.qty ?? 0);
+        // tồn kho gốc từ Admin
+        const baseStockRaw = p.stock ?? p.qty ?? p.inventory ?? 0;
+        let baseStock = Number(baseStockRaw);
+        if (isNaN(baseStock) || baseStock < 0) baseStock = 0;
 
         const badge = String(p.badge || "").toLowerCase();
-        const isOOS =
+
+        function getRemainInfo() {
+          const inCart = getCartQty(p.id);
+          const remain = Math.max(0, baseStock - inCart);
+          return { inCart, remain };
+        }
+
+        const { inCart, remain } = getRemainInfo();
+
+        const isFlagOOS =
           badge === "oos" ||
           badge === "out_of_stock" ||
-          p.stock <= 0;
+          String(p.status || "").toLowerCase() === "inactive" ||
+          p.active === false;
 
-        const effectiveMax = Math.max(
-          0,
-          Math.min(p.stock, p.max_qty)
-        );
+        const isGlobalOOS = isFlagOOS || baseStock <= 0;
+        let canBuy = false;
+        let effectiveMax = 0;
+
+        if (!isGlobalOOS) {
+          if (remain >= p.min_qty) {
+            // nếu có max_qty thì giới hạn thêm
+            if (p.max_qty && p.max_qty > 0) {
+              const leftByMax = p.max_qty - inCart;
+              const allowed = Math.min(remain, leftByMax);
+              if (allowed >= p.min_qty) {
+                effectiveMax = allowed;
+                canBuy = true;
+              }
+            } else {
+              effectiveMax = remain;
+              canBuy = true;
+            }
+          }
+        }
+
+        const isUserMaxed = !isGlobalOOS && !canBuy;
 
         if (bcName) bcName.textContent = toSentenceCase(p.name || "");
 
@@ -697,7 +854,7 @@
             ? '<span class="pd-badge sale">Sale</span>'
             : badge === "new"
             ? '<span class="pd-badge new">Mới</span>'
-            : isOOS
+            : (isGlobalOOS || isUserMaxed)
             ? '<span class="pd-badge oos">Hết hàng</span>'
             : "";
 
@@ -771,7 +928,7 @@
           `;
         }
 
-        // Render chi tiết
+        // ===== Render chi tiết =====
         root.innerHTML = `
           <div class="col-md-5">
             <div class="gallery">
@@ -790,9 +947,8 @@
                   .join("")}
               </div>
               <div class="gallery-main">
-                <img id="mainImg" src="${esc(firstImg)}" alt="${esc(
-          toSentenceCase(p.name || "")
-        )}">
+                <img id="mainImg" src="${esc(firstImg)}"
+                     alt="${esc(toSentenceCase(p.name || ""))}">
               </div>
             </div>
           </div>
@@ -813,13 +969,21 @@
                 ${off > 0 ? `<span class="off">-${off}%</span>` : ""}
               </div>
 
-              <div class="pd-stock">
+              <div class="pd-stock" id="pd-stock">
                 ${
-                  isOOS
+                  isGlobalOOS
                     ? `<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Hết hàng</span>`
-                    : `<span><i class="fa-regular fa-circle-check"></i> Còn ${p.stock} ${esc(
-                        p.unit
-                      )}</span>`
+                    : isUserMaxed
+                    ? `<span class="text-danger">
+                         <i class="fa-regular fa-circle-xmark"></i>
+                         Bạn đã thêm tối đa ${baseStock} ${esc(
+                         p.unit
+                       )} trong giỏ hàng (theo tồn kho hiện tại).
+                       </span>`
+                    : `<span>
+                         <i class="fa-regular fa-circle-check"></i>
+                         Còn ${remain} / ${baseStock} ${esc(p.unit)} khả dụng.
+                       </span>`
                 }
               </div>
 
@@ -840,22 +1004,34 @@
                 <div>
                   <input id="qty" type="number"
                          class="form-control pd-qty"
-                         value="${Math.min(
-                           Math.max(p.quantity, p.min_qty),
-                           effectiveMax || p.min_qty
-                         )}"
+                         value="${
+                           canBuy
+                             ? Math.min(
+                                 Math.max(p.quantity, p.min_qty),
+                                 effectiveMax
+                               )
+                             : p.min_qty
+                         }"
                          min="${p.min_qty}"
-                         max="${Math.max(effectiveMax, p.min_qty)}"
+                         max="${canBuy ? effectiveMax : p.min_qty}"
                          step="1"
-                         ${isOOS ? "disabled" : ""}>
+                         ${!canBuy ? "disabled" : ""}>
                   <div id="qtyHint" class="pd-qty-hint">
-                    Đơn vị: ${esc(p.unit)} · Mua tối thiểu ${p.min_qty}${
-          effectiveMax ? ` – tối đa ${effectiveMax}` : ""
-        }.
+                    ${
+                      !canBuy
+                        ? "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+                        : `Đơn vị: ${esc(
+                            p.unit
+                          )} · Mua tối thiểu ${p.min_qty}${
+                            effectiveMax
+                              ? ` – tối đa ${effectiveMax} (theo tồn kho còn lại).`
+                              : ""
+                          }`
+                    }
                   </div>
                 </div>
                 <button id="btnAdd" class="btn btn-primary" ${
-                  isOOS ? "disabled" : ""
+                  !canBuy ? "disabled" : ""
                 }>
                   <i class="fas fa-cart-plus"></i> Thêm vào giỏ
                 </button>
@@ -881,76 +1057,158 @@
           });
         });
 
-        // Qty clamp
         const qtyEl = document.getElementById("qty");
         const hintEl = document.getElementById("qtyHint");
-        function clampQty() {
-          let v = Number(qtyEl.value || p.min_qty);
-          if (Number.isNaN(v)) v = p.min_qty;
-          if (effectiveMax > 0) v = Math.min(v, effectiveMax);
-          v = Math.max(v, p.min_qty);
-          qtyEl.value = v;
-          hintEl.innerHTML =
-            effectiveMax && v >= effectiveMax
-              ? `Đơn vị: ${esc(
-                  p.unit
-                )} · Tối đa ${effectiveMax} theo tồn kho hiện tại.`
-              : `Đơn vị: ${esc(p.unit)} · Mua tối thiểu ${p.min_qty}${
-                  effectiveMax ? ` – tối đa ${effectiveMax}` : ""
-                }.`;
+        const stockEl = document.getElementById("pd-stock");
+        const btnAdd = document.getElementById("btnAdd");
+
+        function refreshLimitUI() {
+          const info = getRemainInfo();
+          const inCartNow = info.inCart;
+          const remainNow = info.remain;
+
+          let canBuyNow = false;
+          let effMaxNow = 0;
+
+          if (!isFlagOOS && baseStock > 0) {
+            if (remainNow >= p.min_qty) {
+              if (p.max_qty && p.max_qty > 0) {
+                const leftByMax = p.max_qty - inCartNow;
+                const allowed = Math.min(remainNow, leftByMax);
+                if (allowed >= p.min_qty) {
+                  effMaxNow = allowed;
+                  canBuyNow = true;
+                }
+              } else {
+                effMaxNow = remainNow;
+                canBuyNow = true;
+              }
+            }
+          }
+
+          if (!canBuyNow) {
+            if (stockEl) {
+              stockEl.innerHTML =
+                '<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này.</span>';
+            }
+            if (qtyEl) {
+              qtyEl.disabled = true;
+            }
+            if (btnAdd) {
+              btnAdd.disabled = true;
+            }
+            if (hintEl) {
+              hintEl.textContent =
+                "Không thể thêm thêm do đã đạt giới hạn tồn kho.";
+            }
+            return { canBuyNow, effMaxNow };
+          }
+
+          // update UI khi vẫn còn mua được
+          if (stockEl) {
+            stockEl.innerHTML =
+              '<span><i class="fa-regular fa-circle-check"></i> Còn ' +
+              remainNow +
+              " / " +
+              baseStock +
+              " " +
+              esc(p.unit) +
+              " khả dụng.</span>";
+          }
+          if (qtyEl) {
+            let v = Number(qtyEl.value || p.min_qty);
+            if (isNaN(v) || v < p.min_qty) v = p.min_qty;
+            if (v > effMaxNow) v = effMaxNow;
+            qtyEl.value = v;
+            qtyEl.min = p.min_qty;
+            qtyEl.max = effMaxNow;
+            qtyEl.disabled = false;
+          }
+          if (btnAdd) {
+            btnAdd.disabled = false;
+          }
+          if (hintEl) {
+            hintEl.textContent =
+              "Đơn vị: " +
+              p.unit +
+              " · Mua tối thiểu " +
+              p.min_qty +
+              (effMaxNow
+                ? " – tối đa " + effMaxNow + " (theo tồn kho còn lại)."
+                : "");
+          }
+
+          return { canBuyNow, effMaxNow };
         }
+
+        function clampQty() {
+          const { canBuyNow, effMaxNow } = refreshLimitUI();
+          if (!canBuyNow || !qtyEl) return;
+          let v = Number(qtyEl.value || p.min_qty);
+          if (isNaN(v) || v < p.min_qty) v = p.min_qty;
+          if (effMaxNow && v > effMaxNow) v = effMaxNow;
+          qtyEl.value = v;
+        }
+
         if (qtyEl) {
           qtyEl.addEventListener("change", clampQty);
           qtyEl.addEventListener("input", clampQty);
         }
 
-        // Add to cart
-        document.getElementById("btnAdd")?.addEventListener("click", () => {
-          if (!window.AUTH?.loggedIn) {
-            alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
-            Login.go();
-            return;
-          }
-          clampQty();
-          const qty = Math.max(
-            1,
-            Number(document.getElementById("qty").value) || 1
-          );
-          if (effectiveMax && qty > effectiveMax) {
-            alert(`Số lượng tối đa cho sản phẩm này là ${effectiveMax}.`);
-            return;
-          }
+        // Add to cart (GIỚI HẠN THEO TỒN KHO + ĐÃ CÓ TRONG GIỎ)
+        if (btnAdd) {
+          btnAdd.addEventListener("click", () => {
+            const isLogged =
+              (window.AUTH &&
+                (window.AUTH.loggedIn ||
+                  window.AUTH.isAuthenticated?.())) ||
+              !!getCurrentUserEmail();
 
-          if (window.SVStore?.addToCart) {
-            SVStore.addToCart(p.id, qty);
-          } else {
-            try {
-              const KEY = "sv_cart_v1";
-              const cart = JSON.parse(localStorage.getItem(KEY) || "[]");
-              const i = cart.findIndex((x) => x.id === p.id);
-              const newQty = (i >= 0 ? cart[i].qty || 0 : 0) + qty;
-              if (effectiveMax && newQty > effectiveMax) {
-                alert(`Giới hạn ${effectiveMax} ${p.unit} cho sản phẩm này.`);
-                return;
-              }
-              if (i >= 0) cart[i].qty = newQty;
-              else cart.push({ id: p.id, qty });
-              localStorage.setItem(KEY, JSON.stringify(cart));
-            } catch (e) {}
-          }
+            if (!isLogged) {
+              alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+              Login.go();
+              return;
+            }
 
-          window.dispatchEvent(new CustomEvent("cart:changed"));
-          window.SVUI?.updateCartCount?.();
+            const info = getRemainInfo();
+            const remainNow = info.remain;
 
-          const btn = document.getElementById("btnAdd");
-          const prev = btn.innerHTML;
-          btn.disabled = true;
-          btn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = prev;
-          }, 900);
-        });
+            if (remainNow <= 0) {
+              refreshLimitUI();
+              alert(
+                "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+              );
+              return;
+            }
+
+            clampQty();
+            const qty = Math.max(
+              1,
+              Number(qtyEl ? qtyEl.value : p.min_qty) || p.min_qty
+            );
+
+            // p.max_qty là giới hạn tổng trên mỗi user nếu có
+            const ok = addToCartLimited(
+              p.id,
+              qty,
+              baseStock,
+              p.max_qty && p.max_qty > 0 ? p.max_qty : 0
+            );
+            if (!ok) {
+              refreshLimitUI();
+              return;
+            }
+
+            const prev = btnAdd.innerHTML;
+            btnAdd.disabled = true;
+            btnAdd.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
+            setTimeout(() => {
+              btnAdd.disabled = false;
+              btnAdd.innerHTML = prev;
+              refreshLimitUI();
+            }, 900);
+          });
+        }
 
         // ===== Sản phẩm liên quan =====
         function sameCategory(a, b) {
@@ -958,7 +1216,10 @@
             return String(a.categoryId) === String(b.categoryId);
           }
           if (a.category && b.category) {
-            return String(a.category).toLowerCase() === String(b.category).toLowerCase();
+            return (
+              String(a.category).toLowerCase() ===
+              String(b.category).toLowerCase()
+            );
           }
           return false;
         }
@@ -1007,15 +1268,18 @@
 
         // Đồng bộ cart badge
         window.addEventListener("storage", (e) => {
-          if (e.key && e.key.startsWith("sv_cart")) {
+          if (e.key && e.key.startsWith("sv_cart_user_")) {
             window.SVUI?.updateCartCount?.();
+            refreshLimitUI();
           }
         });
         window.addEventListener("cart:changed", () => {
           window.SVUI?.updateCartCount?.();
+          refreshLimitUI();
         });
         document.addEventListener("DOMContentLoaded", () => {
           window.SVUI?.updateCartCount?.();
+          refreshLimitUI();
         });
       })();
     </script>
@@ -1034,11 +1298,7 @@
           }, 150);
         }
         window.addEventListener("storage", function (e) {
-          if (
-            !e ||
-            !e.key
-          )
-            return;
+          if (!e || !e.key) return;
           if (
             e.key === "SV_PRODUCTS" ||
             e.key === "sv_products_v1" ||
