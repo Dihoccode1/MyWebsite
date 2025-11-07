@@ -20,7 +20,10 @@
 
     <title>Quản lý người dùng | Nobility 1800s Admin</title>
 
+    <!-- CSS admin chung -->
     <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -55,6 +58,7 @@
         background: #fff;
         cursor: pointer;
         font-weight: 700;
+        font-size: 13px;
       }
       .btn.primary {
         background: #1f235a;
@@ -74,18 +78,17 @@
         gap: 10px;
         align-items: center;
         margin: 12px 0;
+        flex-wrap: wrap;
       }
       .input {
         border: 1px solid #e5e7eb;
         border-radius: 10px;
-        padding: 10px 12px;
-        min-width: 240px;
+        padding: 9px 11px;
+        min-width: 220px;
         background: #fff;
         color: #111;
         outline: none;
-      }
-      .toolbar .input {
-        min-width: 260px;
+        font-size: 13px;
       }
       table {
         width: 100%;
@@ -93,6 +96,7 @@
         background: #fff;
         border-radius: 14px;
         overflow: hidden;
+        font-size: 13px;
       }
       thead td {
         background: #f8fafc;
@@ -101,8 +105,8 @@
         border-bottom: 1px solid #e5e7eb;
       }
       td {
-        padding: 12px;
-        border-bottom: 1px solid #f0f2f5;
+        padding: 10px 10px;
+        border-bottom: 1px solid #f3f4f6;
         vertical-align: middle;
       }
       tr:hover {
@@ -112,7 +116,7 @@
         display: inline-block;
         padding: 4px 8px;
         border-radius: 999px;
-        font-size: 12px;
+        font-size: 11px;
         border: 1px solid #e5e7eb;
       }
       .status.active {
@@ -130,14 +134,15 @@
         border: 1px solid #e5e7eb;
         border-radius: 999px;
         padding: 2px 8px;
-        font-size: 12px;
+        font-size: 11px;
+        background: #f9fafb;
+        color: #111827;
       }
       .empty {
         color: #9aa3ad;
         text-align: center;
         padding: 20px;
       }
-
       .modal {
         position: fixed;
         inset: 0;
@@ -171,7 +176,7 @@
       .grid-2 {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
       }
       @media (min-width: 720px) {
         .grid-2 {
@@ -179,13 +184,25 @@
         }
       }
       label.small {
-        font-size: 12px;
+        font-size: 11px;
         color: #6b7280;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         display: block;
       }
       .muted {
         color: #6b7280;
+        font-size: 11px;
+      }
+      .pill-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 10px;
+        margin-left: 4px;
       }
     </style>
   </head>
@@ -202,18 +219,20 @@
             </a>
           </li>
           <li id="nav-dashboard">
-            <a href="./index.html"
-              ><span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span
-              ><span class="title">Bảng điều khiển</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"
+                ><ion-icon name="home-outline"></ion-icon
+              ></span>
+              <span class="title">Bảng điều khiển</span>
+            </a>
           </li>
           <li class="hovered" id="nav-customers">
-            <a href="./users.html"
-              ><span class="icon"
-                ><ion-icon name="people-outline"></ion-icon></span
-              ><span class="title">Quản lý khách hàng</span></a
-            >
+            <a href="./users.html">
+              <span class="icon"
+                ><ion-icon name="people-outline"></ion-icon
+              ></span>
+              <span class="title">Quản lý khách hàng</span>
+            </a>
           </li>
           <li id="nav-categories">
             <a href="./categories.html"
@@ -265,8 +284,8 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon
-              ><span>Chào mừng, Admin</span>
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <span id="admin-username">Admin</span>
             </div>
           </li>
           <li>
@@ -284,7 +303,16 @@
     <div class="main">
       <div class="page">
         <div class="page-header">
-          <h1>Quản lý người dùng</h1>
+          <div>
+            <h1>Quản lý người dùng</h1>
+            <div class="muted">
+              Đổi mật khẩu & khóa tài khoản sẽ ép người dùng đăng nhập lại.
+              <span class="pill-note"
+                ><i class="fa-solid fa-shield-halved"></i> Real-time force
+                logout</span
+              >
+            </div>
+          </div>
           <div class="actions">
             <button class="btn primary" id="btnAdd">
               <ion-icon name="person-add-outline"></ion-icon> Thêm tài khoản
@@ -317,7 +345,7 @@
               <td>Vai trò</td>
               <td>Trạng thái</td>
               <td>Tạo lúc</td>
-              <td style="width: 260px">Thao tác</td>
+              <td style="width: 280px">Thao tác</td>
             </tr>
           </thead>
           <tbody id="tbodyUsers">
@@ -341,24 +369,20 @@
         <div class="card-body">
           <div class="grid-2">
             <div>
-              <label class="small">Họ tên</label
-              ><input class="input" id="uName" placeholder="Nguyễn Văn A" />
+              <label class="small">Họ tên</label>
+              <input class="input" id="uName" placeholder="Nguyễn Văn A" />
             </div>
             <div>
-              <label class="small">Email</label
-              ><input
-                class="input"
-                id="uEmail"
-                placeholder="email@domain.com"
-              />
+              <label class="small">Email</label>
+              <input class="input" id="uEmail" placeholder="email@domain.com" />
             </div>
             <div>
-              <label class="small">Số điện thoại</label
-              ><input class="input" id="uPhone" placeholder="09xx..." />
+              <label class="small">Số điện thoại</label>
+              <input class="input" id="uPhone" placeholder="09xx..." />
             </div>
             <div>
-              <label class="small">Địa chỉ</label
-              ><input
+              <label class="small">Địa chỉ</label>
+              <input
                 class="input"
                 id="uAddress"
                 placeholder="Địa chỉ giao hàng"
@@ -372,7 +396,7 @@
                 placeholder="Mật khẩu khởi tạo"
                 type="text"
               />
-              <div class="muted" style="margin-top: 6px">
+              <div class="muted" style="margin-top: 4px">
                 Để trống nếu không muốn đổi mật khẩu khi sửa.
               </div>
             </div>
@@ -409,21 +433,20 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
 
-    <!-- JS chung admin -->
+    <!-- JS chung admin (toggle menu, active sidebar...) -->
     <script src="./assets/js/main.js"></script>
 
-    <!-- Logic Users -->
     <script>
       (function () {
         const LS_USERS = "sv_users_v1";
         const LS_PROFILES = "sv_profiles_v1";
         const BS_USERS = "bs_users";
-
         const $ = (s) => document.querySelector(s);
 
         function loadJSON(key, def) {
           try {
-            return JSON.parse(localStorage.getItem(key) || JSON.stringify(def));
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : def;
           } catch {
             return def;
           }
@@ -431,6 +454,8 @@
         function saveJSON(key, val) {
           localStorage.setItem(key, JSON.stringify(val));
         }
+
+        // Hash FNV-1a (demo)
         function fnv1a(s) {
           s = String(s || "");
           let h = 2166136261 >>> 0;
@@ -444,6 +469,7 @@
           alert(msg);
         }
 
+        // Gộp dữ liệu từ nhiều nguồn
         function getUsersMerged() {
           const sv = loadJSON(LS_USERS, []);
           const profiles = loadJSON(LS_PROFILES, {});
@@ -451,7 +477,8 @@
           const map = new Map();
 
           sv.forEach((u) => {
-            const key = (u.email || "").toLowerCase();
+            const key = String(u.email || "").toLowerCase();
+            if (!key) return;
             map.set(key, {
               name: u.name || "",
               email: key,
@@ -465,7 +492,8 @@
           });
 
           bs.forEach((u) => {
-            const key = String(u.email || "").toLowerCase();
+            const key = String(u.email || u.username || "").toLowerCase();
+            if (!key) return;
             const curr = map.get(key) || {};
             map.set(
               key,
@@ -491,6 +519,7 @@
           );
         }
 
+        // Thêm/sửa user
         function upsertUser({
           name,
           email,
@@ -503,6 +532,7 @@
           const emailLC = String(email || "").toLowerCase();
           if (!emailLC) throw new Error("Thiếu email");
 
+          // sv_users_v1
           const sv = loadJSON(LS_USERS, []);
           const idx = sv.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -510,14 +540,20 @@
           const base = {
             name: name || emailLC,
             email: emailLC,
-            passHash: password ? fnv1a(password) : sv[idx]?.passHash || "",
-            createdAt: sv[idx]?.createdAt || new Date().toISOString(),
-            status: status || sv[idx]?.status || "active",
+            passHash: password
+              ? fnv1a(password)
+              : idx >= 0
+              ? sv[idx].passHash
+              : fnv1a(password || "123456"),
+            createdAt:
+              (idx >= 0 && sv[idx].createdAt) || new Date().toISOString(),
+            status: status || (idx >= 0 ? sv[idx].status : "active"),
           };
           if (idx >= 0) sv[idx] = Object.assign({}, sv[idx], base);
           else sv.push(base);
           saveJSON(LS_USERS, sv);
 
+          // profiles
           const profiles = loadJSON(LS_PROFILES, {});
           profiles[emailLC] = Object.assign({}, profiles[emailLC] || {}, {
             fullname: name || "",
@@ -526,6 +562,7 @@
           });
           saveJSON(LS_PROFILES, profiles);
 
+          // bs_users
           const bs = loadJSON(BS_USERS, []);
           const bidx = bs.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -547,9 +584,10 @@
           saveJSON(BS_USERS, bs);
         }
 
-        // 🔴 SỬA HÀM setStatus: phát tín hiệu "kick" khi khóa
+        // Đặt trạng thái + phát tín hiệu kick/bump
         function setStatus(email, newStatus) {
           const emailLC = String(email || "").toLowerCase();
+          if (!emailLC) return;
 
           const sv = loadJSON(LS_USERS, []);
           const idx = sv.findIndex(
@@ -569,18 +607,20 @@
             saveJSON(BS_USERS, bs);
           }
 
-          // Phát “kick” để các tab user logout ngay
-          if (newStatus === "locked") {
+          if (String(newStatus).toLowerCase() === "locked") {
+            // Đá ra ngay
             localStorage.setItem(`auth.kick.${emailLC}`, String(Date.now()));
           } else {
-            // bump để client (nếu đang mở) tự check lại
+            // Cho client đang mở tự kiểm tra lại
             localStorage.setItem(`auth.bump.${emailLC}`, String(Date.now()));
           }
         }
 
+        // Đổi mật khẩu + kick ngay
         function resetPassword(email, newPass) {
           const emailLC = String(email || "").toLowerCase();
-          if (!newPass) throw new Error("Thiếu mật khẩu mới");
+          if (!emailLC || !newPass)
+            throw new Error("Thiếu thông tin đặt lại mật khẩu");
 
           const sv = loadJSON(LS_USERS, []);
           const idx = sv.findIndex(
@@ -599,6 +639,9 @@
             bs[bidx].password = String(newPass);
             saveJSON(BS_USERS, bs);
           }
+
+          // ép đăng nhập lại
+          localStorage.setItem(`auth.kick.${emailLC}`, String(Date.now()));
         }
 
         const tbody = document.getElementById("tbodyUsers");
@@ -628,7 +671,7 @@
           const status = filterStatus.value;
           let list = getUsersMerged();
 
-          if (q)
+          if (q) {
             list = list.filter((u) =>
               [u.name, u.email, u.phone].some((x) =>
                 String(x || "")
@@ -636,6 +679,7 @@
                   .includes(q)
               )
             );
+          }
           if (status !== "all")
             list = list.filter((u) => (u.status || "active") === status);
 
@@ -646,47 +690,50 @@
           }
 
           tbody.innerHTML = list
-            .map(
-              (u) => `
-            <tr>
-              <td><strong>${esc(u.name || "")}</strong></td>
-              <td>${esc(u.email || "")}</td>
-              <td>${esc(u.phone || "")}</td>
-              <td><span class="chip">${esc(u.role || "member")}</span></td>
-              <td><span class="status ${
-                u.status === "locked" ? "locked" : "active"
-              }">${
-                u.status === "locked" ? "Đã khóa" : "Đang hoạt động"
+            .map((u) => {
+              const isLocked = u.status === "locked";
+              return `
+              <tr>
+                <td><strong>${esc(u.name || "")}</strong></td>
+                <td>${esc(u.email || "")}</td>
+                <td>${esc(u.phone || "")}</td>
+                <td><span class="chip">${esc(u.role || "member")}</span></td>
+                <td><span class="status ${isLocked ? "locked" : "active"}">${
+                isLocked ? "Đã khóa" : "Đang hoạt động"
               }</span></td>
-              <td>${formatDate(u.createdAt)}</td>
-              <td>
-                <div style="display:flex;gap:8px;flex-wrap:wrap">
-                  <button class="btn" title="Đổi mật khẩu" onclick="UsersUI.promptReset('${
-                    u.email
-                  }')">
-                    <i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span>
-                  </button>
-                  ${
-                    u.status === "locked"
-                      ? `<button class="btn" title="Mở khóa tài khoản" onclick="UsersUI.unlock('${u.email}')">
-                         <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
-                       </button>`
-                      : `<button class="btn" title="Khóa tài khoản" onclick="UsersUI.lock('${u.email}')">
-                         <i class="fa-solid fa-lock"></i><span>Khóa tài khoản</span>
-                       </button>`
-                  }
-                </div>
-              </td>
-            </tr>`
-            )
+                <td>${formatDate(u.createdAt)}</td>
+                <td>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap">
+                    <button class="btn" onclick="UsersUI.promptReset('${esc(
+                      u.email
+                    )}')" title="Đổi mật khẩu">
+                      <i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span>
+                    </button>
+                    ${
+                      isLocked
+                        ? `<button class="btn" onclick="UsersUI.unlock('${esc(
+                            u.email
+                          )}')" title="Mở khóa">
+                           <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
+                         </button>`
+                        : `<button class="btn danger" onclick="UsersUI.lock('${esc(
+                            u.email
+                          )}')" title="Khóa tài khoản">
+                           <i class="fa-solid fa-lock"></i><span>Khóa</span>
+                         </button>`
+                    }
+                  </div>
+                </td>
+              </tr>`;
+            })
             .join("");
         }
 
-        // search/filter
+        // search / filter
         searchBox.addEventListener("input", render);
         filterStatus.addEventListener("change", render);
 
-        // Export
+        // Export JSON
         document.getElementById("btnExport").addEventListener("click", () => {
           const data = { users: getUsersMerged() };
           const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -733,7 +780,7 @@
           const email = (uEmail.value || "").trim().toLowerCase();
           const phone = uPhone.value.trim();
           const address = uAddress.value.trim();
-          const pass = uPassword.value;
+          const pass = uPassword.value.trim();
           const role = uRole.value;
 
           if (!name || !email) return toast("Vui lòng nhập Họ tên và Email.");
@@ -758,7 +805,7 @@
           }
         });
 
-        // Actions expose
+        // Public API cho nút trong bảng
         window.UsersUI = {
           promptReset(email) {
             const newPass = prompt("Nhập mật khẩu mới cho " + email + ":");
@@ -767,26 +814,36 @@
             try {
               resetPassword(email, newPass);
               render();
-              toast("Đã đặt lại mật khẩu.");
+              toast("Đã đặt lại mật khẩu (đã ép đăng xuất).");
             } catch (e) {
-              toast(e.message || "Lỗi");
+              toast(e.message || "Lỗi khi đặt lại mật khẩu.");
             }
           },
           lock(email) {
-            if (!confirm("Khóa tài khoản này?")) return;
+            if (
+              !confirm(
+                "Khóa tài khoản này? Người dùng sẽ bị đăng xuất và không thể đăng nhập."
+              )
+            )
+              return;
             setStatus(email, "locked");
             render();
-            toast("Đã khóa.");
+            toast("Đã khóa tài khoản.");
           },
           unlock(email) {
-            if (!confirm("Mở khóa tài khoản này?")) return;
+            if (
+              !confirm(
+                "Mở khóa tài khoản này? Cho phép người dùng đăng nhập lại."
+              )
+            )
+              return;
             setStatus(email, "active");
             render();
-            toast("Đã mở khóa.");
+            toast("Đã mở khóa tài khoản.");
           },
         };
 
-        // Đăng xuất sidebar
+        // Đăng xuất sidebar (admin)
         document
           .getElementById("btn-logout-side")
           ?.addEventListener("click", (e) => {
@@ -795,7 +852,21 @@
             location.href = "./login.html";
           });
 
-        // render lần đầu
+        // Điền tên admin (nếu có)
+        (function fillAdminName() {
+          try {
+            const u = JSON.parse(
+              sessionStorage.getItem("session.user") || "null"
+            );
+            if (!u) return;
+            const el = document.getElementById("admin-username");
+            if (!el) return;
+            el.textContent =
+              u.fullname || u.name || u.username || u.email || "Admin";
+          } catch {}
+        })();
+
+        // Render lần đầu
         render();
       })();
     </script>

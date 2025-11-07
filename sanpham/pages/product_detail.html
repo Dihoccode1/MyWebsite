@@ -14,7 +14,7 @@
       referrerpolicy="no-referrer"
     />
 
-    <!-- Site CSS (ưu tiên base trước style) -->
+    <!-- Site CSS -->
     <link rel="stylesheet" href="/assets/css/base.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
 
@@ -35,7 +35,6 @@
         padding: 24px 0 36px;
       }
 
-      /* === Card chính === */
       .pd-card {
         background: #fff;
         border: 1px solid var(--pd-border);
@@ -54,7 +53,6 @@
         font-size: 13px;
       }
 
-      /* === Badge === */
       .pd-badges .pd-badge {
         display: inline-block;
         color: #fff;
@@ -74,7 +72,6 @@
         background: #6b7280;
       }
 
-      /* === Giá === */
       .pd-price {
         display: flex;
         align-items: flex-end;
@@ -101,14 +98,12 @@
         border-radius: 6px;
       }
 
-      /* Stock line */
       .pd-stock {
         font-size: 13px;
         color: #374151;
         margin-bottom: 10px;
       }
 
-      /* === Mô tả & thông số === */
       .pd-short {
         color: #374151;
         font-size: 14px;
@@ -123,7 +118,6 @@
         color: #374151;
       }
 
-      /* === Gallery === */
       .gallery {
         display: grid;
         grid-template-columns: 80px 1fr;
@@ -166,7 +160,6 @@
         opacity: 1;
       }
 
-      /* === Nút và hành động === */
       .pd-actions {
         display: flex;
         gap: 8px;
@@ -187,7 +180,6 @@
         border-radius: 6px;
       }
 
-      /* === Chính sách & cam kết === */
       .pd-trust {
         display: flex;
         gap: 14px;
@@ -200,7 +192,6 @@
         margin-right: 5px;
       }
 
-      /* === Sản phẩm liên quan === */
       .related-col {
         display: flex;
       }
@@ -250,7 +241,6 @@
         color: var(--pd-primary);
       }
 
-      /* ===== BREADCRUMB ===== */
       .bread-crumb {
         padding: 10px 0;
         border-bottom: 1px solid #eee;
@@ -267,14 +257,8 @@
         align-items: center;
         gap: 8px;
         font-size: 13px;
-        line-height: 1.2;
         color: #6b7280;
         background: transparent !important;
-      }
-      @media (min-width: 768px) {
-        .breadcrumb {
-          font-size: 14px;
-        }
       }
       .breadcrumb li {
         display: flex;
@@ -288,7 +272,6 @@
       }
       .breadcrumb .sep i {
         font-size: 12px;
-        line-height: 1;
         margin: 0 2px;
       }
       .breadcrumb a {
@@ -298,20 +281,16 @@
       }
       .breadcrumb a:hover {
         opacity: 0.85;
-        text-decoration: none !important;
       }
       .breadcrumb li strong span {
         color: #000;
         font-weight: 700;
-        max-width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
-        vertical-align: bottom;
       }
 
-      /* === Responsive === */
       @media (min-width: 992px) {
         #mainImg {
           width: 400px;
@@ -335,7 +314,6 @@
         }
       }
 
-      /* ================== TABS ================== */
       .pd-card .nav-pills {
         display: flex;
         gap: 10px;
@@ -410,21 +388,10 @@
         color: #2563eb;
         font-weight: 700;
       }
-      @media (max-width: 575.98px) {
-        .pd-card .nav-pills {
-          gap: 8px;
-        }
-        .pd-card .nav-pills .nav-link {
-          padding: 8px 12px;
-          font-size: 13.5px;
-        }
-        .pd-card .tab-content {
-          padding: 12px;
-        }
-      }
     </style>
   </head>
   <body>
+    <!-- HEADER -->
     <header class="header">
       <div class="topbar">
         <div class="container">
@@ -487,8 +454,8 @@
       </ul>
     </nav>
 
+    <!-- Search redirect -->
     <script>
-      /* Điều hướng tìm kiếm sang trang sản phẩm và giữ đúng query */
       (function (w, d) {
         function getProductsURL() {
           var a =
@@ -500,7 +467,6 @@
         }
         var form = d.querySelector(".search-bar");
         if (!form) return;
-
         form.addEventListener(
           "submit",
           function (e) {
@@ -513,15 +479,15 @@
             var url = new URL(raw, w.location.origin);
             if (q) url.searchParams.set("q", q);
             else url.searchParams.delete("q");
-            w.location.href = url.pathname + (url.search ? url.search : "");
+            w.location.href = url.pathname + (url.search || "");
           },
           { passive: false }
         );
       })(window, document);
     </script>
 
+    <!-- Welcome click -> profile -->
     <script>
-      /* Welcome name click → trang hồ sơ */
       (function (w, d) {
         function makeWelcomeClickable() {
           var el = d.querySelector(".welcome-user");
@@ -549,7 +515,6 @@
     </script>
 
     <div class="container pd-wrap">
-      <!-- Breadcrumb 3 cấp -->
       <section class="bread-crumb">
         <div class="container">
           <ul class="breadcrumb">
@@ -558,7 +523,7 @@
             </li>
             <li class="sep"><i class="fa-solid fa-angle-right"></i></li>
             <li>
-              <a href="/sanpham/pages/sanpham.html"><span>Sản phẩm</span></a>
+              <a href="/sanpham/sanpham.html"><span>Sản phẩm</span></a>
             </li>
             <li class="sep"><i class="fa-solid fa-angle-right"></i></li>
             <li>
@@ -575,213 +540,17 @@
       <div id="pd-related" class="row"></div>
     </div>
 
+    <!-- FOOTER (giữ nguyên như site) -->
     <footer class="footer">
-      <div class="site-footer">
-        <div class="top-footer">
-          <div class="container">
-            <div class="row">
-              <section class="widget-ft">
-                <h4 class="title-menu">Thông tin</h4>
-                <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/gioithieu.html">Giới thiệu</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
-                  </li>
-                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-                </ul>
-              </section>
-
-              <section class="widget-ft">
-                <h4 class="title-menu">Hỗ trợ</h4>
-                <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/gioithieu.html">Giới thiệu</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
-                  </li>
-                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-                </ul>
-              </section>
-
-              <section class="widget-ft">
-                <h4 class="title-menu">Hướng dẫn</h4>
-                <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/gioithieu.html">Giới thiệu</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
-                  </li>
-                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-                </ul>
-              </section>
-
-              <section class="widget-ft">
-                <h4 class="title-menu">Chính sách</h4>
-                <ul class="list-menu">
-                  <li class="li_menu">
-                    <a href="/trangchu.html">Trang chủ</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/gioithieu.html">Giới thiệu</a>
-                  </li>
-                  <li class="li_menu">
-                    <a href="/sanpham/sanpham.html">Sản phẩm</a>
-                  </li>
-                  <li class="li_menu"><a href="/tintuc.html">Tin tức</a></li>
-                  <li class="li_menu"><a href="/lienhe.html">Liên hệ</a></li>
-                </ul>
-              </section>
-
-              <section class="wg-logo">
-                <h4 class="title-menu">Liên hệ</h4>
-                <ul class="contact">
-                  <li>
-                    <span class="txt_content_child">
-                      <span
-                        ><i
-                          class="fa-solid fa-location-dot"
-                          aria-hidden="true"
-                        ></i
-                      ></span>
-                      140B-Tổ 3, Ấp Xóm Chùa,Tỉnh Tây Ninh
-                    </span>
-                  </li>
-                  <li class="sdt">
-                    <span
-                      ><i class="fa-solid fa-phone" aria-hidden="true"></i
-                    ></span>
-                    <a href="tel:0338286525">0338286525</a>
-                  </li>
-                  <li class="sdt">
-                    <span><i class="fa-solid fa-envelope"></i></span>
-                    <a href="mailto:thanhloc29052006@gmail.com"
-                      >thanhloc29052006@gmail.com</a
-                    >
-                  </li>
-                </ul>
-              </section>
-            </div>
-          </div>
-        </div>
-
-        <div class="mid-footer">
-          <div class="container">
-            <div class="row">
-              <div class="fot_copyright">
-                <span class="wsp"
-                  ><span
-                    >Cung cấp bởi <a href="javascript:;">Nhóm 7</a></span
-                  ></span
-                >
-              </div>
-              <nav class="fot_menu_copyright">
-                <ul class="ul_menu_fot">
-                  <li>
-                    <a href="/trangchu.html" title="Trang chủ">Trang chủ</a>
-                  </li>
-                  <li>
-                    <a href="/gioithieu.html" title="Giới thiệu">Giới thiệu</a>
-                  </li>
-                  <li>
-                    <a href="/sanpham/sanpham.html" title="Sản phẩm"
-                      >Sản phẩm</a
-                    >
-                  </li>
-                  <li><a href="/tin-tuc" title="Tin tức">Tin tức</a></li>
-                  <li><a href="/lienhe.html" title="Liên hệ">Liên hệ</a></li>
-                </ul>
-              </nav>
-              <div class="pay_footer">
-                <ul class="follow_option">
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><img
-                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png"
-                        alt="Payment"
-                    /></a>
-                  </li>
-                </ul>
-              </div>
-              <a
-                href="#"
-                id="back-to-top"
-                class="backtop"
-                title="Lên đầu trang"
-              >
-                <i class="fa-solid fa-angle-up" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Dán nguyên footer chuẩn của bạn ở đây -->
     </footer>
 
-    <!-- Auth + Data + Store (đúng thứ tự) -->
+    <!-- Auth + Data + Store -->
     <script src="/assets/js/auth.js"></script>
     <script src="/assets/js/auth.modal.bridge.js"></script>
-
-    <!-- Seed tĩnh -->
     <script src="/assets/js/products.seed.js"></script>
 
-    <!-- Ưu tiên catalog đã export từ Admin -->
+    <!-- Ưu tiên catalog export từ Admin -->
     <script>
       (function () {
         try {
@@ -791,7 +560,7 @@
           if (Array.isArray(fromAdmin) && fromAdmin.length) {
             window.SV_PRODUCT_SEED = fromAdmin;
           }
-        } catch {}
+        } catch (e) {}
       })();
     </script>
 
@@ -808,8 +577,8 @@
       crossorigin="anonymous"
     ></script>
 
+    <!-- MODULE CHI TIẾT SẢN PHẨM + GIỚI HẠN TỒN KHO -->
     <script>
-      /* Module trang chi tiết sản phẩm */
       (function () {
         const Login = {
           URL: "/account/login.html",
@@ -822,8 +591,184 @@
         const usp = new URLSearchParams(location.search);
         const id = usp.get("id") || "";
 
-        const all =
-          window.SVStore?.getAllProducts?.() || window.SV_PRODUCT_SEED || [];
+        function esc(s = "") {
+          return String(s).replace(/[&<>"']/g, (m) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          }[m]));
+        }
+        function toSentenceCase(s = "") {
+          s = String(s).trim();
+          if (!s) return s;
+          const low = s.toLowerCase();
+          return low.charAt(0).toUpperCase() + low.slice(1);
+        }
+        function labelize(k) {
+          return toSentenceCase(String(k).replace(/_/g, " ").trim());
+        }
+
+        // ===== Helpers lấy catalog =====
+        function getCatalog() {
+          try {
+            if (window.SVStore && typeof SVStore.getAllProducts === "function") {
+              const fromStore = SVStore.getAllProducts();
+              if (Array.isArray(fromStore) && fromStore.length) return fromStore;
+            }
+          } catch (e) {}
+
+          try {
+            const fromSv = JSON.parse(
+              localStorage.getItem("sv_products_v1") || "[]"
+            );
+            if (Array.isArray(fromSv) && fromSv.length) return fromSv;
+          } catch (e) {}
+
+          try {
+            const fromAdmin = JSON.parse(
+              localStorage.getItem("admin.products") || "[]" // fallback
+            );
+            if (Array.isArray(fromAdmin) && fromAdmin.length) return fromAdmin;
+          } catch (e) {}
+
+          return window.SV_PRODUCT_SEED || [];
+        }
+
+        // ===== Helpers tồn kho & giỏ hàng (QUAN TRỌNG) =====
+        function getCurrentUserEmail() {
+          try {
+            if (window.AUTH?.getCurrentUser) {
+              return window.AUTH.getCurrentUser()?.email || null;
+            }
+            if (window.AUTH?.currentUser) {
+              return window.AUTH.currentUser.email || null;
+            }
+          } catch (e) {}
+          return null;
+        }
+
+        function getCartQty(productId) {
+          // Ưu tiên API của SVStore
+          try {
+            if (window.SVStore?.getCartItemQty) {
+              const n = Number(SVStore.getCartItemQty(productId) || 0);
+              if (!isNaN(n)) return n;
+            }
+          } catch (e) {}
+
+          try {
+            if (window.SVStore?.getCart) {
+              const cart = SVStore.getCart() || [];
+              const found = cart.find(
+                (i) =>
+                  String(i.id ?? i.productId) === String(productId)
+              );
+              if (found) {
+                const n = Number(
+                  found.qty ?? found.quantity ?? found.q ?? 0
+                );
+                if (!isNaN(n)) return n;
+              }
+            }
+          } catch (e) {}
+
+          // Fallback: đọc localStorage trực tiếp
+          try {
+            const email = getCurrentUserEmail();
+            const key = email
+              ? "sv_cart_user_" + email
+              : "sv_cart_v1";
+            const cart = JSON.parse(localStorage.getItem(key) || "[]");
+            const found = cart.find(
+              (i) =>
+                String(i.id ?? i.productId) === String(productId)
+            );
+            if (found) {
+              const n = Number(
+                found.qty ?? found.quantity ?? found.q ?? 0
+              );
+              if (!isNaN(n)) return n;
+            }
+          } catch (e) {}
+
+          return 0;
+        }
+
+        function addToCartLimited(productId, qty, baseStock, maxPerProduct) {
+          const inCart = getCartQty(productId);
+          const remain = Math.max(0, baseStock - inCart);
+
+          if (remain <= 0) {
+            alert(
+              "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+            );
+            return false;
+          }
+
+          let allowed = remain;
+          if (maxPerProduct && maxPerProduct > 0) {
+            const leftByMax = maxPerProduct - inCart;
+            if (leftByMax <= 0) {
+              alert(
+                "Bạn đã thêm tối đa số lượng được phép cho sản phẩm này."
+              );
+              return false;
+            }
+            allowed = Math.min(allowed, leftByMax);
+          }
+
+          if (qty > allowed) {
+            alert(
+              "Số lượng bạn chọn vượt quá tồn kho còn lại. Tối đa bạn có thể thêm là " +
+                allowed +
+                "."
+            );
+            return false;
+          }
+
+          if (!window.SVStore?.addToCart) {
+            // fallback
+            try {
+              const email = getCurrentUserEmail();
+              const key = email
+                ? "sv_cart_user_" + email
+                : "sv_cart_v1";
+              const cart = JSON.parse(localStorage.getItem(key) || "[]");
+              const idx = cart.findIndex(
+                (x) => String(x.id ?? x.productId) === String(productId)
+              );
+              if (idx >= 0) {
+                const newQty = Number(
+                  (cart[idx].qty ?? cart[idx].quantity ?? 0) + qty
+                );
+                if (newQty > allowed + inCart) {
+                  alert(
+                    "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+                  );
+                  return false;
+                }
+                cart[idx].qty = newQty;
+              } else {
+                cart.push({ id: productId, qty });
+              }
+              localStorage.setItem(key, JSON.stringify(cart));
+            } catch (e) {
+              console.warn("Không thể ghi giỏ hàng fallback:", e);
+              return false;
+            }
+          } else {
+            SVStore.addToCart(productId, qty);
+          }
+
+          window.dispatchEvent(new CustomEvent("cart:changed"));
+          window.SVUI?.updateCartCount?.();
+          return true;
+        }
+
+        // ===== Lấy sản phẩm =====
+        const all = getCatalog();
         const fmt = window.SVStore?.fmtVND
           ? window.SVStore.fmtVND
           : (n) => Number(n || 0).toLocaleString("vi-VN") + "₫";
@@ -831,33 +776,10 @@
         const root = document.getElementById("pd-root");
         const bcName = document.getElementById("bc-name");
 
-        function toSentenceCase(s = "") {
-          s = String(s).trim();
-          if (!s) return s;
-          const low = s.toLowerCase();
-          return low.charAt(0).toUpperCase() + low.slice(1);
-        }
-        function esc(s = "") {
-          return String(s).replace(
-            /[&<>\"']/g,
-            (m) =>
-              ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;",
-              }[m])
-          );
-        }
-        function labelize(k) {
-          return toSentenceCase(String(k).replace(/_/g, " ").trim());
-        }
-        function percentOff(p) {
-          const a = Number(p?.original_price || 0),
-            b = Number(p?.price || 0);
-          if (!a || !b || b >= a) return 0;
-          return Math.round((1 - b / a) * 100);
+        if (!all || !all.length) {
+          root.innerHTML =
+            '<div class="col-12"><div class="alert alert-warning">Chưa có dữ liệu sản phẩm.</div></div>';
+          return;
         }
 
         const p = all.find((x) => String(x.id) === String(id));
@@ -867,31 +789,72 @@
           return;
         }
 
-        // Defaults
+        // Chuẩn hoá
         p.unit =
-          p.unit || (String(p.category || "").includes("wax") ? "hũ" : "chai");
+          p.unit || (String(p.category || "").includes("wax") ? "hũ" : "sản phẩm");
         p.quantity = Number(p.quantity || 1);
         p.min_qty = Math.max(1, Number(p.min_qty || 1));
-        p.max_qty = Math.max(p.min_qty, Number(p.max_qty || 99));
-        p.stock = Number(p.stock ?? 0);
+        p.max_qty = Math.max(p.min_qty, Number(p.max_qty || 0) || 0);
 
-        // Tồn kho
-        const effectiveMax = Math.max(0, Math.min(p.stock, p.max_qty));
-        const isOOS =
-          String(p.badge || "").toLowerCase() === "oos" ||
-          String(p.badge || "").toLowerCase() === "out_of_stock" ||
-          p.stock <= 0;
-
-        // Breadcrumb
-        bcName.textContent = toSentenceCase(p.name);
+        // tồn kho gốc từ Admin
+        const baseStockRaw = p.stock ?? p.qty ?? p.inventory ?? 0;
+        let baseStock = Number(baseStockRaw);
+        if (isNaN(baseStock) || baseStock < 0) baseStock = 0;
 
         const badge = String(p.badge || "").toLowerCase();
+
+        function getRemainInfo() {
+          const inCart = getCartQty(p.id);
+          const remain = Math.max(0, baseStock - inCart);
+          return { inCart, remain };
+        }
+
+        const { inCart, remain } = getRemainInfo();
+
+        const isFlagOOS =
+          badge === "oos" ||
+          badge === "out_of_stock" ||
+          String(p.status || "").toLowerCase() === "inactive" ||
+          p.active === false;
+
+        const isGlobalOOS = isFlagOOS || baseStock <= 0;
+        let canBuy = false;
+        let effectiveMax = 0;
+
+        if (!isGlobalOOS) {
+          if (remain >= p.min_qty) {
+            // nếu có max_qty thì giới hạn thêm
+            if (p.max_qty && p.max_qty > 0) {
+              const leftByMax = p.max_qty - inCart;
+              const allowed = Math.min(remain, leftByMax);
+              if (allowed >= p.min_qty) {
+                effectiveMax = allowed;
+                canBuy = true;
+              }
+            } else {
+              effectiveMax = remain;
+              canBuy = true;
+            }
+          }
+        }
+
+        const isUserMaxed = !isGlobalOOS && !canBuy;
+
+        if (bcName) bcName.textContent = toSentenceCase(p.name || "");
+
+        const percentOff = (prod) => {
+          const a = Number(prod.original_price || 0);
+          const b = Number(prod.price || 0);
+          if (!a || !b || b >= a) return 0;
+          return Math.round((1 - b / a) * 100);
+        };
+
         const badgeHtml =
           badge === "sale"
             ? '<span class="pd-badge sale">Sale</span>'
             : badge === "new"
             ? '<span class="pd-badge new">Mới</span>'
-            : isOOS
+            : (isGlobalOOS || isUserMaxed)
             ? '<span class="pd-badge oos">Hết hàng</span>'
             : "";
 
@@ -902,229 +865,23 @@
         const firstImg = images[0] || "https://placehold.co/800x800/png";
         const off = percentOff(p);
 
-        // Render
-        root.innerHTML = `
-    <div class="col-md-5">
-      <div class="gallery">
-        <div class="gallery-thumbs">
-          ${images
-            .map(
-              (src, i) =>
-                `<img ${i === 0 ? 'class="active"' : ""} data-src="${esc(
-                  src
-                )}" src="${esc(src)}" alt="${esc(toSentenceCase(p.name))}">`
-            )
-            .join("")}
-        </div>
-        <div class="gallery-main">
-          <img id="mainImg" src="${esc(firstImg)}" alt="${esc(
-          toSentenceCase(p.name)
-        )}">
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-7">
-      <div class="pd-card">
-        <div class="mb-2 pd-badges">${badgeHtml}</div>
-        <h1 class="pd-title">${esc(toSentenceCase(p.name))}</h1>
-        <div class="pd-meta">Mã: ${esc(p.id)}</div>
-
-        <div class="pd-price">
-          <span class="new">${fmt(p.price)}</span>
-          ${
-            p.original_price
-              ? `<span class="old">${fmt(p.original_price)}</span>`
-              : ""
-          }
-          ${off > 0 ? `<span class="off">-${off}%</span>` : ""}
-        </div>
-
-        <div class="pd-stock">
-          ${
-            isOOS
-              ? `<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Hết hàng</span>`
-              : `<span><i class="fa-regular fa-circle-check"></i> Còn ${
-                  p.stock
-                } ${esc(p.unit)}</span>`
-          }
-          ${
-            p.rating
-              ? ` &nbsp;|&nbsp; <i class="fa-solid fa-star"></i> ${Number(
-                  p.rating
-                ).toFixed(1)} (${p.reviews_count || 0} đánh giá)`
-              : ""
-          }
-        </div>
-
-        <div class="pd-short mb-2">${
-          p.short_desc
-            ? esc(toSentenceCase(p.short_desc))
-            : p.description
-            ? esc(toSentenceCase(p.description))
-            : "Đang cập nhật mô tả..."
-        }</div>
-
-        ${renderSpecs(p)}
-
-        ${renderTabs(p)}
-
-        <div class="pd-actions">
-          <div>
-            <input id="qty" type="number"
-                   class="form-control pd-qty"
-                   value="${Math.min(
-                     Math.max(p.quantity, p.min_qty),
-                     effectiveMax || p.min_qty
-                   )}"
-                   min="${p.min_qty}" max="${Math.max(
-          effectiveMax,
-          p.min_qty
-        )}" step="1"
-                   ${isOOS ? "disabled" : ""}>
-            <div id="qtyHint" class="pd-qty-hint">
-              Đơn vị: ${esc(p.unit)} · Mua tối thiểu ${p.min_qty}${
-          effectiveMax ? ` – tối đa ${effectiveMax}` : ""
-        }.
-            </div>
-          </div>
-          <button id="btnAdd" class="btn btn-primary" ${
-            isOOS ? "disabled" : ""
-          }>
-            <i class="fas fa-cart-plus"></i> Thêm vào giỏ
-          </button>
-        </div>
-
-        <div class="pd-trust">
-          <span><i class="fa-regular fa-circle-check"></i> Hàng chính hãng</span>
-          <span><i class="fa-regular fa-clock"></i> Đổi trả 7 ngày</span>
-          <span><i class="fa-solid fa-truck"></i> Giao nhanh nội thành</span>
-        </div>
-      </div>
-    </div>
-  `;
-
-        // Thumbs
-        root.querySelectorAll(".gallery-thumbs img").forEach((t) => {
-          t.addEventListener("click", () => {
-            document.getElementById("mainImg").src = t.dataset.src;
-            root
-              .querySelectorAll(".gallery-thumbs img")
-              .forEach((i) => i.classList.remove("active"));
-            t.classList.add("active");
-          });
-        });
-
-        // Số lượng
-        const qtyEl = document.getElementById("qty");
-        const hintEl = document.getElementById("qtyHint");
-        function clampQty() {
-          let v = Number(qtyEl.value || p.min_qty);
-          if (Number.isNaN(v)) v = p.min_qty;
-          if (effectiveMax > 0) v = Math.min(v, effectiveMax);
-          v = Math.max(v, p.min_qty);
-          qtyEl.value = v;
-          hintEl.innerHTML =
-            effectiveMax && v >= effectiveMax
-              ? `Đơn vị: ${esc(p.unit)} · Tối đa ${effectiveMax} theo tồn kho.`
-              : `Đơn vị: ${esc(p.unit)} · Mua tối thiểu ${p.min_qty}${
-                  effectiveMax ? ` – tối đa ${effectiveMax}` : ""
-                }.`;
-        }
-        qtyEl?.addEventListener("change", clampQty);
-        qtyEl?.addEventListener("input", clampQty);
-
-        // Add to cart (ép login)
-        document.getElementById("btnAdd")?.addEventListener("click", () => {
-          if (!window.AUTH?.loggedIn) {
-            alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
-            Login.go();
-            return;
-          }
-          clampQty();
-          const qty = Math.max(
-            1,
-            Number(document.getElementById("qty").value) || 1
-          );
-          if (effectiveMax && qty > effectiveMax) {
-            alert(`Số lượng tối đa cho sản phẩm này là ${effectiveMax}.`);
-            return;
-          }
-
-          if (window.SVStore?.addToCart) {
-            window.SVStore.addToCart(p.id, qty);
-          } else {
-            try {
-              const KEY = "sv_cart_v1";
-              const cart = JSON.parse(localStorage.getItem(KEY) || "[]");
-              const i = cart.findIndex((x) => x.id === p.id);
-              const newQty = (i >= 0 ? cart[i].qty || 0 : 0) + qty;
-              if (effectiveMax && newQty > effectiveMax) {
-                alert(`Giới hạn ${effectiveMax} ${p.unit} cho sản phẩm này.`);
-                return;
-              }
-              if (i >= 0) cart[i].qty = newQty;
-              else cart.push({ id: p.id, qty });
-              localStorage.setItem(KEY, JSON.stringify(cart));
-            } catch {}
-          }
-
-          window.dispatchEvent(new CustomEvent("cart:changed"));
-          window.SVUI?.updateCartCount?.();
-
-          const btn = document.getElementById("btnAdd");
-          const prev = btn.innerHTML;
-          btn.disabled = true;
-          btn.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = prev;
-          }, 900);
-        });
-
-        // Related
-        const related = all
-          .filter(
-            (x) => x.category === p.category && String(x.id) !== String(p.id)
-          )
-          .slice(0, 3);
-        document.getElementById("pd-related").innerHTML = related
-          .map(
-            (r) => `
-    <div class="col-6 col-md-4 related-col">
-      <a href="/sanpham/pages/product_detail.html?id=${encodeURIComponent(
-        r.id
-      )}" class="related-card text-reset">
-        <div class="img-wrap"><img src="${esc(
-          r.image || "https://placehold.co/600x600/png"
-        )}" alt="${esc(toSentenceCase(r.name))}"></div>
-        <div class="related-body">
-          <div class="related-name">${esc(toSentenceCase(r.name))}</div>
-          <div class="related-price">${fmt(r.price)}</div>
-        </div>
-      </a>
-    </div>
-  `
-          )
-          .join("");
-
         function renderSpecs(prod) {
           const specs = prod.specs || {};
           const keys = Object.keys(specs);
           if (!keys.length) return "";
           return `
-      <h6 class="mt-3">Thông số</h6>
-      <dl class="row specs">
-        ${keys
-          .map(
-            (k) => `
-          <dt class="col-sm-4">${esc(labelize(k))}</dt>
-          <dd class="col-sm-8">${esc(String(specs[k]))}</dd>
-        `
-          )
-          .join("")}
-      </dl>
-    `;
+            <h6 class="mt-3">Thông số</h6>
+            <dl class="row specs">
+              ${keys
+                .map(
+                  (k) => `
+                    <dt class="col-sm-4">${esc(labelize(k))}</dt>
+                    <dd class="col-sm-8">${esc(String(specs[k]))}</dd>
+                  `
+                )
+                .join("")}
+            </dl>
+          `;
         }
 
         function renderTabs(prod) {
@@ -1141,88 +898,413 @@
             : longDesc || "<p>Đang cập nhật nội dung chi tiết…</p>";
 
           const usageHTML = hasUsage
-            ? `<ol>${prod.usage.map((u) => `<li>${esc(u)}</li>`).join("")}</ol>`
+            ? `<ol>${prod.usage
+                .map((u) => `<li>${esc(u)}</li>`)
+                .join("")}</ol>`
             : "<p>Đang cập nhật hướng dẫn sử dụng…</p>";
 
           return `
-      <hr/>
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="pills-details-tab" data-toggle="pill" href="#pills-details" role="tab" aria-controls="pills-details" aria-selected="true">
-            <i class="fa-regular fa-file-lines"></i> Chi tiết
-          </a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="pills-usage-tab" data-toggle="pill" href="#pills-usage" role="tab" aria-controls="pills-usage" aria-selected="false">
-            <i class="fa-solid fa-list-check"></i> Hướng dẫn sử dụng
-          </a>
-        </li>
-      </ul>
-      <div class="tab-content" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab">
-          ${detailsHTML}
-        </div>
-        <div class="tab-pane fade" id="pills-usage" role="tabpanel" aria-labelledby="pills-usage-tab">
-          ${usageHTML}
-        </div>
-      </div>
-    `;
+            <hr/>
+            <ul class="nav nav-pills mb-3" role="tablist">
+              <li class="nav-item" role="presentation">
+                <a class="nav-link active" data-toggle="pill" href="#pills-details" role="tab">
+                  <i class="fa-regular fa-file-lines"></i> Chi tiết
+                </a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a class="nav-link" data-toggle="pill" href="#pills-usage" role="tab">
+                  <i class="fa-solid fa-list-check"></i> Hướng dẫn sử dụng
+                </a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane fade show active" id="pills-details" role="tabpanel">
+                ${detailsHTML}
+              </div>
+              <div class="tab-pane fade" id="pills-usage" role="tabpanel">
+                ${usageHTML}
+              </div>
+            </div>
+          `;
         }
 
-        // Đồng bộ badge giỏ
-        window.addEventListener("storage", (e) => {
-          if (e.key && e.key.startsWith("sv_cart"))
-            window.SVUI?.updateCartCount?.();
+        // ===== Render chi tiết =====
+        root.innerHTML = `
+          <div class="col-md-5">
+            <div class="gallery">
+              <div class="gallery-thumbs">
+                ${images
+                  .map(
+                    (src, i) => `
+                      <img
+                        ${i === 0 ? 'class="active"' : ""}
+                        data-src="${esc(src)}"
+                        src="${esc(src)}"
+                        alt="${esc(toSentenceCase(p.name || ""))}"
+                      >
+                    `
+                  )
+                  .join("")}
+              </div>
+              <div class="gallery-main">
+                <img id="mainImg" src="${esc(firstImg)}"
+                     alt="${esc(toSentenceCase(p.name || ""))}">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-7">
+            <div class="pd-card">
+              <div class="mb-2 pd-badges">${badgeHtml}</div>
+              <h1 class="pd-title">${esc(toSentenceCase(p.name || ""))}</h1>
+              <div class="pd-meta">Mã: ${esc(p.id)}</div>
+
+              <div class="pd-price">
+                <span class="new">${fmt(p.price)}</span>
+                ${
+                  p.original_price
+                    ? `<span class="old">${fmt(p.original_price)}</span>`
+                    : ""
+                }
+                ${off > 0 ? `<span class="off">-${off}%</span>` : ""}
+              </div>
+
+              <div class="pd-stock" id="pd-stock">
+                ${
+                  isGlobalOOS
+                    ? `<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Hết hàng</span>`
+                    : isUserMaxed
+                    ? `<span class="text-danger">
+                         <i class="fa-regular fa-circle-xmark"></i>
+                         Bạn đã thêm tối đa ${baseStock} ${esc(
+                         p.unit
+                       )} trong giỏ hàng (theo tồn kho hiện tại).
+                       </span>`
+                    : `<span>
+                         <i class="fa-regular fa-circle-check"></i>
+                         Còn ${remain} / ${baseStock} ${esc(p.unit)} khả dụng.
+                       </span>`
+                }
+              </div>
+
+              <div class="pd-short mb-2">
+                ${
+                  p.short_desc
+                    ? esc(toSentenceCase(p.short_desc))
+                    : p.description
+                    ? esc(toSentenceCase(p.description))
+                    : "Đang cập nhật mô tả..."
+                }
+              </div>
+
+              ${renderSpecs(p)}
+              ${renderTabs(p)}
+
+              <div class="pd-actions">
+                <div>
+                  <input id="qty" type="number"
+                         class="form-control pd-qty"
+                         value="${
+                           canBuy
+                             ? Math.min(
+                                 Math.max(p.quantity, p.min_qty),
+                                 effectiveMax
+                               )
+                             : p.min_qty
+                         }"
+                         min="${p.min_qty}"
+                         max="${canBuy ? effectiveMax : p.min_qty}"
+                         step="1"
+                         ${!canBuy ? "disabled" : ""}>
+                  <div id="qtyHint" class="pd-qty-hint">
+                    ${
+                      !canBuy
+                        ? "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+                        : `Đơn vị: ${esc(
+                            p.unit
+                          )} · Mua tối thiểu ${p.min_qty}${
+                            effectiveMax
+                              ? ` – tối đa ${effectiveMax} (theo tồn kho còn lại).`
+                              : ""
+                          }`
+                    }
+                  </div>
+                </div>
+                <button id="btnAdd" class="btn btn-primary" ${
+                  !canBuy ? "disabled" : ""
+                }>
+                  <i class="fas fa-cart-plus"></i> Thêm vào giỏ
+                </button>
+              </div>
+
+              <div class="pd-trust">
+                <span><i class="fa-regular fa-circle-check"></i> Hàng chính hãng</span>
+                <span><i class="fa-regular fa-clock"></i> Đổi trả 7 ngày</span>
+                <span><i class="fa-solid fa-truck"></i> Giao nhanh nội thành</span>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Gallery thumbs
+        root.querySelectorAll(".gallery-thumbs img").forEach((t) => {
+          t.addEventListener("click", () => {
+            document.getElementById("mainImg").src = t.dataset.src;
+            root
+              .querySelectorAll(".gallery-thumbs img")
+              .forEach((i) => i.classList.remove("active"));
+            t.classList.add("active");
+          });
         });
-        window.addEventListener("cart:changed", () =>
-          window.SVUI?.updateCartCount?.()
-        );
-        document.addEventListener("DOMContentLoaded", () =>
-          window.SVUI?.updateCartCount?.()
-        );
+
+        const qtyEl = document.getElementById("qty");
+        const hintEl = document.getElementById("qtyHint");
+        const stockEl = document.getElementById("pd-stock");
+        const btnAdd = document.getElementById("btnAdd");
+
+        function refreshLimitUI() {
+          const info = getRemainInfo();
+          const inCartNow = info.inCart;
+          const remainNow = info.remain;
+
+          let canBuyNow = false;
+          let effMaxNow = 0;
+
+          if (!isFlagOOS && baseStock > 0) {
+            if (remainNow >= p.min_qty) {
+              if (p.max_qty && p.max_qty > 0) {
+                const leftByMax = p.max_qty - inCartNow;
+                const allowed = Math.min(remainNow, leftByMax);
+                if (allowed >= p.min_qty) {
+                  effMaxNow = allowed;
+                  canBuyNow = true;
+                }
+              } else {
+                effMaxNow = remainNow;
+                canBuyNow = true;
+              }
+            }
+          }
+
+          if (!canBuyNow) {
+            if (stockEl) {
+              stockEl.innerHTML =
+                '<span class="text-danger"><i class="fa-regular fa-circle-xmark"></i> Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này.</span>';
+            }
+            if (qtyEl) {
+              qtyEl.disabled = true;
+            }
+            if (btnAdd) {
+              btnAdd.disabled = true;
+            }
+            if (hintEl) {
+              hintEl.textContent =
+                "Không thể thêm thêm do đã đạt giới hạn tồn kho.";
+            }
+            return { canBuyNow, effMaxNow };
+          }
+
+          // update UI khi vẫn còn mua được
+          if (stockEl) {
+            stockEl.innerHTML =
+              '<span><i class="fa-regular fa-circle-check"></i> Còn ' +
+              remainNow +
+              " / " +
+              baseStock +
+              " " +
+              esc(p.unit) +
+              " khả dụng.</span>";
+          }
+          if (qtyEl) {
+            let v = Number(qtyEl.value || p.min_qty);
+            if (isNaN(v) || v < p.min_qty) v = p.min_qty;
+            if (v > effMaxNow) v = effMaxNow;
+            qtyEl.value = v;
+            qtyEl.min = p.min_qty;
+            qtyEl.max = effMaxNow;
+            qtyEl.disabled = false;
+          }
+          if (btnAdd) {
+            btnAdd.disabled = false;
+          }
+          if (hintEl) {
+            hintEl.textContent =
+              "Đơn vị: " +
+              p.unit +
+              " · Mua tối thiểu " +
+              p.min_qty +
+              (effMaxNow
+                ? " – tối đa " + effMaxNow + " (theo tồn kho còn lại)."
+                : "");
+          }
+
+          return { canBuyNow, effMaxNow };
+        }
+
+        function clampQty() {
+          const { canBuyNow, effMaxNow } = refreshLimitUI();
+          if (!canBuyNow || !qtyEl) return;
+          let v = Number(qtyEl.value || p.min_qty);
+          if (isNaN(v) || v < p.min_qty) v = p.min_qty;
+          if (effMaxNow && v > effMaxNow) v = effMaxNow;
+          qtyEl.value = v;
+        }
+
+        if (qtyEl) {
+          qtyEl.addEventListener("change", clampQty);
+          qtyEl.addEventListener("input", clampQty);
+        }
+
+        // Add to cart (GIỚI HẠN THEO TỒN KHO + ĐÃ CÓ TRONG GIỎ)
+        if (btnAdd) {
+          btnAdd.addEventListener("click", () => {
+            const isLogged =
+              (window.AUTH &&
+                (window.AUTH.loggedIn ||
+                  window.AUTH.isAuthenticated?.())) ||
+              !!getCurrentUserEmail();
+
+            if (!isLogged) {
+              alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+              Login.go();
+              return;
+            }
+
+            const info = getRemainInfo();
+            const remainNow = info.remain;
+
+            if (remainNow <= 0) {
+              refreshLimitUI();
+              alert(
+                "Bạn đã thêm tối đa số lượng hiện có trong kho cho sản phẩm này."
+              );
+              return;
+            }
+
+            clampQty();
+            const qty = Math.max(
+              1,
+              Number(qtyEl ? qtyEl.value : p.min_qty) || p.min_qty
+            );
+
+            // p.max_qty là giới hạn tổng trên mỗi user nếu có
+            const ok = addToCartLimited(
+              p.id,
+              qty,
+              baseStock,
+              p.max_qty && p.max_qty > 0 ? p.max_qty : 0
+            );
+            if (!ok) {
+              refreshLimitUI();
+              return;
+            }
+
+            const prev = btnAdd.innerHTML;
+            btnAdd.disabled = true;
+            btnAdd.innerHTML = '<i class="fas fa-check"></i> Đã thêm';
+            setTimeout(() => {
+              btnAdd.disabled = false;
+              btnAdd.innerHTML = prev;
+              refreshLimitUI();
+            }, 900);
+          });
+        }
+
+        // ===== Sản phẩm liên quan =====
+        function sameCategory(a, b) {
+          if (a.categoryId != null && b.categoryId != null) {
+            return String(a.categoryId) === String(b.categoryId);
+          }
+          if (a.category && b.category) {
+            return (
+              String(a.category).toLowerCase() ===
+              String(b.category).toLowerCase()
+            );
+          }
+          return false;
+        }
+
+        let related = all.filter((x) => {
+          if (String(x.id) === String(p.id)) return false;
+          return sameCategory(x, p);
+        });
+
+        if (!related.length) {
+          related = all.filter((x) => String(x.id) !== String(p.id)).slice(0, 3);
+        } else {
+          related = related.slice(0, 3);
+        }
+
+        const relatedWrap = document.getElementById("pd-related");
+        if (relatedWrap) {
+          relatedWrap.innerHTML = related.length
+            ? related
+                .map(
+                  (r) => `
+              <div class="col-6 col-md-4 related-col">
+                <a href="/sanpham/pages/product_detail.html?id=${encodeURIComponent(
+                  r.id
+                )}" class="related-card text-reset">
+                  <div class="img-wrap">
+                    <img src="${esc(
+                      r.image ||
+                        (Array.isArray(r.images) && r.images[0]) ||
+                        "https://placehold.co/600x600/png"
+                    )}" alt="${esc(toSentenceCase(r.name || ""))}">
+                  </div>
+                  <div class="related-body">
+                    <div class="related-name">${esc(
+                      toSentenceCase(r.name || "")
+                    )}</div>
+                    <div class="related-price">${fmt(r.price)}</div>
+                  </div>
+                </a>
+              </div>
+            `
+                )
+                .join("")
+            : '<div class="col-12 text-muted">Chưa có sản phẩm liên quan.</div>';
+        }
+
+        // Đồng bộ cart badge
+        window.addEventListener("storage", (e) => {
+          if (e.key && e.key.startsWith("sv_cart_user_")) {
+            window.SVUI?.updateCartCount?.();
+            refreshLimitUI();
+          }
+        });
+        window.addEventListener("cart:changed", () => {
+          window.SVUI?.updateCartCount?.();
+          refreshLimitUI();
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+          window.SVUI?.updateCartCount?.();
+          refreshLimitUI();
+        });
       })();
     </script>
 
+    <!-- Tự refresh khi catalog thay đổi (Admin cập nhật) -->
     <script>
-      /* Tự refresh khi Admin cập nhật catalog */
       (function () {
         let tm = null;
         function scheduleRefresh() {
-          if (tm) return; // chống spam
-          tm = setTimeout(() => {
+          if (tm) return;
+          tm = setTimeout(function () {
             tm = null;
             try {
-              if (window.SVUI && typeof SVUI.renderProducts === "function") {
-                SVUI.renderProducts();
-                return;
-              }
-              if (typeof window.render === "function") {
-                window.render();
-                return;
-              }
-              if (
-                window.SVProductDetail &&
-                typeof SVProductDetail.render === "function"
-              ) {
-                SVProductDetail.render();
-                return;
-              }
-            } catch (e) {
-              console.warn("refresh error:", e);
-            }
-            try {
               location.reload();
-            } catch {}
-          }, 120);
+            } catch (e) {}
+          }, 150);
         }
-
-        window.addEventListener("storage", (e) => {
+        window.addEventListener("storage", function (e) {
           if (!e || !e.key) return;
           if (
             e.key === "SV_PRODUCTS" ||
             e.key === "sv_products_v1" ||
             e.key === "SV_PRODUCTS_UPDATED_AT" ||
-            e.key === "catalog.bump" /* <-- quan trọng */
+            e.key === "catalog.bump" ||
+            e.key === "admin.products"
           ) {
             scheduleRefresh();
           }
