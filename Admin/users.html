@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <!-- GUARD: chưa đăng nhập admin -> quay về /Admin/login.html -->
     <script>
       (function () {
@@ -18,14 +19,14 @@
     </script>
 
     <title>Quản lý người dùng | Nobility 1800s Admin</title>
-    <!-- dùng đường dẫn TƯƠNG ĐỐI -->
+
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
     <style>
-      /* Fit với theme admin sẵn có */
       .page {
         padding: 14px 16px;
       }
@@ -136,6 +137,7 @@
         text-align: center;
         padding: 20px;
       }
+
       .modal {
         position: fixed;
         inset: 0;
@@ -187,6 +189,7 @@
       }
     </style>
   </head>
+
   <body>
     <div class="container">
       <!-- SIDEBAR -->
@@ -233,7 +236,6 @@
               ><span class="title">Phiếu nhập hàng</span></a
             >
           </li>
-
           <li id="nav-inventory">
             <a href="./inventory.html"
               ><span class="icon"
@@ -249,7 +251,6 @@
             >
           </li>
           <hr />
-          <!-- Chào mừng, Admin -->
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -281,7 +282,6 @@
     </div>
 
     <div class="main">
-      <!-- KHÔNG dùng topbar search ở trang này -->
       <div class="page">
         <div class="page-header">
           <h1>Quản lý người dùng</h1>
@@ -329,7 +329,7 @@
       </div>
     </div>
 
-    <!-- Modal: Add / Edit user -->
+    <!-- Modal Add/Edit -->
     <div class="modal" id="modalUser">
       <div class="card">
         <div class="card-header">
@@ -341,20 +341,24 @@
         <div class="card-body">
           <div class="grid-2">
             <div>
-              <label class="small">Họ tên</label>
-              <input class="input" id="uName" placeholder="Nguyễn Văn A" />
+              <label class="small">Họ tên</label
+              ><input class="input" id="uName" placeholder="Nguyễn Văn A" />
             </div>
             <div>
-              <label class="small">Email</label>
-              <input class="input" id="uEmail" placeholder="email@domain.com" />
+              <label class="small">Email</label
+              ><input
+                class="input"
+                id="uEmail"
+                placeholder="email@domain.com"
+              />
             </div>
             <div>
-              <label class="small">Số điện thoại</label>
-              <input class="input" id="uPhone" placeholder="09xx..." />
+              <label class="small">Số điện thoại</label
+              ><input class="input" id="uPhone" placeholder="09xx..." />
             </div>
             <div>
-              <label class="small">Địa chỉ</label>
-              <input
+              <label class="small">Địa chỉ</label
+              ><input
                 class="input"
                 id="uAddress"
                 placeholder="Địa chỉ giao hàng"
@@ -395,7 +399,7 @@
       </div>
     </div>
 
-    <!-- Ionicons -->
+    <!-- Libs -->
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
@@ -405,10 +409,10 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
 
-    <!-- JS chung của admin (toggle menu, active sidebar) -->
+    <!-- JS chung admin -->
     <script src="./assets/js/main.js"></script>
 
-    <!-- Logic Users (giữ nguyên của bạn, chỉ dời vào đây) -->
+    <!-- Logic Users -->
     <script>
       (function () {
         const LS_USERS = "sv_users_v1";
@@ -416,7 +420,6 @@
         const BS_USERS = "bs_users";
 
         const $ = (s) => document.querySelector(s);
-        const $$ = (s) => Array.from(document.querySelectorAll(s));
 
         function loadJSON(key, def) {
           try {
@@ -544,8 +547,10 @@
           saveJSON(BS_USERS, bs);
         }
 
+        // 🔴 SỬA HÀM setStatus: phát tín hiệu "kick" khi khóa
         function setStatus(email, newStatus) {
           const emailLC = String(email || "").toLowerCase();
+
           const sv = loadJSON(LS_USERS, []);
           const idx = sv.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -554,6 +559,7 @@
             sv[idx].status = newStatus;
             saveJSON(LS_USERS, sv);
           }
+
           const bs = loadJSON(BS_USERS, []);
           const bidx = bs.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -562,10 +568,20 @@
             bs[bidx].status = newStatus;
             saveJSON(BS_USERS, bs);
           }
+
+          // Phát “kick” để các tab user logout ngay
+          if (newStatus === "locked") {
+            localStorage.setItem(`auth.kick.${emailLC}`, String(Date.now()));
+          } else {
+            // bump để client (nếu đang mở) tự check lại
+            localStorage.setItem(`auth.bump.${emailLC}`, String(Date.now()));
+          }
         }
+
         function resetPassword(email, newPass) {
           const emailLC = String(email || "").toLowerCase();
           if (!newPass) throw new Error("Thiếu mật khẩu mới");
+
           const sv = loadJSON(LS_USERS, []);
           const idx = sv.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -574,6 +590,7 @@
             sv[idx].passHash = fnv1a(newPass);
             saveJSON(LS_USERS, sv);
           }
+
           const bs = loadJSON(BS_USERS, []);
           const bidx = bs.findIndex(
             (u) => String(u.email || "").toLowerCase() === emailLC
@@ -590,7 +607,7 @@
 
         function esc(s) {
           return String(s || "").replace(
-            /[&<>"']/g,
+            /[&<>\"']/g,
             (m) =>
               ({
                 "&": "&amp;",
@@ -610,6 +627,7 @@
           const q = (searchBox.value || "").trim().toLowerCase();
           const status = filterStatus.value;
           let list = getUsersMerged();
+
           if (q)
             list = list.filter((u) =>
               [u.name, u.email, u.phone].some((x) =>
@@ -630,34 +648,36 @@
           tbody.innerHTML = list
             .map(
               (u) => `
-        <tr>
-          <td><strong>${esc(u.name || "")}</strong></td>
-          <td>${esc(u.email || "")}</td>
-          <td>${esc(u.phone || "")}</td>
-          <td><span class="chip">${esc(u.role || "member")}</span></td>
-          <td><span class="status ${
-            u.status === "locked" ? "locked" : "active"
-          }">${u.status === "locked" ? "Đã khóa" : "Đang hoạt động"}</span></td>
-          <td>${formatDate(u.createdAt)}</td>
-          <td>
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn" title="Đổi mật khẩu" onclick="UsersUI.promptReset('${
-                u.email
-              }')">
-                <i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span>
-              </button>
-              ${
-                u.status === "locked"
-                  ? `<button class="btn" title="Mở khóa tài khoản" onclick="UsersUI.unlock('${u.email}')">
-                     <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
-                   </button>`
-                  : `<button class="btn" title="Khóa tài khoản" onclick="UsersUI.lock('${u.email}')">
-                     <i class="fa-solid fa-lock"></i><span>Khóa tài khoản</span>
-                   </button>`
-              }
-            </div>
-          </td>
-        </tr>`
+            <tr>
+              <td><strong>${esc(u.name || "")}</strong></td>
+              <td>${esc(u.email || "")}</td>
+              <td>${esc(u.phone || "")}</td>
+              <td><span class="chip">${esc(u.role || "member")}</span></td>
+              <td><span class="status ${
+                u.status === "locked" ? "locked" : "active"
+              }">${
+                u.status === "locked" ? "Đã khóa" : "Đang hoạt động"
+              }</span></td>
+              <td>${formatDate(u.createdAt)}</td>
+              <td>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn" title="Đổi mật khẩu" onclick="UsersUI.promptReset('${
+                    u.email
+                  }')">
+                    <i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span>
+                  </button>
+                  ${
+                    u.status === "locked"
+                      ? `<button class="btn" title="Mở khóa tài khoản" onclick="UsersUI.unlock('${u.email}')">
+                         <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
+                       </button>`
+                      : `<button class="btn" title="Khóa tài khoản" onclick="UsersUI.lock('${u.email}')">
+                         <i class="fa-solid fa-lock"></i><span>Khóa tài khoản</span>
+                       </button>`
+                  }
+                </div>
+              </td>
+            </tr>`
             )
             .join("");
         }
@@ -715,9 +735,11 @@
           const address = uAddress.value.trim();
           const pass = uPassword.value;
           const role = uRole.value;
+
           if (!name || !email) return toast("Vui lòng nhập Họ tên và Email.");
           if (pass && pass.length < 4)
             return toast("Mật khẩu tối thiểu 4 ký tự.");
+
           try {
             upsertUser({
               name,

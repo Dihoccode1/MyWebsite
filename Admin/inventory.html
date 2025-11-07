@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Quản lý tồn kho & Báo cáo | Nobility 1800s Admin</title>
     <link rel="stylesheet" href="./assets/css/style.css" />
 
@@ -56,7 +55,8 @@
       .input,
       select,
       input[type="date"],
-      input[type="number"] {
+      input[type="number"],
+      input[type="datetime-local"] {
         border: 1px solid #e5e7eb;
         border-radius: 10px;
         padding: 10px 12px;
@@ -119,11 +119,6 @@
         border-color: #fed7aa;
         color: #9a3412;
       }
-      .status.ok {
-        background: #ecfdf5;
-        border-color: #a7f3d0;
-        color: #065f46;
-      }
       .grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -146,21 +141,11 @@
         color: #6b7280;
         font-size: 12px;
       }
-      .chip {
-        display: inline-block;
-        border: 1px solid #e5e7eb;
-        border-radius: 999px;
-        padding: 2px 8px;
-        font-size: 12px;
-      }
       .right {
         margin-left: auto;
       }
       .nowrap {
         white-space: nowrap;
-      }
-      .warn {
-        color: #b45309;
       }
     </style>
   </head>
@@ -170,71 +155,61 @@
       <div class="navagation">
         <ul>
           <li>
-            <a href="./index.html">
-              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
-              <span class="title">Nobility 1800s</span>
-            </a>
+            <a href="./index.html"
+              ><span class="icon"><ion-icon name="logo-apple"></ion-icon></span
+              ><span class="title">Nobility 1800s</span></a
+            >
           </li>
           <li id="nav-dashboard">
-            <a href="./index.html">
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
-              <span class="title">Bảng điều khiển</span>
-            </a>
+            <a href="./index.html"
+              ><span class="icon"
+                ><ion-icon name="home-outline"></ion-icon></span
+              ><span class="title">Bảng điều khiển</span></a
+            >
           </li>
           <li id="nav-customers">
-            <a href="./users.html">
-              <span class="icon"
-                ><ion-icon name="people-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý khách hàng</span>
-            </a>
+            <a href="./users.html"
+              ><span class="icon"
+                ><ion-icon name="people-outline"></ion-icon></span
+              ><span class="title">Quản lý khách hàng</span></a
+            >
           </li>
           <li id="nav-categories">
-            <a href="./categories.html">
-              <span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý danh mục</span>
-            </a>
+            <a href="./categories.html"
+              ><span class="icon"
+                ><ion-icon name="bookmarks-outline"></ion-icon></span
+              ><span class="title">Quản lý danh mục</span></a
+            >
           </li>
           <li id="nav-products">
-            <a href="./products.html">
-              <span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý sản phẩm</span>
-            </a>
+            <a href="./products.html"
+              ><span class="icon"
+                ><ion-icon name="bag-remove-outline"></ion-icon></span
+              ><span class="title">Quản lý sản phẩm</span></a
+            >
           </li>
           <li id="nav-imports">
-            <a href="./imports.html">
-              <span class="icon"
-                ><ion-icon name="download-outline"></ion-icon
-              ></span>
-              <span class="title">Phiếu nhập hàng</span>
-            </a>
+            <a href="./imports.html"
+              ><span class="icon"
+                ><ion-icon name="download-outline"></ion-icon></span
+              ><span class="title">Phiếu nhập hàng</span></a
+            >
           </li>
           <li id="nav-inventory" class="hovered">
-            <a href="./inventory.html">
-              <span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý hàng tồn kho</span>
-            </a>
+            <a href="./inventory.html"
+              ><span class="icon"
+                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
+              ><span class="title">Quản lý hàng tồn kho</span></a
+            >
           </li>
           <li id="nav-orders">
-            <a href="./orders.html">
-              <span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon
-              ></span>
-              <span class="title">Quản lý đơn hàng</span>
-            </a>
+            <a href="./orders.html"
+              ><span class="icon"
+                ><ion-icon name="newspaper-outline"></ion-icon></span
+              ><span class="title">Quản lý đơn hàng</span></a
+            >
           </li>
-
           <hr />
-
-          <!-- 👋 Welcome tile -->
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -249,18 +224,16 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon>
-              <span>Chào mừng, Admin</span>
+              <ion-icon name="person-circle-outline"></ion-icon
+              ><span>Chào mừng, Admin</span>
             </div>
           </li>
-
           <li>
-            <a href="#" id="btn-logout-side">
-              <span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon
-              ></span>
-              <span class="title">Đăng xuất</span>
-            </a>
+            <a href="#" id="btn-logout-side"
+              ><span class="icon"
+                ><ion-icon name="log-in-outline"></ion-icon></span
+              ><span class="title">Đăng xuất</span></a
+            >
           </li>
         </ul>
       </div>
@@ -358,7 +331,7 @@
           </div>
         </div>
 
-        <!-- Khối 3: Cảnh báo sắp hết hàng -->
+        <!-- Khối 3: Cảnh báo sắp hết -->
         <div class="box">
           <h3>Cảnh báo sắp hết hàng</h3>
           <div class="grid-3" style="margin-bottom: 10px">
@@ -425,7 +398,7 @@
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
 
-    <!-- App -->
+    <!-- App (đường dẫn đúng theo cây thư mục bạn chụp) -->
     <script src="../assets/js/products.seed.js"></script>
     <script src="./assets/js/main.js"></script>
     <script src="./assets/js/inventory.js"></script>
