@@ -3,12 +3,12 @@
   "use strict";
 
   // ======================= KEYS & FLAGS =======================
-  const LS_USERS = "sv_users_v1"; // [{name,email,passHash,createdAt}]
-  const LS_AUTH = "sv_auth_user_v1"; // {name,email,loginAt}
+  const LS_USERS = "sv_users_v1"; // danh sách user thật
+  const LS_AUTH = "sv_auth_user_v1"; // user đang đăng nhập
 
-  // Cờ chống auto-login DEMO: chỉ được set khi đăng nhập qua form/hàm AUTH.login
-  const LOGIN_INTENT_FLAG = "sv_auth_via_login"; // sessionStorage flag
-  const DEMO_EMAIL = "khachhang1@demo.local"; // email tài khoản DEMO
+  // cờ để biết là vừa login bằng form
+  const LOGIN_INTENT_FLAG = "sv_auth_via_login";
+  const DEMO_EMAIL = "khachhang1@demo.local"; // demo account
 
   // ======================= HELPERS =======================
   function qs(sel, root) {
@@ -26,10 +26,13 @@
       return "";
     }
   }
+
+  // 💡 SỬA: trỏ đúng trang login của bạn
   function redirectToLogin() {
     const back = makeBackParam();
-    w.location.href = "/login.html" + (back ? "?redirect=" + back : "");
+    w.location.href = "/account/login.html" + (back ? "?redirect=" + back : "");
   }
+
   function escapeHtml(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) {
       return {
@@ -52,6 +55,7 @@
   function saveUsers(list) {
     localStorage.setItem(LS_USERS, JSON.stringify(list || []));
   }
+
   function getAuth() {
     try {
       return JSON.parse(localStorage.getItem(LS_AUTH) || "null");
@@ -65,7 +69,7 @@
     d.dispatchEvent(new Event("auth:changed"));
   }
 
-  // Tiny hash (NOT secure; for demo only)
+  // hash demo
   function hash(s) {
     s = String(s || "");
     let h = 2166136261 >>> 0;
@@ -76,15 +80,28 @@
     return (h >>> 0).toString(16);
   }
 
-  /* ===================== DEMO BUYER (GIẢ LẬP) ===================== */
-  // Chỉ phục vụ đăng nhập mua hàng cho tài khoản cố định khachhang1 / 123456
+  // ============= DEMO USER =============
   const DEMO_BUYER = Object.freeze({
     username: "khachhang1",
     email: DEMO_EMAIL,
     name: "Khách hàng 1",
     passHash: hash("123456"),
   });
-  /* ================================================================ */
+
+  // đảm bảo demo user luôn có trong sv_users_v1
+  function ensureDemoUserExists() {
+    const users = loadUsers();
+    const has = users.some((u) => u.email === DEMO_EMAIL);
+    if (!has) {
+      users.push({
+        name: DEMO_BUYER.name,
+        email: DEMO_BUYER.email,
+        passHash: DEMO_BUYER.passHash,
+        createdAt: new Date().toISOString(),
+      });
+      saveUsers(users);
+    }
+  }
 
   const AUTH = {
     ready: false,
@@ -93,12 +110,16 @@
     _queue: [],
 
     check: function () {
-      const cur = getAuth();
-
       const current = getAuth();
+
       AUTH.loggedIn = !!current;
       AUTH.user = current ? { name: current.name, email: current.email } : null;
       AUTH.ready = true;
+
+      // 💡 nếu đang login bằng demo nhưng bảng user không có thì chèn vào
+      if (AUTH.user && AUTH.user.email === DEMO_EMAIL) {
+        ensureDemoUserExists();
+      }
 
       AUTH.updateAuthUI();
 
@@ -147,7 +168,7 @@
             '</strong> · <a href="#" data-logout>Đăng xuất</a>';
         } else {
           chip.innerHTML =
-            '<a href="/login.html">Đăng nhập</a> / <a href="/register.html">Đăng ký</a>';
+            '<a href="/account/login.html">Đăng nhập</a> / <a href="/account/register.html">Đăng ký</a>';
         }
       }
     },
@@ -183,16 +204,19 @@
     },
 
     login: function (emailOrUsername, password) {
-      // ===== Nhánh DEMO: cho phép khachhang1 / 123456 =====
       var id = String(emailOrUsername || "")
         .trim()
         .toLowerCase();
       var pwd = String(password || "");
-      var isDemoUser =
-        id === DEMO_BUYER.username || id === DEMO_BUYER.email.toLowerCase();
       if (!id || !pwd) throw new Error("Vui lòng nhập email và mật khẩu.");
 
-      if (isDemoUser && hash(pwd) === DEMO_BUYER.passHash) {
+      // nhánh DEMO
+      var isDemo =
+        id === DEMO_BUYER.username || id === DEMO_BUYER.email.toLowerCase();
+      if (isDemo && hash(pwd) === DEMO_BUYER.passHash) {
+        // 💡 chèn luôn vào sv_users_v1 để mấy file enforcer không chửi
+        ensureDemoUserExists();
+
         setAuth({
           name: DEMO_BUYER.name,
           email: DEMO_BUYER.email,
@@ -204,12 +228,13 @@
         return { name: DEMO_BUYER.name, email: DEMO_BUYER.email };
       }
 
-      // ===== Login LocalStorage bình thường =====
-      const email = id; // chuẩn hoá ở trên
+      // login thường
+      const email = id;
       const users = loadUsers();
       const u = users.find((u) => u.email === email);
-      if (!u || u.passHash !== hash(pwd))
+      if (!u || u.passHash !== hash(pwd)) {
         throw new Error("Thông tin đăng nhập không đúng.");
+      }
 
       setAuth({
         name: u.name,
@@ -232,48 +257,56 @@
 
   // ======================= GUARDS =======================
   function installGuards() {
-    // Chặn nút Thêm vào giỏ nếu chưa đăng nhập
-    d.addEventListener(
-      "click",
-      function (e) {
-        var btn =
-          e.target &&
-          e.target.closest(
-            ".btn-add-cart, [data-add-to-cart], .js-add-to-cart"
-          );
-        if (!btn) return;
-        if (!AUTH.loggedIn) {
-          e.preventDefault();
-          e.stopImmediatePropagation && e.stopImmediatePropagation();
-          redirectToLogin();
-        }
-      },
-      true
-    );
+    // nếu đang ở trang thanh toán thì đừng chặn
+    var path = location.pathname;
+    var isCheckout =
+      path.includes("checkout") ||
+      path.includes("thanhtoan") ||
+      path.includes("thanh-toan");
 
-    // Chặn form mua nhanh nếu chưa đăng nhập
-    d.addEventListener(
-      "submit",
-      function (e) {
-        var form = e.target && e.target.closest("#buyForm, .js-buy-form");
-        if (!form) return;
-        if (!AUTH.loggedIn) {
-          e.preventDefault();
-          e.stopImmediatePropagation && e.stopImmediatePropagation();
-          redirectToLogin();
-        }
-      },
-      true
-    );
+    if (!isCheckout) {
+      // chặn add-to-cart khi chưa login
+      d.addEventListener(
+        "click",
+        function (e) {
+          var btn =
+            e.target &&
+            e.target.closest(
+              ".btn-add-cart, [data-add-to-cart], .js-add-to-cart"
+            );
+          if (!btn) return;
+          if (!AUTH.loggedIn) {
+            e.preventDefault();
+            e.stopImmediatePropagation && e.stopImmediatePropagation();
+            redirectToLogin();
+          }
+        },
+        true
+      );
 
-    // Đăng xuất
+      // chặn form mua nhanh
+      d.addEventListener(
+        "submit",
+        function (e) {
+          var form = e.target && e.target.closest("#buyForm, .js-buy-form");
+          if (!form) return;
+          if (!AUTH.loggedIn) {
+            e.preventDefault();
+            e.stopImmediatePropagation && e.stopImmediatePropagation();
+            redirectToLogin();
+          }
+        },
+        true
+      );
+    }
+
+    // nút logout
     d.addEventListener("click", function (e) {
       var out = e.target && e.target.closest("[data-logout]");
       if (!out) return;
       e.preventDefault();
       AUTH.logout();
       AUTH.check();
-      // Ở lại trang; UI sẽ tự cập nhật
     });
   }
 
