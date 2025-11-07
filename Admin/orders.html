@@ -4,7 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý đơn hàng | Nobility 1800s Admin</title>
+
+    <!-- GUARD: chưa đăng nhập admin -> quay về ./login.html -->
+    <script>
+      (function () {
+        try {
+          const u = JSON.parse(
+            sessionStorage.getItem("session.user") || "null"
+          );
+          if (!u || u.role !== "admin") location.replace("./login.html");
+        } catch {
+          location.replace("./login.html");
+        }
+      })();
+    </script>
+
+    <!-- CSS admin chung -->
     <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Font Awesome (đồng bộ với các trang khác) -->
+    <link
+      rel="stylesheet"
+      href="../fontawesome-free-6.7.2-web/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     <style>
       .page {
         padding: 14px 16px;
@@ -66,6 +91,7 @@
         background: #fff;
         cursor: pointer;
         font-weight: 700;
+        font-size: 13px;
       }
       .btn.primary {
         background: #1f235a;
@@ -110,19 +136,19 @@
         inset: 0;
         background: rgba(0, 0, 0, 0.35);
         display: none;
+        align-items: center;
+        justify-content: center;
         z-index: 998;
       }
       .modal.show {
-        display: block;
+        display: flex;
       }
       .modal .panel {
-        position: absolute;
-        inset: 40px 0 0;
-        max-width: 920px;
-        margin: 0 auto;
         background: #fff;
         border-radius: 14px;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        width: min(920px, 96vw);
+        max-height: 90vh;
         display: flex;
         flex-direction: column;
       }
@@ -132,6 +158,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 8px;
       }
       .panel .bd {
         padding: 12px 16px;
@@ -145,6 +172,7 @@
       .kv {
         display: flex;
         gap: 8px;
+        margin-bottom: 4px;
       }
       .kv .k {
         width: 120px;
@@ -156,81 +184,70 @@
         margin: 10px 0;
       }
     </style>
-
-    <script>
-      (function () {
-        try {
-          const u = JSON.parse(
-            sessionStorage.getItem("session.user") || "null"
-          );
-          if (!u || u.role !== "admin") location.replace("./login.html");
-        } catch {
-          location.replace("./login.html");
-        }
-      })();
-    </script>
   </head>
+
   <body>
     <div class="container">
       <div class="navagation">
         <ul>
           <li>
-            <a href="./index.html"
-              ><span class="icon"><ion-icon name="logo-apple"></ion-icon></span
-              ><span class="title">Nobility 1800s</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><i class="fa-brands fa-apple"></i></span>
+              <span class="title">Nobility 1800s</span>
+            </a>
           </li>
+
           <li id="nav-dashboard">
-            <a href="./index.html"
-              ><span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span
-              ><span class="title">Bảng điều khiển</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><i class="fa-solid fa-house"></i></span>
+              <span class="title">Bảng điều khiển</span>
+            </a>
           </li>
+
           <li id="nav-customers">
-            <a href="./users.html"
-              ><span class="icon"
-                ><ion-icon name="people-outline"></ion-icon></span
-              ><span class="title">Quản lý khách hàng</span></a
-            >
+            <a href="./users.html">
+              <span class="icon"><i class="fa-solid fa-user"></i></span>
+              <span class="title">Quản lý khách hàng</span>
+            </a>
           </li>
+
           <li id="nav-categories">
-            <a href="./categories.html"
-              ><span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon></span
-              ><span class="title">Quản lý danh mục</span></a
-            >
+            <a href="./categories.html">
+              <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="title">Quản lý danh mục</span>
+            </a>
           </li>
+
           <li id="nav-products">
-            <a href="./products.html"
-              ><span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon></span
-              ><span class="title">Quản lý sản phẩm</span></a
-            >
+            <a href="./products.html">
+              <span class="icon"><i class="fa-solid fa-tags"></i></span>
+              <span class="title">Quản lý sản phẩm</span>
+            </a>
           </li>
+
           <li id="nav-imports">
-            <a href="./imports.html"
-              ><span class="icon"
-                ><ion-icon name="download-outline"></ion-icon></span
-              ><span class="title">Phiếu nhập hàng</span></a
-            >
+            <a href="./imports.html">
+              <span class="icon"><i class="fa-solid fa-box-open"></i></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
           </li>
+
           <li id="nav-inventory">
             <a href="./inventory.html">
-              <span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon
-              ></span>
+              <span class="icon"><i class="fa-solid fa-warehouse"></i></span>
               <span class="title">Quản lý hàng tồn kho</span>
             </a>
           </li>
+
           <li class="hovered" id="nav-orders">
-            <a href="./orders.html"
-              ><span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon></span
-              ><span class="title">Quản lý đơn hàng</span></a
-            >
+            <a href="./orders.html">
+              <span class="icon"><i class="fa-solid fa-receipt"></i></span>
+              <span class="title">Quản lý đơn hàng</span>
+            </a>
           </li>
+
           <hr />
+
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -245,16 +262,18 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon
-              ><span>Chào mừng, Admin</span>
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Chào mừng, Admin</span>
             </div>
           </li>
+
           <li>
-            <a href="#" id="btn-logout-side"
-              ><span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon></span
-              ><span class="title">Đăng xuất</span></a
-            >
+            <a href="#" id="btn-logout-side">
+              <span class="icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </span>
+              <span class="title">Đăng xuất</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -272,7 +291,7 @@
             id="q"
             class="input"
             type="text"
-            placeholder="Tìm mã đơn / tên / sđt / địa chỉ..."
+            placeholder="Tìm mã đơn / tên / SĐT / địa chỉ..."
           />
           <input id="from" class="input" type="date" />
           <input id="to" class="input" type="date" />
@@ -323,18 +342,22 @@
       </div>
     </div>
 
+    <!-- Modal chi tiết đơn -->
     <div id="od-modal" class="modal" aria-hidden="true">
       <div class="panel">
         <div class="hd">
           <h3 id="od-title" style="margin: 0">Chi tiết đơn</h3>
-          <div style="display: flex; gap: 8px; align-items: center">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
             <select id="od-status" class="input">
               <option value="new">Chưa xử lý</option>
               <option value="confirmed">Đã xác nhận</option>
               <option value="delivered">Đã giao</option>
               <option value="canceled">Đã huỷ</option>
             </select>
-            <button class="btn primary" id="btnUpdateStatus">Cập nhật</button>
+            <button class="btn primary" id="btnUpdateStatus">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Cập nhật</span>
+            </button>
             <button class="btn" id="btnClose">Đóng</button>
           </div>
         </div>
@@ -401,19 +424,14 @@
       </div>
     </div>
 
+    <!-- JS chung -->
     <script src="./assets/js/main.js"></script>
-    <script
-      type="module"
-      src="./assets/js/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="./assets/js/ionicons.js"
-    ></script>
 
+    <!-- Logic đơn hàng -->
     <script src="./assets/js/order.js"></script>
+
     <script>
-      // Xử lý nút Đăng xuất
+      // Đăng xuất sidebar
       document
         .getElementById("btn-logout-side")
         ?.addEventListener("click", (e) => {
@@ -421,6 +439,32 @@
           sessionStorage.removeItem("session.user");
           location.href = "./login.html";
         });
+
+      // Modal handlers (phần chi tiết đơn, cho order.js gọi)
+      (function () {
+        const modal = document.getElementById("od-modal");
+        const btnClose = document.getElementById("btnClose");
+
+        function openModal() {
+          modal.classList.add("show");
+          modal.setAttribute("aria-hidden", "false");
+        }
+        function closeModal() {
+          modal.classList.remove("show");
+          modal.setAttribute("aria-hidden", "true");
+        }
+
+        btnClose.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeModal();
+        });
+
+        // Cho order.js sử dụng
+        window.AdminOrderModal = { open: openModal, close: closeModal };
+      })();
     </script>
   </body>
 </html>

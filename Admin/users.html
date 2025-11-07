@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../fontawesome-free-6.7.2-web/css/all.min.css">
 
-    <!-- GUARD: chưa đăng nhập admin -> quay về /Admin/login.html -->
+    <!-- GUARD: chưa đăng nhập admin -> quay về ./login.html -->
     <script>
       (function () {
         try {
@@ -23,10 +24,12 @@
     <!-- CSS admin chung -->
     <link rel="stylesheet" href="./assets/css/style.css" />
 
-    <!-- Icons -->
+    <!-- Font Awesome (dùng CDN cho chắc, khỏi lo path) -->
     <link
       rel="stylesheet"
-      href="../fontawesome-free-6.7.2-web/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
 
     <style>
@@ -47,6 +50,8 @@
       .actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
       }
       .btn {
         display: inline-flex;
@@ -214,62 +219,62 @@
         <ul>
           <li>
             <a href="./index.html">
-              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+              <span class="icon"><i class="fa-brands fa-apple"></i></span>
               <span class="title">Nobility 1800s</span>
             </a>
           </li>
+
           <li id="nav-dashboard">
             <a href="./index.html">
-              <span class="icon"
-                ><ion-icon name="home-outline"></ion-icon
-              ></span>
+              <span class="icon"><i class="fa-solid fa-house"></i></span>
               <span class="title">Bảng điều khiển</span>
             </a>
           </li>
+
           <li class="hovered" id="nav-customers">
             <a href="./users.html">
-              <span class="icon"
-                ><ion-icon name="people-outline"></ion-icon
-              ></span>
+              <span class="icon"><i class="fa-solid fa-user-group"></i></span>
               <span class="title">Quản lý khách hàng</span>
             </a>
           </li>
+
           <li id="nav-categories">
-            <a href="./categories.html"
-              ><span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon></span
-              ><span class="title">Quản lý danh mục</span></a
-            >
+            <a href="./categories.html">
+              <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="title">Quản lý danh mục</span>
+            </a>
           </li>
+
           <li id="nav-products">
-            <a href="./products.html"
-              ><span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon></span
-              ><span class="title">Quản lý sản phẩm</span></a
-            >
+            <a href="./products.html">
+              <span class="icon"><i class="fa-solid fa-tags"></i></span>
+              <span class="title">Quản lý sản phẩm</span>
+            </a>
           </li>
+
           <li id="nav-imports">
-            <a href="./imports.html"
-              ><span class="icon"
-                ><ion-icon name="download-outline"></ion-icon></span
-              ><span class="title">Phiếu nhập hàng</span></a
-            >
+            <a href="./imports.html">
+              <span class="icon"><i class="fa-solid fa-box-open"></i></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
           </li>
+
           <li id="nav-inventory">
-            <a href="./inventory.html"
-              ><span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
-              ><span class="title">Quản lý hàng tồn kho</span></a
-            >
+            <a href="./inventory.html">
+              <span class="icon"><i class="fa-solid fa-warehouse"></i></span>
+              <span class="title">Quản lý hàng tồn kho</span>
+            </a>
           </li>
+
           <li id="nav-orders">
-            <a href="./orders.html"
-              ><span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon></span
-              ><span class="title">Quản lý đơn hàng</span></a
-            >
+            <a href="./orders.html">
+              <span class="icon"><i class="fa-solid fa-receipt"></i></span>
+              <span class="title">Quản lý đơn hàng</span>
+            </a>
           </li>
+
           <hr />
+
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -284,15 +289,16 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon>
+              <i class="fa-solid fa-user-shield"></i>
               <span id="admin-username">Admin</span>
             </div>
           </li>
+
           <li>
             <a href="#" id="btn-logout-side">
-              <span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon
-              ></span>
+              <span class="icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </span>
               <span class="title">Đăng xuất</span>
             </a>
           </li>
@@ -307,18 +313,20 @@
             <h1>Quản lý người dùng</h1>
             <div class="muted">
               Đổi mật khẩu & khóa tài khoản sẽ ép người dùng đăng nhập lại.
-              <span class="pill-note"
-                ><i class="fa-solid fa-shield-halved"></i> Real-time force
-                logout</span
-              >
+              <span class="pill-note">
+                <i class="fa-solid fa-shield-halved"></i>
+                Real-time force logout
+              </span>
             </div>
           </div>
           <div class="actions">
             <button class="btn primary" id="btnAdd">
-              <ion-icon name="person-add-outline"></ion-icon> Thêm tài khoản
+              <i class="fa-solid fa-user-plus"></i>
+              <span>Thêm tài khoản</span>
             </button>
             <button class="btn" id="btnExport">
-              <ion-icon name="download-outline"></ion-icon> Xuất JSON
+              <i class="fa-solid fa-file-arrow-down"></i>
+              <span>Xuất JSON</span>
             </button>
           </div>
         </div>
@@ -423,17 +431,7 @@
       </div>
     </div>
 
-    <!-- Libs -->
-    <script
-      type="module"
-      src="./assets/js/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="./assets/js/ionicons.js"
-    ></script>
-
-    <!-- JS chung admin (toggle menu, active sidebar...) -->
+    <!-- JS chung admin -->
     <script src="./assets/js/main.js"></script>
 
     <script>
@@ -540,11 +538,12 @@
           const base = {
             name: name || emailLC,
             email: emailLC,
-            passHash: password
-              ? fnv1a(password)
-              : idx >= 0
-              ? sv[idx].passHash
-              : fnv1a(password || "123456"),
+            passHash:
+              password && password.length
+                ? fnv1a(password)
+                : idx >= 0
+                ? sv[idx].passHash
+                : fnv1a("123456"),
             createdAt:
               (idx >= 0 && sv[idx].createdAt) || new Date().toISOString(),
             status: status || (idx >= 0 ? sv[idx].status : "active"),
@@ -572,7 +571,10 @@
             status: status || bs[bidx]?.status || "active",
             fullName: name || emailLC,
             username: emailLC,
-            password: password ? String(password) : bs[bidx]?.password || "",
+            password:
+              password && password.length
+                ? String(password)
+                : bs[bidx]?.password || "",
             email: emailLC,
             phone: phone || "",
             address: address || "",
@@ -608,10 +610,8 @@
           }
 
           if (String(newStatus).toLowerCase() === "locked") {
-            // Đá ra ngay
             localStorage.setItem(`auth.kick.${emailLC}`, String(Date.now()));
           } else {
-            // Cho client đang mở tự kiểm tra lại
             localStorage.setItem(`auth.bump.${emailLC}`, String(Date.now()));
           }
         }
@@ -640,7 +640,6 @@
             saveJSON(BS_USERS, bs);
           }
 
-          // ép đăng nhập lại
           localStorage.setItem(`auth.kick.${emailLC}`, String(Date.now()));
         }
 
@@ -674,14 +673,15 @@
           if (q) {
             list = list.filter((u) =>
               [u.name, u.email, u.phone].some((x) =>
-                String(x || "")
-                  .toLowerCase()
-                  .includes(q)
+                String(x || "").toLowerCase().includes(q)
               )
             );
           }
-          if (status !== "all")
-            list = list.filter((u) => (u.status || "active") === status);
+          if (status !== "all") {
+            list = list.filter(
+              (u) => (u.status || "active") === status
+            );
+          }
 
           if (!list.length) {
             tbody.innerHTML =
@@ -692,35 +692,32 @@
           tbody.innerHTML = list
             .map((u) => {
               const isLocked = u.status === "locked";
+              const email = esc(u.email || "");
               return `
               <tr>
                 <td><strong>${esc(u.name || "")}</strong></td>
-                <td>${esc(u.email || "")}</td>
+                <td>${email}</td>
                 <td>${esc(u.phone || "")}</td>
                 <td><span class="chip">${esc(u.role || "member")}</span></td>
-                <td><span class="status ${isLocked ? "locked" : "active"}">${
-                isLocked ? "Đã khóa" : "Đang hoạt động"
-              }</span></td>
+                <td>
+                  <span class="status ${isLocked ? "locked" : "active"}">
+                    ${isLocked ? "Đã khóa" : "Đang hoạt động"}
+                  </span>
+                </td>
                 <td>${formatDate(u.createdAt)}</td>
                 <td>
                   <div style="display:flex;gap:6px;flex-wrap:wrap">
-                    <button class="btn" onclick="UsersUI.promptReset('${esc(
-                      u.email
-                    )}')" title="Đổi mật khẩu">
+                    <button class="btn" onclick="UsersUI.promptReset('${email}')" title="Đổi mật khẩu">
                       <i class="fa-solid fa-key"></i><span>Đổi mật khẩu</span>
                     </button>
                     ${
                       isLocked
-                        ? `<button class="btn" onclick="UsersUI.unlock('${esc(
-                            u.email
-                          )}')" title="Mở khóa">
-                           <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
-                         </button>`
-                        : `<button class="btn danger" onclick="UsersUI.lock('${esc(
-                            u.email
-                          )}')" title="Khóa tài khoản">
-                           <i class="fa-solid fa-lock"></i><span>Khóa</span>
-                         </button>`
+                        ? `<button class="btn" onclick="UsersUI.unlock('${email}')" title="Mở khóa">
+                             <i class="fa-solid fa-lock-open"></i><span>Mở khóa</span>
+                           </button>`
+                        : `<button class="btn danger" onclick="UsersUI.lock('${email}')" title="Khóa tài khoản">
+                             <i class="fa-solid fa-lock"></i><span>Khóa</span>
+                           </button>`
                     }
                   </div>
                 </td>
@@ -748,12 +745,12 @@
         // Modal
         const modal = document.getElementById("modalUser");
         const modalTitle = document.getElementById("modalTitle");
-        const uName = $("#uName"),
-          uEmail = $("#uEmail"),
-          uPhone = $("#uPhone"),
-          uAddress = $("#uAddress"),
-          uPassword = $("#uPassword"),
-          uRole = $("#uRole");
+        const uName = $("#uName");
+        const uEmail = $("#uEmail");
+        const uPhone = $("#uPhone");
+        const uAddress = $("#uAddress");
+        const uPassword = $("#uPassword");
+        const uRole = $("#uRole");
 
         function openModal() {
           modal.classList.add("show");
@@ -783,7 +780,8 @@
           const pass = uPassword.value.trim();
           const role = uRole.value;
 
-          if (!name || !email) return toast("Vui lòng nhập Họ tên và Email.");
+          if (!name || !email)
+            return toast("Vui lòng nhập Họ tên và Email.");
           if (pass && pass.length < 4)
             return toast("Mật khẩu tối thiểu 4 ký tự.");
 
@@ -810,7 +808,8 @@
           promptReset(email) {
             const newPass = prompt("Nhập mật khẩu mới cho " + email + ":");
             if (!newPass) return;
-            if (newPass.length < 4) return toast("Mật khẩu tối thiểu 4 ký tự.");
+            if (newPass.length < 4)
+              return toast("Mật khẩu tối thiểu 4 ký tự.");
             try {
               resetPassword(email, newPass);
               render();
@@ -861,7 +860,7 @@
             if (!u) return;
             const el = document.getElementById("admin-username");
             if (!el) return;
-            el.textContent =
+            el.textContent = "Chào mừng, Admin";
               u.fullname || u.name || u.username || u.email || "Admin";
           } catch {}
         })();

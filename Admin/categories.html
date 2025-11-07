@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="../fontawesome-free-6.7.2-web/css/all.min.css"
+      integrity="sha512-..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer">
+    <!-- Font Awesome -->
 
     <!-- GUARD -->
     <script>
@@ -33,12 +40,13 @@
       }
       .page-header h1 {
         font-size: 30px;
-        color:#000;
+        color: #000;
         margin: 0;
       }
       .actions {
         display: flex;
         gap: 8px;
+        flex-wrap: wrap;
       }
       .btn {
         display: inline-flex;
@@ -62,12 +70,14 @@
         padding: 10px 12px;
         background: #fff;
         min-width: 220px;
+        outline: none;
       }
       .toolbar {
         display: flex;
         gap: 10px;
         align-items: center;
         margin: 12px 0;
+        flex-wrap: wrap;
       }
 
       table {
@@ -99,16 +109,6 @@
         border: 1px solid #e5e7eb;
         color: #6b7280;
       }
-      .badge.on {
-        background: #ecfdf5;
-        border-color: #a7f3d0;
-        color: #065f46;
-      }
-      .badge.off {
-        background: #eef2ff;
-        border-color: #c7d2fe;
-        color: #3730a3;
-      }
 
       /* Drawer */
       .drawer-backdrop {
@@ -117,6 +117,9 @@
         background: rgba(0, 0, 0, 0.35);
         display: none;
         z-index: 998;
+      }
+      .drawer-backdrop.show {
+        display: block;
       }
       .drawer {
         position: fixed;
@@ -135,9 +138,6 @@
       }
       .drawer.open {
         transform: translateX(0);
-      }
-      .drawer-backdrop.show {
-        display: block;
       }
       .drawer .cardHeader {
         padding: 14px 16px;
@@ -180,61 +180,62 @@
         <ul>
           <li>
             <a href="./index.html">
-              <span class="icon"><ion-icon name="logo-apple"></ion-icon></span>
+              <span class="icon"><i class="fa-brands fa-apple"></i></span>
               <span class="title">Nobility 1800s</span>
             </a>
           </li>
+
           <li id="nav-dashboard">
-            <a href="./index.html"
-              ><span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span
-              ><span class="title">Bảng điều khiển</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><i class="fa-solid fa-house"></i></span>
+              <span class="title">Bảng điều khiển</span>
+            </a>
           </li>
+
           <li id="nav-customers">
-            <a href="./users.html"
-              ><span class="icon"
-                ><ion-icon name="people-outline"></ion-icon></span
-              ><span class="title">Quản lý khách hàng</span></a
-            >
+            <a href="./users.html">
+              <span class="icon"><i class="fa-solid fa-user"></i></span>
+              <span class="title">Quản lý khách hàng</span>
+            </a>
           </li>
+
           <li class="hovered" id="nav-categories">
-            <a href="./categories.html"
-              ><span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon></span
-              ><span class="title">Quản lý danh mục</span></a
-            >
+            <a href="./categories.html">
+              <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="title">Quản lý danh mục</span>
+            </a>
           </li>
+
           <li id="nav-products">
-            <a href="./products.html"
-              ><span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon></span
-              ><span class="title">Quản lý sản phẩm</span></a
-            >
+            <a href="./products.html">
+              <span class="icon"><i class="fa-solid fa-tags"></i></span>
+              <span class="title">Quản lý sản phẩm</span>
+            </a>
           </li>
+
           <li id="nav-imports">
-            <a href="./imports.html"
-              ><span class="icon"
-                ><ion-icon name="download-outline"></ion-icon></span
-              ><span class="title">Phiếu nhập hàng</span></a
-            >
+            <a href="./imports.html">
+              <span class="icon"><i class="fa-solid fa-box-open"></i></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
           </li>
 
           <li id="nav-inventory">
-            <a href="./inventory.html"
-              ><span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
-              ><span class="title">Quản lý hàng tồn kho</span></a
-            >
+            <a href="./inventory.html">
+              <span class="icon"><i class="fa-solid fa-warehouse"></i></span>
+              <span class="title">Quản lý hàng tồn kho</span>
+            </a>
           </li>
+
           <li id="nav-orders">
-            <a href="./orders.html"
-              ><span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon></span
-              ><span class="title">Quản lý đơn hàng</span></a
-            >
+            <a href="./orders.html">
+              <span class="icon"><i class="fa-solid fa-receipt"></i></span>
+              <span class="title">Quản lý đơn hàng</span>
+            </a>
           </li>
+
           <hr />
+
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -249,16 +250,18 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon
-              ><span>Chào mừng, Admin</span>
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Chào mừng, Admin</span>
             </div>
           </li>
+
           <li>
-            <a href="#" id="btn-logout-side"
-              ><span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon></span
-              ><span class="title">Đăng xuất</span></a
-            >
+            <a href="#" id="btn-logout-side">
+              <span class="icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </span>
+              <span class="title">Đăng xuất</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -275,7 +278,9 @@
               type="text"
               placeholder="Tìm theo tên / mô tả…"
             />
-            <button class="btn primary" id="btn-new">+ Thêm danh mục</button>
+            <button class="btn primary" id="btn-new">
+              + Thêm danh mục
+            </button>
           </div>
         </div>
 
@@ -355,15 +360,6 @@
 
     <!-- JS chung -->
     <script src="./assets/js/main.js"></script>
-    <!-- Ionicons -->
-    <script
-      type="module"
-      src="./assets/js/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="./assets/js/ionicons.js"
-    ></script>
 
     <!-- Logic danh mục -->
     <script src="./assets/js/categories.js"></script>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản lý tồn kho & Báo cáo | Nobility 1800s Admin</title>
-    <link rel="stylesheet" href="./assets/css/style.css" />
 
     <!-- GUARD -->
     <script>
@@ -19,6 +18,17 @@
         }
       })();
     </script>
+
+    <!-- CSS admin chung -->
+    <link rel="stylesheet" href="./assets/css/style.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="../fontawesome-free-6.7.2-web/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
     <style>
       .page {
@@ -62,6 +72,7 @@
         padding: 10px 12px;
         background: #fff;
         width: 100%;
+        outline: none;
       }
       .btn {
         display: inline-flex;
@@ -73,11 +84,12 @@
         background: #fff;
         font-weight: 700;
         cursor: pointer;
+        font-size: 13px;
       }
       .btn.primary {
-        background: #111;
+        background: #111827;
         color: #fff;
-        border-color: #111;
+        border-color: #111827;
       }
       .btn.ghost {
         background: #fff;
@@ -143,73 +155,77 @@
       }
       .right {
         margin-left: auto;
+        text-align: right;
       }
       .nowrap {
         white-space: nowrap;
       }
     </style>
   </head>
+
   <body>
     <div class="container">
       <!-- Sidebar -->
       <div class="navagation">
         <ul>
           <li>
-            <a href="./index.html"
-              ><span class="icon"><ion-icon name="logo-apple"></ion-icon></span
-              ><span class="title">Nobility 1800s</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><i class="fa-brands fa-apple"></i></span>
+              <span class="title">Nobility 1800s</span>
+            </a>
           </li>
+
           <li id="nav-dashboard">
-            <a href="./index.html"
-              ><span class="icon"
-                ><ion-icon name="home-outline"></ion-icon></span
-              ><span class="title">Bảng điều khiển</span></a
-            >
+            <a href="./index.html">
+              <span class="icon"><i class="fa-solid fa-house"></i></span>
+              <span class="title">Bảng điều khiển</span>
+            </a>
           </li>
+
           <li id="nav-customers">
-            <a href="./users.html"
-              ><span class="icon"
-                ><ion-icon name="people-outline"></ion-icon></span
-              ><span class="title">Quản lý khách hàng</span></a
-            >
+            <a href="./users.html">
+              <span class="icon"><i class="fa-solid fa-user"></i></span>
+              <span class="title">Quản lý khách hàng</span>
+            </a>
           </li>
+
           <li id="nav-categories">
-            <a href="./categories.html"
-              ><span class="icon"
-                ><ion-icon name="bookmarks-outline"></ion-icon></span
-              ><span class="title">Quản lý danh mục</span></a
-            >
+            <a href="./categories.html">
+              <span class="icon"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="title">Quản lý danh mục</span>
+            </a>
           </li>
+
           <li id="nav-products">
-            <a href="./products.html"
-              ><span class="icon"
-                ><ion-icon name="bag-remove-outline"></ion-icon></span
-              ><span class="title">Quản lý sản phẩm</span></a
-            >
+            <a href="./products.html">
+              <span class="icon"><i class="fa-solid fa-tags"></i></span>
+              <span class="title">Quản lý sản phẩm</span>
+            </a>
           </li>
+
           <li id="nav-imports">
-            <a href="./imports.html"
-              ><span class="icon"
-                ><ion-icon name="download-outline"></ion-icon></span
-              ><span class="title">Phiếu nhập hàng</span></a
-            >
+            <a href="./imports.html">
+              <span class="icon"><i class="fa-solid fa-box-open"></i></span>
+              <span class="title">Phiếu nhập hàng</span>
+            </a>
           </li>
+
           <li id="nav-inventory" class="hovered">
-            <a href="./inventory.html"
-              ><span class="icon"
-                ><ion-icon name="file-tray-stacked-outline"></ion-icon></span
-              ><span class="title">Quản lý hàng tồn kho</span></a
-            >
+            <a href="./inventory.html">
+              <span class="icon"><i class="fa-solid fa-boxes-stacked"></i></span>
+              <span class="title">Quản lý hàng tồn kho</span>
+            </a>
           </li>
+
           <li id="nav-orders">
-            <a href="./orders.html"
-              ><span class="icon"
-                ><ion-icon name="newspaper-outline"></ion-icon></span
-              ><span class="title">Quản lý đơn hàng</span></a
-            >
+            <a href="./orders.html">
+              <span class="icon"><i class="fa-solid fa-receipt"></i></span>
+              <span class="title">Quản lý đơn hàng</span>
+            </a>
           </li>
+
           <hr />
+
           <li class="welcome-admin-tile" style="margin: 8px 10px 6px">
             <div
               style="
@@ -224,16 +240,18 @@
                 font-weight: 700;
               "
             >
-              <ion-icon name="person-circle-outline"></ion-icon
-              ><span>Chào mừng, Admin</span>
+              <i class="fa-solid fa-user-shield"></i>
+              <span>Chào mừng, Admin</span>
             </div>
           </li>
+
           <li>
-            <a href="#" id="btn-logout-side"
-              ><span class="icon"
-                ><ion-icon name="log-in-outline"></ion-icon></span
-              ><span class="title">Đăng xuất</span></a
-            >
+            <a href="#" id="btn-logout-side">
+              <span class="icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </span>
+              <span class="title">Đăng xuất</span>
+            </a>
           </li>
         </ul>
       </div>
@@ -242,7 +260,7 @@
     <div class="main">
       <div class="page">
         <div class="page-header">
-          <h1>Quản lý tồn kho & Báo cáo</h1>
+          <h1>Quản lý tồn kho &amp; Báo cáo</h1>
           <div id="summary" class="muted right"></div>
         </div>
 
@@ -262,9 +280,22 @@
               <div class="label">Thời điểm</div>
               <input id="f-at" type="datetime-local" class="input" />
             </div>
-            <div style="grid-column: span 2; display: flex; gap: 8px">
-              <button id="btn-check" class="btn primary">Xem tồn</button>
-              <button id="btn-reset-check" class="btn ghost">Xoá lọc</button>
+            <div
+              style="
+                grid-column: span 2;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+              "
+            >
+              <button id="btn-check" class="btn primary">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                <span>Xem tồn</span>
+              </button>
+              <button id="btn-reset-check" class="btn ghost">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Xoá lọc</span>
+              </button>
             </div>
           </div>
           <div id="at-result" class="muted"></div>
@@ -286,11 +317,22 @@
               <div class="label">Loại</div>
               <select id="r-category" class="input"></select>
             </div>
-            <div style="grid-column: span 3; display: flex; gap: 8px">
+            <div
+              style="
+                grid-column: span 3;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+              "
+            >
               <button id="btn-run-report" class="btn primary">
-                Chạy báo cáo
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Chạy báo cáo</span>
               </button>
-              <button id="btn-export-csv" class="btn ghost">Xuất CSV</button>
+              <button id="btn-export-csv" class="btn ghost">
+                <i class="fa-solid fa-file-export"></i>
+                <span>Xuất CSV</span>
+              </button>
             </div>
           </div>
 
@@ -350,13 +392,14 @@
               <div class="label">Loại</div>
               <select id="low-category" class="input"></select>
             </div>
-            <div style="display: flex; gap: 8px; align-items: end">
+            <div style="display: flex; gap: 8px; align-items: flex-end">
               <button id="btn-check-low" class="btn primary">
-                Quét tồn hiện tại
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Quét tồn hiện tại</span>
               </button>
-              <span class="muted"
-                >Kiểm tra theo số tồn <strong>hiện tại</strong>.</span
-              >
+              <span class="muted">
+                Kiểm tra theo số tồn <strong>hiện tại</strong>.
+              </span>
             </div>
           </div>
 
@@ -388,22 +431,17 @@
       </div>
     </div>
 
-    <!-- Libs -->
-    <script
-      type="module"
-      src="./assets/js/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="./assets/js/ionicons.js"
-    ></script>
-
-    <!-- App (đường dẫn đúng theo cây thư mục bạn chụp) -->
-    <script src="../assets/js/products.seed.js"></script>
+    <!-- JS chung -->
     <script src="./assets/js/main.js"></script>
+
+    <!-- Seed sản phẩm (dùng chung cho tồn kho / báo cáo) -->
+    <script src="./assets/js/products.seed.js"></script>
+
+    <!-- Logic tồn kho & báo cáo -->
     <script src="./assets/js/inventory.js"></script>
 
     <script>
+      // Logout
       document
         .getElementById("btn-logout-side")
         ?.addEventListener("click", (e) => {
