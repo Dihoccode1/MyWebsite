@@ -93,7 +93,7 @@
 </head>
 <body>
   <!-- Đổi sang .html -->
-  <a href="/trangchu.html" class="back"><i class="fa-solid fa-chevron-left"></i> Quay lại</a>
+  <a href="/index.html" class="back"><i class="fa-solid fa-chevron-left"></i> Quay lại</a>
 
   <div class="wrap">
     <div class="card">
@@ -237,7 +237,7 @@
 
         // CHUYỂN VỀ TRANG CHỦ VỚI POPUP WELCOME (đổi .php → .html)
         const nameForWelcome = encodeURIComponent(name || 'bạn');
-        location.href = '/trangchu.html?welcome=' + nameForWelcome;
+        location.href = '/index.html?welcome=' + nameForWelcome;
 
       }catch(err){
         showErr(err?.message);
