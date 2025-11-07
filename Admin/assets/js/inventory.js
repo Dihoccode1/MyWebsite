@@ -1,18 +1,9 @@
 /*
-<<<<<<< HEAD
   inventory.js – Tồn kho & Báo cáo (full, đã fix)
   Kết nối trực tiếp với:
     admin.categories : [{id, code, name, active, ...}]
     admin.products   : [{id, code, name, categoryId, qty, status, ...}]
     admin.stock      : [{id, productId, type:'import'|'export'|'adjust', qty, note, ref, createdAt}]
-=======
-  inventory.js – Tồn kho & Báo cáo (đã fix)
-  - Kết nối trực tiếp với:
-      admin.categories : [{id, code, name, ...}]
-      admin.products   : [{id, code, name, categoryId, qty, ...}]
-      admin.stock      : [{id, productId, type:'import'|'export'|'adjust', qty, note, ref, createdAt}]
-  - KHÔNG dùng #q (vì HTML không có), tránh lỗi JS làm hư toàn bộ trang.
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
 */
 
 (function () {
@@ -23,19 +14,9 @@
   const $ = (s) => document.querySelector(s);
   const fmtInt = (n) => Number(n || 0).toLocaleString("vi-VN");
 
-<<<<<<< HEAD
   const state = { cats: [], prods: [], txs: [] };
 
-  // ---------- Storage helpers
-=======
-  const state = {
-    cats: [],
-    prods: [],
-    txs: [],
-  };
-
   // Helpers đọc/ghi
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function loadJSON(key, def) {
     try {
       const raw = localStorage.getItem(key);
@@ -48,8 +29,7 @@
     localStorage.setItem(key, JSON.stringify(val));
   }
 
-<<<<<<< HEAD
-  // ---------- Bootstrap admin.* từ catalog public nếu trống
+  // Bootstrap admin.* từ catalog public nếu trống
   function bootstrapAdminFromCatalogIfEmpty() {
     const prodsCurr = loadJSON(LS_PRODS, []);
     const catsCurr = loadJSON(LS_CATS, []);
@@ -111,16 +91,9 @@
     saveJSON(LS_PRODS, prods);
   }
 
-  // seed admin.stock rỗng nếu chưa có
+  // Seed tối thiểu admin.stock (mảng rỗng nếu chưa có)
   (function seedStock() {
     if (!localStorage.getItem(LS_TX)) saveJSON(LS_TX, []);
-=======
-  // Seed tối thiểu admin.stock (nếu chưa có thì để mảng rỗng, không phá dữ liệu)
-  (function seedStock() {
-    if (!localStorage.getItem(LS_TX)) {
-      saveJSON(LS_TX, []);
-    }
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   })();
 
   // gọi bootstrap trước khi loadAll
@@ -132,37 +105,21 @@
     state.txs = loadJSON(LS_TX, []);
   }
 
-<<<<<<< HEAD
-  // ---------- helpers
-=======
-  // Tên loại từ id
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
+  // Helpers
   function catName(id) {
-    return (
-      state.cats.find((c) => String(c.id) === String(id))?.name || "—"
-    );
+    return state.cats.find((c) => String(c.id) === String(id))?.name || "—";
   }
-<<<<<<< HEAD
-=======
 
   // Số lượng hiện tại: đọc từ admin.products.qty
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function currentQty(productId) {
     const p = state.prods.find((x) => String(x.id) === String(productId));
     return Number(p?.qty || 0);
   }
-<<<<<<< HEAD
+
+  // Tính tồn tại thời điểm at: từ tồn hiện tại trừ phát sinh SAU thời điểm đó
   function stockOn(productId, at) {
     const atTS = at ? new Date(at).getTime() : Date.now();
     const nowTS = Date.now();
-=======
-
-  // Tính tồn tại thời điểm at: từ tồn hiện tại trừ đi phát sinh SAU thời điểm đó
-  function stockOn(productId, at) {
-    const atTS = at ? new Date(at).getTime() : Date.now();
-    const nowTS = Date.now();
-
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     if (atTS >= nowTS - 1000) return currentQty(productId);
 
     let deltaAfter = 0;
@@ -175,19 +132,11 @@
         const q = Number(t.qty || 0);
         if (t.type === "import") deltaAfter += q;
         else if (t.type === "export") deltaAfter -= q;
-<<<<<<< HEAD
-        else if (t.type === "adjust") deltaAfter += q; // dương/âm
-=======
         else if (t.type === "adjust") deltaAfter += q; // dương/âm tuỳ phiếu
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
       }
     }
     return currentQty(productId) - deltaAfter;
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   const stockNow = (productId) => stockOn(productId, new Date());
 
   function escapeHtml(s) {
@@ -204,11 +153,7 @@
     );
   }
 
-<<<<<<< HEAD
-  // ---------- fill selects
-=======
   // ==== Fill dropdown ====
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function fillProductSelect(sel, includeAll = true) {
     const el = typeof sel === "string" ? $(sel) : sel;
     if (!el) return;
@@ -221,17 +166,14 @@
       );
     for (const p of list) {
       opts.push(
-        `<option value="${p.id}">${escapeHtml(
-          p.code || ""
-        )} — ${escapeHtml(p.name || "")}</option>`
+        `<option value="${p.id}">${escapeHtml(p.code || "")} — ${escapeHtml(
+          p.name || ""
+        )}</option>`
       );
     }
     el.innerHTML = opts.join("");
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function fillCategorySelect(sel, includeAll = true) {
     const el = typeof sel === "string" ? $(sel) : sel;
     if (!el) return;
@@ -244,32 +186,17 @@
       );
     for (const c of list) {
       if (c.active === false) continue;
-<<<<<<< HEAD
       opts.push(`<option value="${c.id}">${escapeHtml(c.name || "")}</option>`);
-=======
-      opts.push(
-        `<option value="${c.id}">${escapeHtml(c.name || "")}</option>`
-      );
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     }
     el.innerHTML = opts.join("");
   }
 
-<<<<<<< HEAD
-  // ---------- Khối 1: Tra cứu tại thời điểm
-  function handleCheckAt() {
-    const pid = $("#f-product")?.value || "";
-    const cid = $("#f-category")?.value || "";
-    const atV = $("#f-at")?.value;
-    const at = atV ? new Date(atV) : new Date();
-=======
   // ==== Khối 1: Tra cứu tồn tại thời điểm ====
   function handleCheckAt() {
     const pid = $("#f-product")?.value || "";
     const cid = $("#f-category")?.value || "";
     const atVal = $("#f-at")?.value;
     const at = atVal ? new Date(atVal) : new Date();
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
 
     const list = state.prods.filter((p) => {
       if (pid && String(p.id) !== String(pid)) return false;
@@ -281,11 +208,7 @@
     if (!target) return;
 
     if (!list.length) {
-<<<<<<< HEAD
       target.innerHTML =
-=======
-      $("#at-result").innerHTML =
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
         '<span class="muted">Không có sản phẩm phù hợp bộ lọc.</span>';
       return;
     }
@@ -294,15 +217,6 @@
       .map((p) => {
         const qty = stockOn(p.id, at);
         return `
-<<<<<<< HEAD
-        <tr>
-          <td>${escapeHtml(p.code || "")}</td>
-          <td><strong>${escapeHtml(p.name || "")}</strong></td>
-          <td>${escapeHtml(catName(p.categoryId))}</td>
-          <td class="num">${fmtInt(qty)}</td>
-        </tr>
-      `;
-=======
           <tr>
             <td>${escapeHtml(p.code || "")}</td>
             <td><strong>${escapeHtml(p.name || "")}</strong></td>
@@ -310,7 +224,6 @@
             <td class="num">${fmtInt(qty)}</td>
           </tr>
         `;
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
       })
       .join("");
 
@@ -320,16 +233,7 @@
         <div class="muted">Kết quả tại thời điểm: <span class="nowrap">${when}</span></div>
         <table style="margin-top:6px">
           <thead>
-<<<<<<< HEAD
             <tr><td>Mã</td><td>Tên sản phẩm</td><td>Loại</td><td class="num">Tồn</td></tr>
-=======
-            <tr>
-              <td>Mã</td>
-              <td>Tên sản phẩm</td>
-              <td>Loại</td>
-              <td class="num">Tồn</td>
-            </tr>
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
           </thead>
           <tbody>${rows}</tbody>
         </table>
@@ -340,35 +244,24 @@
     if ($("#f-product")) $("#f-product").value = "";
     if ($("#f-category")) $("#f-category").value = "";
     if ($("#f-at")) $("#f-at").value = "";
-<<<<<<< HEAD
     if ($("#at-result"))
       $("#at-result").innerHTML =
         '<span class="muted">Chọn sản phẩm/loại và thời điểm để tra cứu tồn.</span>';
-  }
-
-  // ---------- Khối 2: Báo cáo N-X-T
-  function runReport() {
-    const sumEl = $("#summary");
-    const body = $("#report-body");
-    if (!body) return;
-=======
-    $("#at-result").innerHTML =
-      '<span class="muted">Chọn sản phẩm/loại và thời điểm để tra cứu tồn.</span>';
   }
 
   // ==== Khối 2: Báo cáo nhập – xuất – tồn ====
   function runReport() {
     const sumEl = $("#summary");
     const body = $("#report-body");
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
+    if (!body) return;
 
     const fromVal = $("#r-from")?.value;
     const toVal = $("#r-to")?.value;
     const cid = $("#r-category")?.value || "";
 
-<<<<<<< HEAD
     let fromTS = null,
       toTS = null;
+
     if (fromVal) {
       const d = new Date(fromVal);
       fromTS = new Date(
@@ -394,42 +287,16 @@
       ).getTime();
     }
 
-    const products = state.prods.filter(
-      (p) => !cid || String(p.categoryId) === String(cid)
-    );
-    const rows = [];
-
-    for (const p of products) {
-      const begin = fromTS == null ? 0 : stockOn(p.id, new Date(fromTS - 1));
-      let imp = 0,
-        exp = 0;
-=======
-    let fromTS = null;
-    let toTS = null;
-
-    if (fromVal) {
-      const d = new Date(fromVal);
-      fromTS = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0).getTime();
-    }
-    if (toVal) {
-      const d = new Date(toVal);
-      toTS = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999).getTime();
-    }
-
     const products = state.prods.filter((p) => {
       if (cid && String(p.categoryId) !== String(cid)) return false;
       return true;
     });
 
     const rows = [];
-
     for (const p of products) {
-      const begin =
-        fromTS == null ? 0 : stockOn(p.id, new Date(fromTS - 1));
-
+      const begin = fromTS == null ? 0 : stockOn(p.id, new Date(fromTS - 1));
       let imp = 0;
       let exp = 0;
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
 
       for (const t of state.txs) {
         if (String(t.productId) !== String(p.id)) continue;
@@ -491,23 +358,13 @@
     const sumImp = rows.reduce((t, x) => t + x.imp, 0);
     const sumExp = rows.reduce((t, x) => t + x.exp, 0);
     const sumEnd = rows.reduce((t, x) => t + x.end, 0);
-<<<<<<< HEAD
-    if (sumEl)
+
+    if (sumEl) {
       sumEl.textContent = `Tổng: Tồn đầu ${fmtInt(sumBegin)} • Nhập ${fmtInt(
         sumImp
       )} • Xuất ${fmtInt(sumExp)} • Tồn cuối ${fmtInt(sumEnd)}`;
-
-=======
-
-    if (sumEl) {
-      sumEl.textContent = `Tổng: Tồn đầu ${fmtInt(
-        sumBegin
-      )} • Nhập ${fmtInt(sumImp)} • Xuất ${fmtInt(
-        sumExp
-      )} • Tồn cuối ${fmtInt(sumEnd)}`;
     }
 
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     window.__INV_LAST_REPORT__ = rows;
   }
 
@@ -528,12 +385,8 @@
       "TonCuoi",
     ];
     const lines = [header.join(",")];
-<<<<<<< HEAD
-    rows.forEach((r, i) =>
-=======
 
     rows.forEach((r, i) => {
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
       lines.push(
         [
           i + 1,
@@ -545,14 +398,9 @@
           r.exp,
           r.end,
         ].join(",")
-<<<<<<< HEAD
-      )
-    );
-=======
       );
     });
 
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     const blob = new Blob([lines.join("\n")], {
       type: "text/csv;charset=utf-8;",
     });
@@ -564,24 +412,12 @@
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-<<<<<<< HEAD
-=======
 
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     function csv(v) {
       return `"${String(v ?? "").replace(/"/g, '""')}"`;
     }
   }
 
-<<<<<<< HEAD
-  // ---------- Khối 3: Cảnh báo sắp hết
-  function checkLow() {
-    const th = Number($("#low-threshold")?.value || 5);
-    const cid = $("#low-category")?.value || "";
-    const list = state.prods.filter(
-      (p) => !cid || String(p.categoryId) === String(cid)
-    );
-=======
   // ==== Khối 3: Cảnh báo sắp hết ====
   function checkLow() {
     const th = Number($("#low-threshold")?.value || 5);
@@ -592,32 +428,20 @@
       return true;
     });
 
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     const rows = list
       .map((p) => ({ p, qty: stockNow(p.id) }))
       .filter((x) => x.qty <= th);
 
     const body = $("#low-body");
     if (!body) return;
-<<<<<<< HEAD
+
     if (!rows.length) {
       body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#16a34a;padding:14px">Tốt! Không có sản phẩm nào ≤ ${fmtInt(
         th
       )}.</td></tr>`;
       return;
     }
-=======
 
-    if (!rows.length) {
-      body.innerHTML = `<tr>
-        <td colspan="6" style="text-align:center;color:#16a34a;padding:14px">
-          Tốt! Không có sản phẩm nào ≤ ${fmtInt(th)}.
-        </td>
-      </tr>`;
-      return;
-    }
-
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
     body.innerHTML = rows
       .map(
         (x, i) => `
@@ -634,40 +458,22 @@
       .join("");
   }
 
-<<<<<<< HEAD
-  // ---------- init UI
-=======
   // ==== Init UI ====
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function initUI() {
     fillProductSelect("#f-product", true);
     fillCategorySelect("#f-category", true);
     fillCategorySelect("#r-category", true);
     fillCategorySelect("#low-category", true);
 
-<<<<<<< HEAD
-    const d = new Date(),
-      y = d.getFullYear(),
-      m = d.getMonth();
-    if ($("#r-from")) $("#r-from").value = toInputDate(new Date(y, m, 1));
-    if ($("#r-to")) $("#r-to").value = toInputDate(new Date(y, m + 1, 0));
-    if ($("#at-result"))
-      $("#at-result").innerHTML =
-        '<span class="muted">Chọn sản phẩm/loại và thời điểm để tra cứu tồn.</span>';
-=======
     const d = new Date();
     const y = d.getFullYear();
     const m = d.getMonth();
-    if ($("#r-from"))
-      $("#r-from").value = toInputDate(new Date(y, m, 1));
-    if ($("#r-to"))
-      $("#r-to").value = toInputDate(new Date(y, m + 1, 0));
-
+    if ($("#r-from")) $("#r-from").value = toInputDate(new Date(y, m, 1));
+    if ($("#r-to")) $("#r-to").value = toInputDate(new Date(y, m + 1, 0));
     if ($("#at-result")) {
       $("#at-result").innerHTML =
         '<span class="muted">Chọn sản phẩm/loại và thời điểm để tra cứu tồn.</span>';
     }
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   }
 
   function toInputDate(dt) {
@@ -685,11 +491,7 @@
     $("#btn-check-low")?.addEventListener("click", checkLow);
   }
 
-<<<<<<< HEAD
-  // ---------- boot
-=======
   // Boot
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
   function boot() {
     loadAll();
     initUI();
@@ -697,11 +499,7 @@
   }
   boot();
 
-<<<<<<< HEAD
-  // reload khi dữ liệu admin.* thay đổi từ tab khác
-=======
-  // Lắng nghe thay đổi từ Phiếu nhập / Sản phẩm / Kho
->>>>>>> 064aa3131d01d51a4ffe084311aa171c03e9ebc0
+  // Lắng nghe thay đổi từ Phiếu nhập / Sản phẩm / Kho (tab khác)
   window.addEventListener("storage", (e) => {
     if ([LS_CATS, LS_PRODS, LS_TX].includes(e.key)) {
       loadAll();
