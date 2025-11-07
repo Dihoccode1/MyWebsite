@@ -18,19 +18,17 @@
   <link rel="stylesheet" href="fontawesome-free-6.7.2-web/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/base.css">
-  <style>
+<style>
 /* =========================
    BASE
    ========================= */
-html, body {
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: 0;
-  color: #222;
+img {
+  max-width: 100%;
+  display: block;
 }
-img { max-width: 100%; display: block; }
-a { text-decoration: none; }
+a {
+  text-decoration: none;
+}
 
 /* =========================
    CONTAINER + GRID NHẸ
@@ -44,7 +42,10 @@ a { text-decoration: none; }
   display: flex;
   flex-wrap: wrap;
 }
-.col-12 { flex: 0 0 100%; max-width: 100%; }
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
 
 /* =========================
    TOPBAR
@@ -73,7 +74,9 @@ a { text-decoration: none; }
   text-decoration: none;
 }
 
-/* nút đen giữ lại giống trang trung tâm */
+/* =========================
+   BUTTON (login/logout...)
+   ========================= */
 .btn-primary,
 .btn-logout {
   background: #333 !important;
@@ -102,14 +105,22 @@ a { text-decoration: none; }
   align-items: center;
   justify-content: space-between;
 }
-.header-left { flex: 1 1 auto; }
-.header-center { text-align: center; }
+.header-left {
+  flex: 1 1 auto;
+}
+.header-center {
+  text-align: center;
+}
 .header-center .logo img {
   max-height: 50px;
 }
-.header-right { flex: 1 1 auto; display: flex; justify-content: flex-end; }
+.header-right {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+}
 
-/* search giống trang chủ */
+/* Search */
 .search-bar {
   display: flex;
   align-items: center;
@@ -136,7 +147,7 @@ a { text-decoration: none; }
   background: #555;
 }
 
-/* giỏ hàng */
+/* Cart */
 .cart-link {
   display: inline-flex;
   align-items: center;
@@ -144,7 +155,9 @@ a { text-decoration: none; }
   font-weight: 600;
   color: #333;
 }
-.cart-link i { font-size: 18px; }
+.cart-link i {
+  font-size: 18px;
+}
 
 /* =========================
    MENU NGANG
@@ -160,7 +173,9 @@ a { text-decoration: none; }
   margin: 0;
   padding: 0;
 }
-.main-nav li { position: relative; }
+.main-nav li {
+  position: relative;
+}
 .main-nav a {
   display: block;
   padding: 14px 20px;
@@ -168,10 +183,12 @@ a { text-decoration: none; }
   font-weight: 600;
   transition: .2s;
 }
-.main-nav a:hover { color: #007bff; }
+.main-nav a:hover {
+  color: #007bff;
+}
 
 /* =========================
-   BREADCRUMB (đồng bộ với tin tức)
+   BREADCRUMB
    ========================= */
 .bread-crumb {
   padding: 10px 0;
@@ -195,7 +212,9 @@ a { text-decoration: none; }
   font-weight: 600;
   color: #333;
 }
-.breadcrumb .mr_lr i { color: #999; }
+.breadcrumb .mr_lr i {
+  color: #999;
+}
 
 /* =========================
    PAGE TITLE + NỘI DUNG GIỚI THIỆU
@@ -203,7 +222,8 @@ a { text-decoration: none; }
 .page {
   padding: 22px 0 36px;
 }
-.page-title .title-head {
+.page-title .title-head,
+.page-title h1 {
   font-size: 35px;
   margin: 0 0 12px;
 }
@@ -221,138 +241,36 @@ a { text-decoration: none; }
 }
 
 /* =========================
-   FOOTER (copy style từ trung tâm)
-   ========================= */
-.footer a { text-decoration: none; }
-.footer ul { list-style: none; margin: 0; padding: 0; }
-
-.site-footer .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-.site-footer .row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-.top-footer {
-  background: #232323;
-  color: #ddd;
-  padding: 26px 0 18px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-.widget-ft, .wg-logo {
-  padding: 0 8px;
-}
-.widget-ft .title-menu,
-.wg-logo .title-menu {
-  margin: 0 0 14px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  text-transform: uppercase;
-}
-.list-menu .li_menu { margin: 6px 0; }
-.list-menu .li_menu a {
-  color: #cfcfcf;
-  font-size: 14px;
-}
-.list-menu .li_menu a:hover { color: #fff; }
-
-.contact li {
-  display: flex;
-  gap: 10px;
-  margin: 8px 0;
-  color: #cfcfcf;
-}
-.contact a { color: #cfcfcf; }
-
-.mid-footer {
-  background: #f2f2f2;
-  padding: 14px 0;
-}
-.mid-footer .row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.fot_copyright { font-size: 14px; color: #7a7a7a; }
-.ul_menu_fot {
-  display: flex;
-  gap: 14px 24px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.ul_menu_fot a { color: #7a7a7a; font-size: 14px; }
-.pay_footer .follow_option {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-.backtop {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
-  background: #111;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* =========================
    RESPONSIVE
    ========================= */
 @media (max-width: 767.98px) {
-  .search-bar { display: none !important; }
+  .search-bar {
+    display: none !important;
+  }
+
   .mid-header .header-main {
     display: grid;
     grid-template-columns: auto 1fr auto;
     gap: 8px;
     align-items: center;
   }
-  .header-center .logo img { max-height: 40px; }
-  .cart-link { font-size: 13px; }
 
-  .site-footer .widget-ft,
-  .site-footer .wg-logo {
-    flex: 1 1 100%;
+  .header-center .logo img {
+    max-height: 40px;
   }
 
-  /* footer accordion giữ lại */
-  .site-footer .widget-ft .title-menu {
-    position: relative;
-    padding-right: 24px;
-    cursor: pointer;
+  .cart-link {
+    font-size: 13px;
   }
-  .site-footer .widget-ft .title-menu::after {
-    content: "+";
-    position: absolute;
-    right: 0;
-    top: 0;
-    color: #cfcfcf;
-  }
-  .site-footer .widget-ft.is-open .title-menu::after { content: "–"; }
-  .site-footer .widget-ft .list-menu { display: none; }
-  .site-footer .widget-ft.is-open .list-menu { display: block; }
 
-  /* nút logout nhỏ lại */
   .btn-logout {
     padding: 5px 8px !important;
     font-size: 11px !important;
     max-width: 70px !important;
   }
 }
-@media (min-width: 768px) {
-  .site-footer .widget-ft .list-menu { display: block !important; }
-  .site-footer .widget-ft .title-menu::after { content: none !important; }
-}
 </style>
+
 
 </head>
 
