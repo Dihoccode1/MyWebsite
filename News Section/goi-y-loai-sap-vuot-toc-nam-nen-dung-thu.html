@@ -67,6 +67,51 @@
     }
     .sidebar-pad{padding-right:24px}
     .content-pad{padding-left:24px}
+    @media (max-width: 767.98px) {
+  /* Ẩn cả khối search bên trái cho rộng */
+  .header-left,
+  .search-bar {
+    display: none !important;
+  }
+
+  /* Header: chỉ còn logo + giỏ hàng trên 1 hàng */
+  .header-main {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+  }
+
+  /* Logo: giới hạn RÕ bề ngang, auto co theo, không tràn */
+  .header-center {
+    flex: 0 0 auto;
+    max-width: 40% !important;      /* nếu vẫn to, giảm xuống 35% */
+    overflow: hidden;
+  }
+  .header-center .logo img {
+    max-width: 120px !important;     /* chỉnh 70–90 tuỳ mắt */
+    height: auto !important;
+    display: block;
+  }
+
+  /* Giỏ hàng: luôn thấy full bên phải */
+  .header-right {
+    flex: 0 0 auto;
+  }
+  .header-right .cart-link {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 6px !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+  .header-right .cart-link i {
+    font-size: 15px !important;
+  }
+}
   </style>
 </head>
 <header class="header">
