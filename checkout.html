@@ -7,7 +7,7 @@
 
   <!-- Vendor CSS -->
   <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="assets/css/normalize.min.css"/>
 
   <!-- Site CSS -->
   <link rel="stylesheet" href="/assets/css/base.css">
@@ -369,13 +369,13 @@
            </nav>
            <div class="pay_footer">
              <ul class="follow_option">
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png" alt="Payment"></a></li>
-               <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_1.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_2.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_3.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_4.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_5.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_6.webp" alt="Payment"></a></li>
+               <li><a href="#"><img src="/assets/images/pay_7.webp" alt="Payment"></a></li>
              </ul>
            </div>
            <a href="#" id="back-to-top" class="backtop" title="Lên đầu trang">
@@ -436,15 +436,15 @@
   /* Danh sách tỉnh / demo quận phường */
   const VN_PROVINCES = ["An Giang","Bà Rịa - Vũng Tàu","Bắc Giang","Bắc Kạn","Bạc Liêu","Bắc Ninh","Bến Tre","Bình Định","Bình Dương","Bình Phước","Bình Thuận","Cà Mau","Cao Bằng","Đắk Lắk","Đắk Nông","Điện Biên","Đồng Nai","Đồng Tháp","Gia Lai","Hà Giang","Hà Nam","Hà Tĩnh","Hải Dương","Hậu Giang","Hòa Bình","Hưng Yên","Khánh Hòa","Kiên Giang","Kon Tum","Lai Châu","Lâm Đồng","Lạng Sơn","Lào Cai","Long An","Nam Định","Nghệ An","Ninh Bình","Ninh Thuận","Phú Thọ","Phú Yên","Quảng Bình","Quảng Nam","Quảng Ngãi","Quảng Ninh","Quảng Trị","Sóc Trăng","Sơn La","Tây Ninh","Thái Bình","Thái Nguyên","Thanh Hóa","Thừa Thiên Huế","Tiền Giang","Trà Vinh","Tuyên Quang","Vĩnh Long","Vĩnh Phúc","Yên Bái","Hà Nội","TP.HCM","Hải Phòng","Đà Nẵng","Cần Thơ"];
   const VN_ADMIN_SAMPLE = {
-    "TP.HCM": {
-      "Quận 1": ["Bến Nghé","Bến Thành","Cầu Kho","Cầu Ông Lãnh"],
-      "Quận 3": ["Võ Thị Sáu","Phường 7","Phường 8"],
-      "Bình Thạnh": ["Phường 1","Phường 2","Phường 3"]
-    },
-    "Hà Nội": {
-      "Ba Đình": ["Cống Vị","Điện Biên","Giảng Võ"],
-      "Hoàn Kiếm": ["Hàng Bạc","Hàng Buồm","Tràng Tiền"]
-    }
+      "TP.HCM": {
+        "Quận 1": ["Bến Nghé","Bến Thành","Cầu Kho","Cầu Ông Lãnh"],
+        "Quận 3": ["Võ Thị Sáu","Phường 7","Phường 8"],
+        "Bình Thạnh": ["Phường 1","Phường 2","Phường 3"]
+      },
+      "Hà Nội": {
+        "Ba Đình": ["Cống Vị","Điện Biên","Giảng Võ"],
+        "Hoàn Kiếm": ["Hàng Bạc","Hàng Buồm","Tràng Tiền"]
+      }
   };
 
   /* Badge giỏ hàng trên header */
