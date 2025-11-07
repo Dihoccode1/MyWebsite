@@ -288,13 +288,55 @@
               </nav>
               <div class="pay_footer">
                 <ul class="follow_option">
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png" alt="Payment" /></a></li>
-                  <li><a href="#"><img src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png" alt="Payment" /></a></li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_1.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_2.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_3.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_4.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_5.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_6.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="#"
+                      ><img
+                        src="//bizweb.dktcdn.net/100/004/366/themes/900241/assets/pay_7.png"
+                        alt="Payment"
+                    /></a>
+                  </li>
                 </ul>
               </div>
               <a
@@ -474,18 +516,15 @@
         }
 
         function escapeHtml(s) {
-          return String(s || "").replace(
-            /[&<>"']/g,
-            function (m) {
-              return {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;",
-              }[m];
-            }
-          );
+          return String(s || "").replace(/[&<>"']/g, function (m) {
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[m];
+          });
         }
 
         // Sự kiện nút Huỷ đơn
@@ -509,9 +548,7 @@
           // 1) Cập nhật sv_orders_v1
           const store = LS.get(KEY, {});
           const list = store[email] || [];
-          const idx = list.findIndex(
-            (o) => String(o.id) === String(orderId)
-          );
+          const idx = list.findIndex((o) => String(o.id) === String(orderId));
           if (idx < 0) {
             alert("Không tìm thấy đơn hàng.");
             btn && btn.removeAttribute("disabled");
@@ -547,10 +584,7 @@
                 changed = true;
               }
               if (changed) LS.set("admin.orders", adminOrders);
-            } else if (
-              adminOrders &&
-              typeof adminOrders === "object"
-            ) {
+            } else if (adminOrders && typeof adminOrders === "object") {
               Object.keys(adminOrders).forEach((k) => {
                 const o = adminOrders[k];
                 if (o && String(o.id) === String(orderId)) {
@@ -653,7 +687,6 @@
         }
       });
     </script>
-            <script src="/assets/js/auth.kick.guard.js"></script>
 
     <!-- Bootstrap JS -->
     <script
